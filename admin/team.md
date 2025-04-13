@@ -21,9 +21,9 @@ Welcome to the official team page for **10X Brogrammers**, where we compile idea
 |----------------|--------------------|------------------------------------|-----------|
 | **Dhruv Agarwal** | Team Lead | [@dhruvagarwal]() |  |
 | **Haoyan Wan** | Team Lead | [@haoyanwan]() |  |
-| **Hetvi Gandhi** |  | [@hetvigandhi](https://github.com/hetvi1511/) | Writes docs so good, they compile without warnings. |
+| **Hetvi Gandhi** |  | [@hetvigandhi]([https://github.com/hetvi1511/]) | Writes docs so good, they compile without warnings. |
 | **Pantea Foroutan** |  | [@panteaforoutan]() |  |
-| **Nasser Al Nasser** |  | [@nasseralnasser]() |  |
+| **Nasser Al Nasser** |  | [@nasseralnasser]([https://github.com/nascaral/]) | Building websites so responsive they answer emails too |
 | **Anthony-Hao Nguyen** |  | [@anthonyhaonguyen]() |  |
 | **Damian Nieto** |  | [@jdamiannieto]() |  |
 | **Kiichiro Wang** |  | [@kiichirowang]() |  |

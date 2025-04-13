@@ -24,7 +24,7 @@ Welcome to the official team page for **10X Brogrammers**, where we compile idea
 | **Hetvi Gandhi** |  | [@hetvigandhi](https://github.com/hetvi1511) | Writes docs so good, they compile without warnings. |
 | **Pantea Foroutan** |  | [@panteaforoutan](https://github.com/Panteaforoutan) | I like learning, building stuff, and coding. |
 | **Nasser Al Nasser** |  | [@nasseralnasser](https://github.com/nascaral) | Building websites so responsive they answer emails too |
-| **Anthony-Hao Nguyen** |  | [@anthonyhaonguyen]() |  |
+| **Anthony-Hao Nguyen** |  | [@anthonyhaonguyen](https://github.com/AnthonyHaoNguyen) | I enjoy reading and writing code, looking for ways to improve. |
 | **Damian Nieto** |  | [@jdamiannieto]() |  |
 | **Kiichiro Wang** |  | [@kiichirowang]() |  |
 | **Adam Connor** |  | [@adamconnor]() |  |

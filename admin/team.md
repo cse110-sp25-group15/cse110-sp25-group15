@@ -1,0 +1,58 @@
+# 🧑‍💻 Team 10X Brogrammers
+
+> *"Writing code so clean, it squeaks."*
+
+---
+
+## 🌐 About Us
+
+Welcome to the official team page for **10X Brogrammers**, where we compile ideas, squash all bugs (only for debugging purposes mostly), and caffeine flows through our veins. We are a team of passionate developers who value:
+
+- 💡 **Clarity** – Write code that makes sense (even two weeks later).
+- 🤝 **Collaboration** – Great software is built together.
+- 🧐 **Curiosity** – Always ask why (and how).
+- ☕️ **Caffeine** – Our primary programming language.
+
+---
+
+## 🧾 Team Roster
+
+| Name           | Role               | GitHub                            | Short Bio |
+|----------------|--------------------|------------------------------------|-----------|
+| **Dhruv Agarwal** | Team Lead | [@dhruvagarwal]() |  |
+| **Haoyan Wan** | Team Lead | [@haoyanwan]() |  |
+| **Hetvi Gandhi** |  | [@hetvigandhi](https://github.com/hetvi1511/) | Writes docs so good, they compile without warnings. |
+| **Pantea Foroutan** |  | [@panteaforoutan]() |  |
+| **Nasser Al Nasser** |  | [@nasseralnasser]() |  |
+| **Anthony-Hao Nguyen** |  | [@anthonyhaonguyen]() |  |
+| **Damian Nieto** |  | [@jdamiannieto]() |  |
+| **Kiichiro Wang** |  | [@kiichirowang]() |  |
+| **Adam Connor** |  | [@adamconnor]() |  |
+| **Ahmed Abdullahi** |  | [@ahmedabdullahi]() |  |
+| **Aniruddha Dasu** |  | [@aniruddhadasu]() |  |
+
+---
+
+## 🎯 Team Values
+
+- **Transparency**: No surprises, just syncs.
+- **Ownership**: If you break it, you fix it, you inform. And write a test.
+- **Humor**: If we’re not laughing, we’re debugging (but then we are crying).
+
+---
+
+## 🔗 Related Links
+
+- [🔙 Return to Repository](../)
+- [📄 Individual Developer Pages](./team.md) <-- You are here!
+- [📌 Project README](../README.md)
+
+---
+
+## 🧪 Fun Fact
+
+We’d share a fun fact, but we’ve been too busy pushing clean code and dodging merge conflicts 😎
+
+---
+
+_Running on logic and vibes_ 🛠️

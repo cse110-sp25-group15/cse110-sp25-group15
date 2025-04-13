@@ -19,7 +19,7 @@ Welcome to the official team page for **10X Brogrammers**, where we compile idea
 
 | Name           | Role               | GitHub                            | Short Bio |
 |----------------|--------------------|------------------------------------|-----------|
-| **Dhruv Agarwal** | Team Lead | [@dhruvagarwal]() |  |
+| **Dhruv Agarwal** | Team Lead | [@d6agarwal](https://github.com/d6agarwal) |Writes code that breaks things just enough to build them better |
 | **Haoyan Wan** | Team Lead | [@haoyanwan]([https://github.com/haoyanwan]) | Debugs code so well, no pesticides needed. |
 | **Hetvi Gandhi** |  | [@hetvigandhi]([https://github.com/hetvi1511/]) | Writes docs so good, they compile without warnings. |
 | **Pantea Foroutan** |  | [@panteaforoutan]() |  |

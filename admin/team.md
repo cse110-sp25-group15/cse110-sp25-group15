@@ -28,7 +28,7 @@ Welcome to the official team page for **10X Brogrammers**, where we compile idea
 | **Damian Nieto** |  | [@damiannieto](https://github.com/DamianGN136) | I tend to break things and then put them back together. Usually neither are done on purpose. |
 | **Kiichiro Wang** |  | [@kiichirowang]() |  |
 | **Adam Connor** |  | [@adamconnor](https://github.com/adam-hehe) | Can also code in Spanish. |
-| **Ahmed Abdullahi** |  | [@ahmedabdullahi]() |  |
+| **Ahmed Abdullahi** |  | [@ahmedabdullahi](https://github.com/axmed-cs) | I like web development, its fun. |
 | **Aniruddha Dasu** |  | [@aniruddhadasu]() |  |
 
 ---

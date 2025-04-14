@@ -21,15 +21,15 @@ Welcome to the official team page for **10X Brogrammers**, where we compile idea
 |----------------|--------------------|------------------------------------|-----------|
 | **Dhruv Agarwal** | Team Lead | [@d6agarwal](https://github.com/d6agarwal) |Writes code that breaks things just enough to build them better |
 | **Haoyan Wan** | Team Lead | [@haoyanwan](https://github.com/haoyanwan) | Debugs code so well, no pesticides needed. |
-| **Hetvi Gandhi** |  | [@hetvigandhi](https://github.com/hetvi1511) | Writes docs so good, they compile without warnings. |
-| **Pantea Foroutan** |  | [@panteaforoutan](https://github.com/Panteaforoutan) | I like learning, building stuff, and coding. |
-| **Nasser Al Nasser** |  | [@nasseralnasser](https://github.com/nascaral) | Building websites so responsive they answer emails too |
-| **Anthony-Hao Nguyen** |  | [@anthonyhaonguyen](https://github.com/AnthonyHaoNguyen) | I enjoy reading and writing code, looking for ways to improve. |
-| **Damian Nieto** |  | [@damiannieto](https://github.com/DamianGN136) | I tend to break things and then put them back together. Usually neither are done on purpose. |
-| **Kiichiro Wang** |  | [@kiichirowang]() |  |
-| **Adam Connor** |  | [@adamconnor](https://github.com/adam-hehe) | Can also code in Spanish. |
-| **Ahmed Abdullahi** |  | [@ahmedabdullahi](https://github.com/axmed-cs) | I like web development, its fun. |
-| **Aniruddha Dasu** |  | [@aniruddhadasu](https://github.com/adasu14) | Everytime I code, I learn something I should've known before. | 
+| **Hetvi Gandhi** | Developer | [@hetvigandhi](https://github.com/hetvi1511) | Writes docs so good, they compile without warnings. |
+| **Pantea Foroutan** | Developer | [@panteaforoutan](https://github.com/Panteaforoutan) | I like learning, building stuff, and coding. |
+| **Nasser Al Nasser** | Developer | [@nasseralnasser](https://github.com/nascaral) | Building websites so responsive they answer emails too |
+| **Anthony-Hao Nguyen** | Developer | [@anthonyhaonguyen](https://github.com/AnthonyHaoNguyen) | I enjoy reading and writing code, looking for ways to improve. |
+| **Damian Nieto** | Developer | [@damiannieto](https://github.com/DamianGN136) | I tend to break things and then put them back together. Usually neither are done on purpose. |
+| **Kiichiro Wang** | Developer | [@kiichirowang]() |  |
+| **Adam Connor** | Developer | [@adamconnor](https://github.com/adam-hehe) | Can also code in Spanish. |
+| **Ahmed Abdullahi** | Developer | [@ahmedabdullahi](https://github.com/axmed-cs) | I like web development, its fun. |
+| **Aniruddha Dasu** | Developer | [@aniruddhadasu](https://github.com/adasu14) | Everytime I code, I learn something I should've known before. | 
 
 ---
 

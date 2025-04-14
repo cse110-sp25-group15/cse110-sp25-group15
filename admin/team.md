@@ -29,7 +29,7 @@ Welcome to the official team page for **10X Brogrammers**, where we compile idea
 | **Kiichiro Wang** |  | [@kiichirowang]() |  |
 | **Adam Connor** |  | [@adamconnor](https://github.com/adam-hehe) | Can also code in Spanish. |
 | **Ahmed Abdullahi** |  | [@ahmedabdullahi](https://github.com/axmed-cs) | I like web development, its fun. |
-| **Aniruddha Dasu** |  | [@aniruddhadasu]() |  |
+| **Aniruddha Dasu** |  | [@aniruddhadasu](https://github.com/adasu14) | Everytime I code, I learn something I should've known before. | 
 
 ---
 

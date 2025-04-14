@@ -25,7 +25,7 @@ Welcome to the official team page for **10X Brogrammers**, where we compile idea
 | **Pantea Foroutan** |  | [@panteaforoutan](https://github.com/Panteaforoutan) | I like learning, building stuff, and coding. |
 | **Nasser Al Nasser** |  | [@nasseralnasser](https://github.com/nascaral) | Building websites so responsive they answer emails too |
 | **Anthony-Hao Nguyen** |  | [@anthonyhaonguyen](https://github.com/AnthonyHaoNguyen) | I enjoy reading and writing code, looking for ways to improve. |
-| **Damian Nieto** |  | [@jdamiannieto]() |  |
+| **Damian Nieto** |  | [@damiannieto](https://github.com/DamianGN136) |  | I tend to break things and then put them back together. Usually neither are done on purpose.
 | **Kiichiro Wang** |  | [@kiichirowang]() |  |
 | **Adam Connor** |  | [@adamconnor]() |  |
 | **Ahmed Abdullahi** |  | [@ahmedabdullahi]() |  |

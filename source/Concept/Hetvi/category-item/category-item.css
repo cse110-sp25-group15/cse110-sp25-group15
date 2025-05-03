@@ -9,7 +9,7 @@
     /*transition: background 0.2s ease;*/
 }
 
-.container:hover{
+:host(:hover) .container {
     background: lightgray;
 }
 
@@ -31,14 +31,14 @@
 }
 
 /* selected state */
-:host(.selected) .container {
+:host([selected]) .container {
     background: lightgray;
 }
 
-:host(.selected) .icon {
+:host([selected]) .icon {
     background-color: rgb(0, 0, 75);
 }
 
-:host(.selected) .label {
+:host([selected]) .label {
     font-weight: bold;
 }

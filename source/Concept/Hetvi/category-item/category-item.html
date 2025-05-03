@@ -1,14 +1,5 @@
 <!-- category-item.html-->
- <template id = "category-item-template"> <!--id gives it a name so JS can find it using get element by id because its contents are not rendered by default-->
-    <style>
-        @import "./category-item.css";
-    </style>
-    <div class = "container">
-        <div class = "icon">
-            <slot name = "icon"></slot>
-        </div>
-        <div class = "label">
-            <slot name = "label"></slot>
-        </div>
-    </div>
- </template>
+ <div class = "container">
+    <div class = "icon"><slot name = "icon"></slot></div>
+    <div class = "label"><slot name = "label"></slot></div>
+ </div>

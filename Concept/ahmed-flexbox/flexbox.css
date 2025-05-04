@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  gap: 16px;
+}
+
+/* defining card aspect ratio*/
+.card {
+  aspect-ratio: 3/4;
+  /* background-color: red; */
+}
+
+/* 2 columns */
+@media (max-width: 600px) {
+  .card {
+      width: calc(50% - 8px);
+  }
+}
+
+/* 3 columns */
+@media (min-width: 601px) and (max-width: 900px) {
+  .card {
+      width: calc(33.33% - 10.67px);
+  }
+}
+
+/* 4 columns */
+@media (min-width: 901px) and (max-width: 1200px) {
+  .card {
+      width: calc(25% - 12px);
+  }
+}
+
+/* 5 columns */
+@media (min-width: 1201px) and (max-width: 1600px) {
+  .card {
+      width: calc(20% - 12.8px);
+  }
+}
+
+/* 6 columns */
+@media (min-width: 1601px) {
+  .card {
+      width: calc(16.6667% - 13.3333px)
+  }
+}
+

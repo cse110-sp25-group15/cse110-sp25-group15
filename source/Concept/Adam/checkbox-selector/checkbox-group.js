@@ -1,50 +1,58 @@
-class CheckboxGroup extends HTMLElement {
+class CheckboxItem extends HTMLElement {
     constructor() {
       super();
+      this.attachShadow({ mode: 'open' });
+    }
+  
+    static get observedAttributes() {
+      return ["checked"];
+    }
+  
+    async connectedCallback() {
+      // Load HTML & CSS templates
+      const [html, css] = await Promise.all([
+        fetch('./checkbox-selector/checkbox-group.html').then(r => r.text()),
+        fetch('./checkbox-selector/checkbox-group.css').then(r => r.text())
+      ]);
+
+  
       const template = document.createElement('template');
       template.innerHTML = `
-        <div class="checkbox-group">
-          <!-- Checkboxes will be dynamically rendered here -->
-        </div>
+        <style>
+          ${css}
+        </style>
+        ${html}
       `;
-      const shadow = this.attachShadow({ mode: 'open' });
-      shadow.appendChild(template.content.cloneNode(true));
+      this.shadowRoot.appendChild(template.content.cloneNode(true));
   
-      // Dynamically add the external CSS file
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = './checkbox-selector/checkbox-group.css'; 
-      shadow.appendChild(link);
-    }
-  
-    connectedCallback() {
-      const options = JSON.parse(this.getAttribute('options') || '[]');
-      const checkboxGroup = this.shadowRoot.querySelector('.checkbox-group');
-  
-      // Dynamically create checkboxes based on the options attribute
-      options.forEach(option => {
-        const label = document.createElement('label');
-        const checkbox = document.createElement('input');
-        const span = document.createElement('span');
-  
-        checkbox.type = 'checkbox';
-        checkbox.value = option;
-        span.textContent = option;
-  
-        label.appendChild(checkbox);
-        label.appendChild(span);
-        checkboxGroup.appendChild(label);
-      });
-  
-      // Listen for changes and dispatch a custom event
-      this.shadowRoot.addEventListener('change', () => {
-        const selectedValues = Array.from(
-          this.shadowRoot.querySelectorAll('input[type="checkbox"]:checked')
-        ).map(checkbox => checkbox.value);
-  
-        this.dispatchEvent(new CustomEvent('change', { detail: { selectedValues } }));
+      // add event listener to button
+      this.checkbox = this.shadowRoot.querySelector(".checkmark"); 
+      this.checkbox.addEventListener('click', (event) => {
+      this.updateCheckedState();   
       });
     }
-  }
+
+    updateCheckedState(){
+        this.checkbox = this.shadowRoot.querySelector(".checkmark");
+
+        if(this.checkbox.classList.contains("checked")) {
+            this.checkbox.classList.remove("checked");
+            console.log("unchecked");
+        }else {
+            this.checkbox.classList.add("checked");
+            console.log("checked");
+        }
+        
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (name === 'checked') {
+        this.updateCheckedState();
+      }
+      console.log(name);
+    
+    }
+
+}
   
-  customElements.define('checkbox-group', CheckboxGroup);
+  customElements.define('checkbox-item', CheckboxItem);

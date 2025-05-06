@@ -1,12 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkbox Group</title>
-    <script defer src="checkbox-selector/checkbox-group.js"></script>
+  <meta charset="UTF-8" />
+  <title>Check Item List</title>
+  <script src="./checkbox-selector/checkbox-group.js" defer></script>
+  <style>
+    .checkbox-group {
+      width: 220px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 12px 16px;
+      background-color: #f9f9f9;
+      font-family: sans-serif;
+    }
+
+    .checkbox-group h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
+<<<<<<< HEAD
+  <div class="checkbox-group">
+    <h3>Condition</h3>
+    <check-item checked>
+      <span slot="label">New</span>
+    </check-item>
+    <check-item>
+      <span slot="label">Used - Like new</span>
+    </check-item>
+    <check-item>
+      <span slot="label">Used - Good</span>
+    </check-item>
+    <check-item>
+      <span slot="label">Used - Fair</span>
+    </check-item>
+  </div>
+=======
     <h2>Conditions:</h2>
     <style>
         .container {
@@ -21,5 +53,6 @@
         <checkbox-item>Refurbished</checkbox-item>
         <checkbox-item>Used</checkbox-item>
     </div>
+>>>>>>> 3fc9e7e5cb4c70dfd8229ccee6cc92a8d48b26fd
 </body>
 </html>

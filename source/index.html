@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/marketplace.css">
+    <link rel="stylesheet" href="styles/flexbox.css">
+    <title>UCSD Marketplace</title>
+    <script src="components/category-item/category-item.js" defer></script>
+    <script src="components/checkbox-item/checkbox-item.js" defer></script>
+</head>
+
+<body>
+    <div class="marketplace-container">
+
+        <!-- Left sidebar -->
+        <aside class="filters-sidebar">
+            <div class="sidebar-header">
+                <h2>UCSD Marketplace</h2>
+            </div>
+
+            <h3>Categories</h3>
+            <div class="category-list">
+                <category-item selected>
+                    <span slot="icon">🚗</span>
+                    <span slot="label">Vehicles</span>
+                </category-item>
+                <category-item>
+                    <span slot="icon">🏠</span>
+                    <span slot="label">Property Rentals</span>
+                </category-item>
+                <category-item>
+                    <span slot="icon">👕</span>
+                    <span slot="label">Apparel</span>
+                </category-item>
+                <category-item>
+                    <span slot="icon">📱</span>
+                    <span slot="label">Electronics</span>
+                </category-item>
+                <category-item>
+                    <span slot="icon">🎮</span>
+                    <span slot="label">Entertainment</span>
+                </category-item>
+                <category-item>
+                    <span slot="icon">🪴</span>
+                    <span slot="label">Home & Garden</span>
+                </category-item>
+                <category-item>
+                    <span slot="icon">🐾</span>
+                    <span slot="label">Pet Supplies</span>
+                </category-item>
+                <category-item>
+                    <span slot="icon">🏈</span>
+                    <span slot="label">Sports & Outdoors</span>
+                </category-item>
+            </div>
+        </aside>
+
+        <!-- Right content area -->
+        <main class="content-area">
+            <!-- Subcategory selector TODO -->
+         
+
+            <!-- Products container (scrollable) -->
+            <div class="products-container">
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

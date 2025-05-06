@@ -1,0 +1,22 @@
+.circular-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.selector-label {
+  font-weight: 500;
+  color: #111827;
+}
+
+.circular-option {
+  display: grid;
+  grid-template-columns: 1fr auto;  /* label left, radio right */
+  align-items: center;
+  width: 10%;
+  cursor: pointer;
+  user-select: none;
+}

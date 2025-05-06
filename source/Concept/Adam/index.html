@@ -1,31 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkbox Group</title>
-    <script defer src="checkbox-selector/checkbox-group.js"></script>
+  <meta charset="UTF-8" />
+  <title>Check Item List</title>
+  <script src="./checkbox-selector/checkbox-group.js" defer></script>
+  <style>
+    .checkbox-group {
+      width: 220px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 12px 16px;
+      background-color: #f9f9f9;
+      font-family: sans-serif;
+    }
+
+    .checkbox-group h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <!--Accept a list of options via attribute-->
-    <h1>Condition:</h1>
-    <checkbox-group options='["New", "Refurbished", "Used"]'></checkbox-group>
-    
-    <h2>Selected Values:</h2>
-    <p id="selected-values">None</p>
-    
-    <script>
-        //example demonstrating value
-        const checkboxGroup = document.querySelector('checkbox-group');
-        const selectedValuesElement = document.getElementById('selected-values');
-
-        //Update the selected values display when the checkbox group changes
-        checkboxGroup.addEventListener('change', (event) => {
-            const selectedValues = event.detail.selectedValues;
-
-            selectedValuesElement.textContent = selectedValues.length > 0
-            ? selectedValues.join(', ') : 'None';
-        });
-    </script>
+  <div class="checkbox-group">
+    <h3>Condition</h3>
+    <check-item checked>
+      <span slot="label">New</span>
+    </check-item>
+    <check-item>
+      <span slot="label">Used - Like new</span>
+    </check-item>
+    <check-item>
+      <span slot="label">Used - Good</span>
+    </check-item>
+    <check-item>
+      <span slot="label">Used - Fair</span>
+    </check-item>
+  </div>
 </body>
 </html>

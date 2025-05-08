@@ -2,7 +2,7 @@
 
 ---
 
-### PowerPoint theme
+## PowerPoint theme
 [PowerPoint template](https://docs.google.com/presentation/d/1PhQvcqkpzSp78WDHoGmLxY72Mks8BIobtz8euNtCzzY/edit#slide=id.g34b7fb2c91b_0_5193)
 
 

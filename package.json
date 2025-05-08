@@ -6,5 +6,9 @@
     "@eslint/markdown": "^6.4.0",
     "eslint": "^9.26.0",
     "globals": "^16.1.0"
+  },
+  "scripts": {
+  "lint": "eslint . --ext .js,.mjs,.cjs"
   }
+
 }

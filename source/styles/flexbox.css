@@ -13,7 +13,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   gap: var(--gap);
-  background: --background-color;
+  background: var(--background-color);
   max-width: var(--max-container-width) !important;
   min-width: min(var(--max-container-width), 100%);
   padding: var(--gap);

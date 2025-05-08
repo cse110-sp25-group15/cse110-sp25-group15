@@ -10,8 +10,8 @@ class CheckItem extends HTMLElement {
 
   async connectedCallback() {
     const [html, css] = await Promise.all([
-      fetch('./components/checkbox-item/checkbox-item.html').then(r => r.text()),
-      fetch('./components/checkbox-item/checkbox-item.css').then(r => r.text()),
+      fetch('./components/checkbox-item/checkbox-item.html').then((r) => r.text()),
+      fetch('./components/checkbox-item/checkbox-item.css').then((r) => r.text()),
     ]);
 
     const template = document.createElement('template');
@@ -32,16 +32,16 @@ class CheckItem extends HTMLElement {
     this.updateCheckedStyle();
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
+  attributeChangedCallback(name) {
     if (name === 'checked') {
       this.updateCheckedStyle();
     }
   }
 
   updateCheckedStyle() {
-    if (!this.checkbox) return;
+    if (!this.checkbox) {return;}
     this.checkbox.classList.toggle('checked', this.hasAttribute('checked'));
   }
 }
 
-customElements.define('check-item', CheckItem);
+customElements.define('checkbox-item', CheckItem);

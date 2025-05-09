@@ -3,6 +3,7 @@ import globals from 'globals';
 import markdown from '@eslint/markdown';
 import css from '@eslint/css';
 import { defineConfig } from 'eslint/config';
+import html from '@html-eslint/eslint-plugin';
 
 export default defineConfig([
   {
@@ -26,7 +27,10 @@ export default defineConfig([
       'no-multiple-empty-lines': ['error', { 'max': 1 }],
     },
   },
-
+  {
+    ...html.configs['flat/recommended'],
+    files: ['**/*.html'],
+  },
   { files: ['**/*.js'], languageOptions: { sourceType: 'script' } },
   { files: ['**/*.{js,mjs,cjs}'], languageOptions: { globals: { ...globals.browser, ...globals.node } } },
   { files: ['**/*.md'], plugins: { markdown }, language: 'markdown/gfm', extends: ['markdown/recommended'] },

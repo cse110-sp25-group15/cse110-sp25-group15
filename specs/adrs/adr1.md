@@ -1,4 +1,4 @@
-# ADR 1: UCSD Online MarketPlace
+# ADR 1: UCSD Online Marketplace
 
 **Date Adopted:** 8 May, 2025  
 **Status:** Accepted  

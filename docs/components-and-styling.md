@@ -13,13 +13,13 @@ A component is a self-contained bundle of HTML, CSS, Javascript that is modular,
 - We also keep inner functioning inside the component. It should not interact with any elements outside it.
 
 #### Creating Files/Folders
-```
+`
     parent-directory  (folder)
         |_ component-name  (component folder)
                 |-> component-name.html
                 |-> component-name.css
                 |-> component-name.js
-```
+`
 
 
 ## Notes
@@ -28,28 +28,28 @@ A component is a self-contained bundle of HTML, CSS, Javascript that is modular,
 
 ## How to use `<slot>` in your component.html?
 - The `<slot>` element in Web Components is a placeholder for user-provided content. It allows components to accept content from the outside:
-```
+`
     <!-- custom-button.html -->
     <div class="custom-button">
         <slot></slot>
     </div>
-```
+`
 - Used like this:
-```
+`
     <custom-button> 
         Click Me!
     </custom-button>
-```
+`
 - In this case the "Click Me!" string will be inserted into the `<slot></slot>`. So the shadow DOM will be rendered like below:
-``` 
+`
     <div class="custom-button">
         Click Me!
     </div>
-```
+`
 
 ## Template
 - The bulk of the logic lies in the `component.js` file, so we will focus on that.
-```
+`
 1    class Component extends HTMLElement {
 2       constructor() {
 3           super();
@@ -73,23 +73,23 @@ A component is a self-contained bundle of HTML, CSS, Javascript that is modular,
 21   }
 22
 23   customElements.define('component', Component);
-```
+`
 
-#### Line 1
+### Line 1
 - In line 1 we define the class `Component` which extends `HTMLElement`. This means we are creating a _**custom**_ HTML element. 
   
-#### Lines 2-5
+### Lines 2-5
 - We create a constructor and call `super()` which points to the class `HTMLElement`. This is so we can call methods defined in `HTMLElement` here in our `Component` class.
   
-#### Lines 7-12
+### Lines 7-12
 - We create an asynchronous function `connectedCallback()` that will be automatically called by the browser when this custom element is added to the main(light) DOM
 - Starting at line 9 we create 2 const variables `html` and `css` and fetch the data from our .html and .css files we created.
   
-#### Lines 14-18
+### Lines 14-18
 - Then at line 14 we create a template where we add in our styling from the `css` variable and the html from the `html` variable. 
 - A template is a special HTML element for defining reusable chunks for HTML that can be added to the DOM. Inside our template above we add in the css using the `<style>` tag.
 
-#### Line 19
+### Line 19
 - We call the shadow DOM and from our component and insert (`appendChild`) our content from a template we created using our external .html and .css files. The `cloneNode(true)` means we create a deep copy of the entire template content - including all elements and styles - and insert it into the component's Shadow DOM. 
 
 ## Moving Further
@@ -97,7 +97,7 @@ Now that we understand the basic structure of components, we can move onto makin
   
 ### Managing state through attributes
 - We use a built in function `attributeChangedCallback()` that is automatically called whenever one of the attributes we specify from our custom element is changed. We can tell this function exactly which attributes to observe.
-```
+`
 1   static get observedAttributes() {
 2       return ['disabled', 'active'];
 3   }
@@ -107,7 +107,7 @@ Now that we understand the basic structure of components, we can move onto makin
 7
 8   }
 9
-```
+`
 - The attributes *disabled* and *active* are just examples as these potentially can be used for a custom-button component.
 - Inside the `attributeChangedCallback` function, we can run logic that enables/disables elements, toggles classes, or re-renders parts of the UI based on changes to specific attributes.
   - We can optionally include default attributes for the component inside the .js file. Based on interactions (*via event listeners*) we can dynamically change these attributes. 
@@ -123,27 +123,27 @@ Now that we understand the basic structure of components, we can move onto makin
 ### Bubbling up custom events
 - Now that we understand how to handle attributes inside our component, how can the parent DOM (associated with index.html) know when the component's state changes?
 - We can achieve this with **bubbling** and **custom events**. Since the shadow DOM hides internal details we need to dispatch an event to notify it. 
-```
+`
 1   this.dispatchEvent(new CustomEvent('active', {
 2       bubbles: true, 
 3       composed: true, 
 4   }));
 5      
-```
+`
 We can also set it equal to a variable:
-```
+`
 1   const activeEvent = new CustomEvent('active', {
 2       bubbles: true, 
 3       composed: true, 
 4   });
 5   
 6   this.dispatchEvent(activeEvent);
-```
+`
 By doing this the parent DOM can listen for events by using `addEventListener`.
-```
+`
 1   //inside our main index.html
 2   document.querySelector('custom-button')
 3       .addEventListener('active', () => {
 4            console.log('Component is active!')';
 5   }); 
-```
+`

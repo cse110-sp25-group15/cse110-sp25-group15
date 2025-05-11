@@ -10,6 +10,6 @@
     "globals": "^16.1.0"
   },
   "scripts": {
-    "lint": "eslint . --ext .js,.mjs,.cjs,.html,.css"
+    "lint": "eslint --ext .js,.html,.css,.mjs"
   }
 }

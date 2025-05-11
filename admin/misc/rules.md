@@ -56,8 +56,8 @@
 | Role               | Members                           |
 |--------------------|-----------------------------------|
 | UI/UX Design       | Lead: Kiichi                            |
-| DevOps      | Lead: Haoyan                            |
-| Frontend           | Lead: Ahmed (contributors: Hetvi, Damian, Anthony)        |
+| DevOps      | Lead: Haoyan  (contributors: Anthony)                          |
+| Frontend           | Lead: Ahmed (contributors: Hetvi, Damian, Nasser)        |
 | Backend & Database | Lead: Aniruddha & Dhruv (contributors: Pantea, Damian, Adam)   |
 | Logistics & Notes  | Lead: Dhruv                             |
 

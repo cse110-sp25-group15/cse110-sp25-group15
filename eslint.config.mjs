@@ -34,10 +34,10 @@ export default defineConfig([
     },
   },
 
-  // Treat .js files as scripts (non-module)
+  // Treat .js files as scripts (module)
   {
     files: ['**/*.js'],
-    languageOptions: { sourceType: 'script' },
+    languageOptions: { sourceType: 'module' },
   },
 
   // HTML Linting Configuration
@@ -69,5 +69,12 @@ export default defineConfig([
     plugins: { markdown },
     language: 'markdown/gfm',
     extends: ['markdown/recommended'],
+  },
+  // Test Linting Configuration
+  {
+    files: ['**/*.test.js', '**/*.spec.js'],
+    languageOptions: {
+      globals: globals.jest,
+    },
   },
 ]);

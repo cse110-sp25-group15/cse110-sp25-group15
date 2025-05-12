@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  root: 'source',  
+  root: 'src',  
   server: {
     port: 3000, 
   },

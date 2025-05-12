@@ -26,18 +26,18 @@ UCSD Marketplace is a platform designed to help students buy, sell, and discover
 
 ## Table Of Contents
 
-* [💻 Application Overview](docs/application-overview.md) (incomplete)
-* [⚙️ Design Standards](docs/project-standards.md) (incomplete)
-* [🗄️ File Structure](docs/project-structure.md) (incomplete)
-* [🧱 UI Components](docs/components-and-styling.md) (incomplete)
-* [📡 API Integration](docs/api-layer.md) (incomplete)
-* [🗃️ State Management](docs/state-management.md) (incomplete)
-* [🧪 Testing and QA](docs/testing.md) (incomplete)
-* [⚠️ Error Handling](docs/error-handling.md) (incomplete)
-* [🔐 Security Practices](docs/security.md) (incomplete)
-* [🚄 Performance](docs/performance.md) (incomplete)
-* [🌐 Deployment Guide](docs/deployment.md) (incomplete)
-* [📚 Resources](docs/additional-resources.md) (incomplete)
+* [💻 Application Overview](application-overview.md) (incomplete)
+* [⚙️ Design Standards](project-standards.md) (incomplete)
+* [🗄️ File Structure](project-structure.md) (incomplete)
+* [🧱 UI Components](components-and-styling.md) (incomplete)
+* [📡 API Integration](api-layer.md) (incomplete)
+* [🗃️ State Management](state-management.md) (incomplete)
+* [🧪 Testing and QA](testing.md) (incomplete)
+* [⚠️ Error Handling](error-handling.md) (incomplete)
+* [🔐 Security Practices](security.md) (incomplete)
+* [🚄 Performance](performance.md) (incomplete)
+* [🌐 Deployment Guide](deployment.md) (incomplete)
+* [📚 Resources](additional-resources.md) (incomplete)
 
 ## Our Team!
 

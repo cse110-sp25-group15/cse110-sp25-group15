@@ -2,12 +2,13 @@ name: CI Pipeline Check
 
 on:
   push:
-    branches: [main, test, dev]
+    branches: ['**']
   pull_request:
-    branches: [main, test, dev]
+    branches: ['**']
 
 jobs:
-  lint:
+  ci_pipeline_check:
+    name: CI Pipeline Check  # ✅ This is the reported status name GitHub will use
     runs-on: ubuntu-latest
 
     steps:
@@ -24,21 +25,6 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint
-
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install Dependencies
-        run: npm ci
 
       - name: Run Unit Tests
         run: npm test

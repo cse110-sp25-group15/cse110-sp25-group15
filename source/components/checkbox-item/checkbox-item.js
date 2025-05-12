@@ -1,3 +1,6 @@
+import templateHTML from './checkbox-item.html?raw';
+import templateCSS from './checkbox-item.css?raw';
+
 class CheckItem extends HTMLElement {
   static get observedAttributes() {
     return ['checked'];
@@ -8,26 +11,21 @@ class CheckItem extends HTMLElement {
     this.attachShadow({ mode: 'open' });
   }
 
-  async connectedCallback() {
-    const [html, css] = await Promise.all([
-      fetch('./components/checkbox-item/checkbox-item.html').then((r) => r.text()),
-      fetch('./components/checkbox-item/checkbox-item.css').then((r) => r.text()),
-    ]);
-
+  connectedCallback() {
     const template = document.createElement('template');
     template.innerHTML = `
-      <style>${css}</style>
-      ${html}
+      <style>${templateCSS}</style>
+      ${templateHTML}
     `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-    // Store reference to checkbox for later toggling
     this.checkbox = this.shadowRoot.querySelector('.checkbox');
 
-    // Click toggles checked state
-    this.checkbox.addEventListener('click', () => {
-      this.toggleAttribute('checked');
-    });
+    if (this.checkbox) {
+      this.checkbox.addEventListener('click', () => {
+        this.toggleAttribute('checked');
+      });
+    }
 
     this.updateCheckedStyle();
   }
@@ -39,7 +37,7 @@ class CheckItem extends HTMLElement {
   }
 
   updateCheckedStyle() {
-    if (!this.checkbox) {return;}
+    if (!this.checkbox) { return; }
     this.checkbox.classList.toggle('checked', this.hasAttribute('checked'));
   }
 }

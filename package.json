@@ -21,5 +21,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "docs": "jsdoc -c jsdoc.json"
+  },
+  "dependencies": {
+    "docdash": "^2.0.2"
   }
 }

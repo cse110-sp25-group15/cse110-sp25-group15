@@ -1,5 +1,3 @@
-// main.js - Example usage of the product-card component
-
 import { createClient } from '@supabase/supabase-js';
 import './components/product-card/product-card.js';
 
@@ -24,7 +22,7 @@ async function loadListings() {
       .select();
     
     if (listingsError) {
-      //console.error('Error fetching listings:', listingsError);
+      console.error('Error fetching listings:', listingsError);
       return;
     }
     
@@ -49,7 +47,7 @@ async function loadListings() {
       productsContainer.appendChild(card);
     });
     
-    //console.log('Loaded listings:', listings);
+    console.log('Loaded listings:', listings);
   } catch (err) {
     console.error('Failed to load listings:', err);    
   }
@@ -57,3 +55,24 @@ async function loadListings() {
 
 // Call the function when the DOM is loaded
 document.addEventListener('DOMContentLoaded', loadListings);
+
+// Fix: Make handleSignInWithGoogle available globally for the Google Sign-In callback
+window.handleSignInWithGoogle = async function(response) {
+  try {
+    const { data, error } = await supabase.auth.signInWithIdToken({
+      provider: 'google',
+      token: response.credential,
+    });
+    
+    if (error) {
+      console.error('Google Sign-In error:', error);
+    } else {
+      console.log('Successfully signed in with Google:', data);
+      // Handle successful sign-in (e.g., refresh UI, redirect)
+    }
+  } catch (err) {
+    console.error('Failed to process Google Sign-In:', err);
+  }
+};
+
+export default supabase;

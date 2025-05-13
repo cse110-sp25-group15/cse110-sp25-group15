@@ -10,6 +10,7 @@
         <script type="module" src="/components/checkbox-item/checkbox-item.js"></script>
         <script type="module" src="/components/product-card/product-card.js"></script>
         <script type="module" src="/main.js"></script>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
     </head>
 
     <body>
@@ -54,6 +55,30 @@
                 <checkbox-item checked>
                     <span slot="label">Show only items from UCSD students</span>
                 </checkbox-item>
+                
+                <!-- Google Sign-In Button -->
+                <div class="google-signin-container">
+                    <div
+                        id="g_id_onload"
+                        data-client_id="579089769865-23i1udp8npl3n624c7t16c4bfvmcvsdn.apps.googleusercontent.com"
+                        data-context="signin"
+                        data-ux_mode="popup"
+                        data-callback="handleSignInWithGoogle"
+                        data-auto_prompt="false"
+                    >
+                    </div>
+
+                    <div
+                        class="g_id_signin"
+                        data-type="standard"
+                        data-shape="rectangular"
+                        data-theme="filled_black"
+                        data-text="signin_with"
+                        data-size="large"
+                        data-logo_alignment="left"
+                    >
+                    </div>
+                </div>
             </aside>
 
             <!-- Right content area -->

@@ -24,20 +24,6 @@ UCSD Marketplace is a platform designed to help students buy, sell, and discover
 * Responsive layout for desktop and mobile ❌
 * Subcategory and filter UI components built with native Web Components ❌
 
-## Table Of Contents
-
-* [💻 Application Overview](docs/application-overview.md) (incomplete)
-* [⚙️ Design Standards](docs/project-standards.md) (incomplete)
-* [🗄️ File Structure](docs/project-structure.md) (incomplete)
-* [🧱 UI Components](docs/components-and-styling.md) (incomplete)
-* [📡 API Integration](docs/api-layer.md) (incomplete)
-* [🗃️ State Management](docs/state-management.md) (incomplete)
-* [🧪 Testing and QA](docs/testing.md) (incomplete)
-* [⚠️ Error Handling](docs/error-handling.md) (incomplete)
-* [🔐 Security Practices](docs/security.md) (incomplete)
-* [🚄 Performance](docs/performance.md) (incomplete)
-* [🌐 Deployment Guide](docs/deployment.md) (incomplete)
-* [📚 Resources](docs/additional-resources.md) (incomplete)
 
 ## Our Team!
 

@@ -7,8 +7,10 @@ import { defineConfig } from 'eslint/config';
 import html from '@html-eslint/eslint-plugin';
 
 export default defineConfig([
+  
   // JavaScript Linting Configuration
   {
+    ignores: ['docs/**'], 
     files: ['**/*.{js,mjs,cjs}'],
     plugins: { js },
     extends: ['js/recommended'],
@@ -36,18 +38,21 @@ export default defineConfig([
 
   // Treat .js files as scripts (module)
   {
+    ignores: ['docs/**'], 
     files: ['**/*.js'],
     languageOptions: { sourceType: 'module' },
   },
 
   // HTML Linting Configuration
   {
+    ignores: ['docs/**'], 
     ...html.configs['flat/recommended'],
     files: ['**/*.html'],
   },
 
   // CSS Linting Configuration
   {
+    ignores: ['docs/**'], 
     files: ['**/*.css'],
     plugins: { css },
     language: 'css/css',
@@ -65,6 +70,7 @@ export default defineConfig([
 
   // Markdown Linting Configuration
   {
+    ignores: ['docs/**'], 
     files: ['**/*.md'],
     plugins: { markdown },
     language: 'markdown/gfm',

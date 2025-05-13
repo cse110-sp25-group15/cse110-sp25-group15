@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Tutorial: WebComponentGuide - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="CategoryItem.html">CategoryItem</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-OnBoarding.html">OnBoarding</a></li><li><a href="tutorial-WebComponentGuide.html">WebComponentGuide</a></li><li><a href="tutorial-application-overview.html">application-overview</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Tutorial: WebComponentGuide</h1>
+    
+
+    <section>
+
+<header>
+    
+
+    <h2>WebComponentGuide</h2>
+</header>
+
+<article>
+    <hr>
+<h1>Component Guidelines</h1>
+<h2>Purpose</h2>
+<p>Below are the design patterns and information about how to build components.</p>
+<h3>What's a component in this context?</h3>
+<p>A component is a self-contained bundle of <strong>HTML</strong>, <strong>CSS</strong>, and <strong>JavaScript</strong> that is modular, reusable, and independent from the rest of the codebase.</p>
+<h3>Shadow DOM</h3>
+<ul>
+<li>Shadow DOM gives your component its own sealed-off space in the browser. Its HTML, CSS, and JavaScript stay hidden from the rest of the page.</li>
+<li>No CSS leaks in or out of the Shadow DOM, so global styles won't interfere with your component.</li>
+</ul>
+<h3>Locality</h3>
+<ul>
+<li>We keep related code physically close—ideally within a single directory.</li>
+<li>We also keep inner functioning inside the component. It should not interact with any elements outside it.</li>
+</ul>
+<h4>Creating Files/Folders</h4>
+<pre class="prettyprint source lang-bash"><code>parent-directory/       # folder
+└── component-name/     # component folder
+    ├── component-name.html
+    ├── component-name.css
+    └── component-name.js
+</code></pre>
+<h2>Notes</h2>
+<ul>
+<li>All styling should be in the component’s <code>.css</code> file.</li>
+<li>All logic should be handled within the <code>.js</code> file.</li>
+</ul>
+<h2>How to use <code>&lt;slot&gt;</code> in your component.html?</h2>
+<p>The <code>&lt;slot&gt;</code> element in Web Components is a placeholder for user-provided content. It allows components to accept content from the outside:</p>
+<pre class="prettyprint source lang-html"><code>&lt;!-- custom-button.html -->
+&lt;div class=&quot;custom-button&quot;>
+    &lt;slot>&lt;/slot>
+&lt;/div>
+</code></pre>
+<p>Used like this:</p>
+<pre class="prettyprint source lang-html"><code>&lt;custom-button> 
+    Click Me!
+&lt;/custom-button>
+</code></pre>
+<p>In this case, the &quot;Click Me!&quot; string will be inserted into the <code>&lt;slot&gt;&lt;/slot&gt;</code>. The shadow DOM will render as:</p>
+<pre class="prettyprint source lang-html"><code>&lt;div class=&quot;custom-button&quot;>
+    Click Me!
+&lt;/div>
+</code></pre>
+<h2>Template Example</h2>
+<p>The bulk of the logic lies in the <code>component.js</code> file, so we will focus on that.</p>
+<p>Since we are using Vite, we now import assets directly rather than fetching them at runtime. Example:</p>
+<pre class="prettyprint source lang-js"><code>import html from './component.html?raw';
+import css from './component.css?raw';
+
+class Component extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+    }
+
+    connectedCallback() {
+        const template = document.createElement('template');
+        template.innerHTML = `
+            &lt;style>${css}&lt;/style>
+            ${html}
+        `;
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+    }
+}
+
+customElements.define('component', Component);
+</code></pre>
+<h3>Line Explanations</h3>
+<h4>Line 1</h4>
+<ul>
+<li>Defines the class <code>Component</code> which extends <code>HTMLElement</code>, creating a <strong>custom</strong> HTML element.</li>
+</ul>
+<h4>Lines 2-5</h4>
+<ul>
+<li>Creates a constructor and calls <code>super()</code>, enabling usage of <code>HTMLElement</code> methods inside <code>Component</code>.</li>
+</ul>
+<h4>Lines 7-12</h4>
+<ul>
+<li>Defines <code>connectedCallback()</code>, which is called when the element is added to the DOM. It uses static imports to load the template and styles.</li>
+</ul>
+<h4>Lines 14-18</h4>
+<ul>
+<li>Creates a template, injects styles and HTML into it, and prepares it for rendering.</li>
+</ul>
+<h4>Line 19</h4>
+<ul>
+<li>Appends a <strong>deep copy</strong> of the template content to the shadow DOM, making the component self-contained.</li>
+</ul>
+<hr>
+<h2>Moving Further</h2>
+<p>After setting up structure, we can make components <strong>interactive</strong> using <strong>attributes</strong>.</p>
+<h3>Managing state through attributes</h3>
+<p>You can observe and react to attribute changes using <code>attributeChangedCallback()</code>:</p>
+<pre class="prettyprint source lang-js"><code>static get observedAttributes() {
+    return ['disabled', 'active'];
+}
+
+attributeChangedCallback(name, oldValue, newValue) {
+    // Runs when 'disabled' or 'active' changes
+}
+</code></pre>
+<h4>Example Usage in JavaScript:</h4>
+<pre class="prettyprint source lang-js"><code>this.setAttribute('name', 'value');   // Add or update an attribute
+this.removeAttribute('name');        // Remove the attribute
+this.toggleAttribute('name');        // Toggle attribute on or off
+</code></pre>
+<h4>Example Conditional Styling:</h4>
+<p>In your <code>.css</code> file:</p>
+<pre class="prettyprint source lang-css"><code>:host([active]) {
+    background-color: green;
+}
+</code></pre>
+<h3>Bubbling up custom events</h3>
+<p>Dispatch custom events to communicate state changes to the outside DOM:</p>
+<pre class="prettyprint source lang-js"><code>this.dispatchEvent(new CustomEvent('active', {
+    bubbles: true,
+    composed: true,
+}));
+</code></pre>
+<p>Or assign to a variable:</p>
+<pre class="prettyprint source lang-js"><code>const activeEvent = new CustomEvent('active', {
+    bubbles: true,
+    composed: true,
+});
+
+this.dispatchEvent(activeEvent);
+</code></pre>
+<h4>Listening for the event in <code>index.html</code>:</h4>
+<pre class="prettyprint source lang-html"><code>&lt;script>
+    document.querySelector('custom-button')
+        .addEventListener('active', () => {
+            console.log('Component is active!');
+        });
+&lt;/script>
+</code></pre>
+<hr>
+</article>
+
+</section>
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Tue May 13 2025 15:37:30 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

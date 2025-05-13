@@ -23,6 +23,7 @@
     "docs": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.4",
     "docdash": "^2.0.2"
   }
 }

@@ -17,12 +17,13 @@
   "scripts": {
     "lint": "eslint --ext .js,.html,.css,.mjs --ignore-pattern docs/",
     "test": "vitest",
-    "dev": "vite",
+    "dev": "vite --config vite.config.js",
     "build": "vite build",
     "preview": "vite preview",
     "docs": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.4",
     "docdash": "^2.0.2"
   }
 }

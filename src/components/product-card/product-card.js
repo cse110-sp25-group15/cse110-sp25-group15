@@ -38,30 +38,26 @@ class MarketplaceCard extends HTMLElement {
         
     // Set title
     const title = this.getAttribute('title');
-    if (title) {
+    if (title && titleElement) {
       titleElement.textContent = title;
     }
         
     // Set price
     const price = this.getAttribute('price');
-    if (price) {
+    if (price && priceElement) {
       priceElement.textContent = `$${price}`;
     }
         
     // Set image - first try image-url attribute, then fall back to first image in _images array
     const imageUrl = this.getAttribute('image-url');
-    if (imageUrl) {
+    if (imageUrl && imageElement) {
       imageElement.src = imageUrl;
       imageElement.alt = title || 'Product image';
     } else if (this._images && this._images.length > 0) {
       // Use the first image from the images array
       imageElement.src = this._images[0].image_url;
       imageElement.alt = title || 'Product image';
-    } else {
-      // Show placeholder if no image
-      imageElement.style.display = 'none';
-      this.shadowRoot.querySelector('.placeholder-image').style.display = 'block';
-    }
+    } 
   }
     
   // Getter and setter for listing data

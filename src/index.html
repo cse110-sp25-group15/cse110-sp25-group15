@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/styles/marketplace.css">
         <link rel="stylesheet" href="/styles/flexbox.css">
+        <link rel="stylesheet" href="/styles/login.css">
         <title>UCSD Marketplace</title>
         <script type="module" src="/components/category-item/category-item.js"></script>
         <script type="module" src="/components/checkbox-item/checkbox-item.js"></script>
         <script type="module" src="/components/product-card/product-card.js"></script>
         <script type="module" src="/supabase.js"></script>
         <script type="module" src="/main.js"></script>
-        <script src="https://accounts.google.com/gsi/client" async defer></script>
     </head>
 
     <body>
@@ -56,28 +57,13 @@
                 <checkbox-item checked>
                     <span slot="label">Show only items from UCSD students</span>
                 </checkbox-item>
-                
-                <!-- Google Sign-In Button -->
-                <div class="google-signin-container">
-                    <div
-                        id="g_id_onload"
-                        data-client_id="579089769865-23i1udp8npl3n624c7t16c4bfvmcvsdn.apps.googleusercontent.com"
-                        data-context="signin"
-                        data-ux_mode="popup"
-                        data-callback="handleSignInWithGoogle"
-                        data-auto_prompt="false"
-                    >
-                    </div>
 
-                    <div
-                        class="g_id_signin"
-                        data-type="standard"
-                        data-shape="rectangular"
-                        data-theme="filled_black"
-                        data-text="signin_with"
-                        data-size="large"
-                        data-logo_alignment="left"
-                    >
+                <!-- Auth container with class-based hiding instead of inline styles -->
+                <div class="auth-container">
+                    <button id="login-button" class="hidden">Sign In with Google</button>
+                    <button id="logout-button" class="hidden">Sign Out</button>
+                    <div id="user-info" class="hidden">
+                        <p id="user-email"></p>
                     </div>
                 </div>
             </aside>
@@ -90,4 +76,5 @@
             </main>
         </div>
     </body>
+
 </html>

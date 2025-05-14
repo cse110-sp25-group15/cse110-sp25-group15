@@ -8,9 +8,8 @@ import html from '@html-eslint/eslint-plugin';
 
 export default defineConfig([
   
-  // JavaScript Linting Configuration
   {
-    ignores: ['docs/**'], 
+    ignores: ['docs/**, src/dist/**'], // Ignore docs and dist directories
     files: ['**/*.{js,mjs,cjs}'],
     plugins: { js },
     extends: ['js/recommended'],

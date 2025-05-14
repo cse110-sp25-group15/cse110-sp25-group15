@@ -25,7 +25,6 @@ export default defineConfig([
       'comma-dangle': ['error', 'always-multiline'],
       'object-curly-spacing': ['error', 'always'],
       'array-bracket-spacing': ['error', 'never'],
-      'no-console': 'warn',
       'prefer-const': 'error',
       'eqeqeq': ['error', 'always'],
       'no-var': 'error',

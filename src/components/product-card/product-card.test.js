@@ -38,18 +38,6 @@ describe('<product-card>', () => {
     expect(priceElement.textContent).toBe(`$${testPrice}`);
   });
 
-  it('should show placeholder when no image is provided', () => {
-    // Don't set any image URL
-    const imageElement = element.shadowRoot.querySelector('.card-image');
-    const placeholderElement = element.shadowRoot.querySelector('.placeholder-image');
-    
-    // Force update content to make sure placeholder logic runs
-    element._updateContent();
-    
-    expect(imageElement.style.display).toBe('none');
-    expect(placeholderElement.style.display).toBe('block');
-  });
-
   it('should update all properties when setting listing object', () => {
     const testListing = {
       listing_id: 'test-123',

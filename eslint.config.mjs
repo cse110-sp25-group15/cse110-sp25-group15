@@ -8,9 +8,8 @@ import html from '@html-eslint/eslint-plugin';
 
 export default defineConfig([
   
-  // JavaScript Linting Configuration
   {
-    ignores: ['docs/**'], 
+    ignores: ['docs/**, src/dist/**'], // Ignore docs and dist directories
     files: ['**/*.{js,mjs,cjs}'],
     plugins: { js },
     extends: ['js/recommended'],
@@ -25,7 +24,6 @@ export default defineConfig([
       'comma-dangle': ['error', 'always-multiline'],
       'object-curly-spacing': ['error', 'always'],
       'array-bracket-spacing': ['error', 'never'],
-      'no-console': 'warn',
       'prefer-const': 'error',
       'eqeqeq': ['error', 'always'],
       'no-var': 'error',

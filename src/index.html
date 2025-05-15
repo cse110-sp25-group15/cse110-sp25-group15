@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/styles/marketplace.css">
         <link rel="stylesheet" href="/styles/flexbox.css">
+        <link rel="stylesheet" href="/styles/login.css">
         <title>UCSD Marketplace</title>
         <script type="module" src="/components/category-item/category-item.js"></script>
-        <script type="module" src="/components/checkbox-item/checkbox-item.js"></script> 
+        <script type="module" src="/components/checkbox-item/checkbox-item.js"></script>
+        <script type="module" src="/components/product-card/product-card.js"></script>
+        <script type="module" src="/supabase.js"></script>
+        <script type="module" src="/main.js"></script>
     </head>
 
     <body>
@@ -52,26 +57,24 @@
                 <checkbox-item checked>
                     <span slot="label">Show only items from UCSD students</span>
                 </checkbox-item>
+
+                <!-- Auth container with class-based hiding instead of inline styles -->
+                <div class="auth-container">
+                    <button id="login-button" class="hidden">Sign In with Google</button>
+                    <button id="logout-button" class="hidden">Sign Out</button>
+                    <div id="user-info" class="hidden">
+                        <p id="user-email"></p>
+                    </div>
+                </div>
             </aside>
 
             <!-- Right content area -->
             <main class="content-area">
                 <div class="products-container">
-                    <!-- Example cards -->
-                    <div class="card"></div>
-                    <div class="card"></div>
-                    <div class="card"></div>
-                    <div class="card"></div>
-                    <div class="card"></div>
-                    <div class="card"></div>
-                    <div class="card"></div>
-                    <div class="card"></div>
-                    <div class="card"></div>
-                    <div class="card"></div>
-                    <div class="card"></div>
-                    <div class="card"></div>
+                    <!-- Cards will be loaded dynamically -->
                 </div>
             </main>
         </div>
     </body>
+
 </html>

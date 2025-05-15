@@ -9,23 +9,32 @@ class MarketplaceCard extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
-    this._images = [];
   }
 
   connectedCallback() {
     const template = document.createElement('template');
     template.innerHTML = `
-            <style>${css}</style>
-            ${html}
-        `;
+      <style>${css}</style>
+      ${html}
+    `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
         
     // Set initial data if attributes are present
     this._updateContent();
+    
+    // Add click event listener that emits a custom event
+    this.shadowRoot.querySelector('.card-container')?.addEventListener('click', () => {
+      this.dispatchEvent(new CustomEvent('card-click', {
+        bubbles: true,
+        composed: true,
+        detail: { listingId: this.getAttribute('listing-id') },
+      }));
+    });
   }
 
-  attributeChangedCallback(_name, _oldValue, _newValue) {
-    if (this.shadowRoot) {
+  attributeChangedCallback(name, oldValue, newValue) {
+    // Only update if the value actually changed
+    if (oldValue !== newValue && this.shadowRoot) {
       this._updateContent();
     }
   }
@@ -38,60 +47,22 @@ class MarketplaceCard extends HTMLElement {
         
     // Set title
     const title = this.getAttribute('title');
-    if (title && titleElement) {
-      titleElement.textContent = title;
+    if (titleElement) {
+      titleElement.textContent = title || '';
     }
         
     // Set price
     const price = this.getAttribute('price');
-    if (price && priceElement) {
-      priceElement.textContent = `$${price}`;
+    if (priceElement) {
+      priceElement.textContent = price ? `$${price}` : '';
     }
         
-    // Set image - first try image-url attribute, then fall back to first image in _images array
+    // Set image
     const imageUrl = this.getAttribute('image-url');
-    if (imageUrl && imageElement) {
-      imageElement.src = imageUrl;
+    if (imageElement) {
+      imageElement.src = imageUrl || 'https://via.placeholder.com/300x400';
       imageElement.alt = title || 'Product image';
-    } else if (this._images && this._images.length > 0) {
-      // Use the first image from the images array
-      imageElement.src = this._images[0].image_url;
-      imageElement.alt = title || 'Product image';
-    } 
-  }
-    
-  // Getter and setter for listing data
-  set listing(data) {
-    if (data) {
-      this.setAttribute('listing-id', data.listing_id || '');
-      this.setAttribute('title', data.title || '');
-      this.setAttribute('price', data.price || '');
-            
-      // Handle the various image scenarios
-      if (data.image_url) {
-        // Direct image_url on the listing
-        this.setAttribute('image-url', data.image_url);
-      } else if (data.images && Array.isArray(data.images) && data.images.length > 0) {
-        // Images array under listing
-        this._images = data.images;
-        this._updateContent();
-      } else {
-        // No image found
-        this.removeAttribute('image-url');
-        this._images = [];
-        this._updateContent();
-      }
     }
-  }
-    
-  get listing() {
-    return {
-      listing_id: this.getAttribute('listing-id'),
-      title: this.getAttribute('title'),
-      price: this.getAttribute('price'),
-      image_url: this.getAttribute('image-url'),
-      images: this._images,
-    };
   }
 }
 

@@ -10,7 +10,18 @@ describe('<chat-widget>', () => {
   });
 
   afterEach(() => {
-    document.body.removeChild(element);
+    element = document.querySelector('chat-widget');
+    if (element && document.body.contains(element)) {
+      document.body.removeChild(element);
+    }
+  });
+
+  it('closes when ESC key is pressed', async () => {
+    const event = new KeyboardEvent('keydown', { key: 'Escape' });
+    document.dispatchEvent(event);
+    console.log(document.body.innerHTML);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(document.body.contains(element)).toBe(false);
   });
 
   it('renders shadow DOM with template', () => {
@@ -37,11 +48,4 @@ describe('<chat-widget>', () => {
     expect(typeof detail.id).toBe('number');
   });
 
-  /*it('closes when ESC key is pressed', async () => {
-    const event = new KeyboardEvent('keydown', { key: 'Escape' });
-    document.dispatchEvent(event);
-    console.log(document.body.innerHTML);
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    expect(document.body.contains(element)).toBe(false);
-  });*/
 });

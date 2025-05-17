@@ -1,4 +1,5 @@
 import supabase from '../utils/supabase.js';
+import { CategoryEnum } from '../constants/CategoryEnum.js';
 
 export class ListingModel {
   constructor() {
@@ -24,6 +25,29 @@ export class ListingModel {
       return this.listings;
     } catch (err) {
       console.error('Failed to fetch listings:', err);
+      throw err;
+    }
+  }
+  
+  async fetchListingsByCategory(category) {
+    if (!Object.values(CategoryEnum).includes(category)) {
+      throw new Error(`Invalid category: ${category}`);
+    }
+
+    try {
+      const { data: listings, error } = await supabase
+        .from('listings')
+        .select()
+        .eq('category', category);
+
+      if (error) {
+        console.error(`Error fetching ${category} listings:`, error);
+        throw error;
+      }
+
+      return listings;
+    } catch (err) {
+      console.error(`Failed to fetch ${category} listings:`, err);
       throw err;
     }
   }

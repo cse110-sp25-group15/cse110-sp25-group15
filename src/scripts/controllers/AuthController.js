@@ -53,8 +53,7 @@ export class AuthController {
    * @param {string} event - Auth event type
    * @param {Object} session - Auth session
    */
-  async handleAuthStateChange(event, _session) {
-    console.log('Auth state changed:', event);
+  async handleAuthStateChange(_event, _session) {
     await this.model.refreshSession();
     this.updateAuthUI();
   }

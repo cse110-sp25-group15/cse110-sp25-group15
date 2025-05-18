@@ -1,6 +1,6 @@
 import html from './browse-page.html?raw';
 import css from './browse-page.css?raw';
-import supabase from '../../supabase.js';
+import supabase from '../../scripts/utils/supabase.js';
 import '../product-card/product-card.js';
 import '../../styles/flexbox.css';
 

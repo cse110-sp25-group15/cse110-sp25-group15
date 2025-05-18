@@ -1,0 +1,73 @@
+<div class="card-container">
+    <div class="media-upload">
+        <label for="media-upload" class="media-label">
+            <span class="icon camera" title="Upload Photo"></span>
+            <span class="icon video-icon" title="Upload Video"></span>
+            <input
+                type="file"
+                id="media-upload"
+                name="media"
+                multiple 
+                hidden
+            >
+        </label>
+        <div id="preview-container" class="preview-container"></div>
+    </div>
+
+    <div class="field-cluster">
+        <label>
+            Title
+            <input
+                type="text"
+                name="title"
+                required
+            >
+        </label>
+        <label>
+            Price
+            <input 
+                type="text" 
+                name="price" 
+                required 
+            >
+        </label>
+        <label>
+            Category
+            <select name="category" required>
+                <option value="">Select category</option>
+                <option value="books">Books</option>
+                <option value="electronics">Electronics</option>
+                <option value="furniture">Furniture</option>
+            </select>
+        </label>
+        <label>
+            Condition
+            <select name="condition" required>
+                <option value="">Select condition</option>
+                <option value="new">New</option>
+                <option value="used">Used</option>
+                <option value="refurbished">Refurbished</option>
+            </select>
+        </label>
+    </div>
+    
+    <div class="description">
+        <label for="description">Description</label>
+        <textarea
+            id="description"
+            name="description"
+            rows="5"
+            placeholder="Describe your item..."
+        ></textarea>
+        <div id="word-count">0/250</div>
+    </div>
+
+    <div class="actions">
+        <button
+            type="button"
+            id="preview-button"
+            class="pre-button"
+        >See Preview</button>
+        <button type="submit" class="comp-button">Complete</button>
+    </div>
+</div>

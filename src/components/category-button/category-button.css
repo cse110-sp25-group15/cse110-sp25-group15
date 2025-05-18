@@ -1,0 +1,25 @@
+.label {
+    font-family: Arial;
+    padding: 6px 10px 6px 10px;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+    /* background-color: rgb(238, 239, 240); */
+    background-color: rgb(246, 246, 247);
+    border-radius: 20px;
+    /* border: 1px solid rgb(179, 179, 179); */
+    border: 0px;
+    font-size: 1.1em;
+}
+
+.label:hover {
+    cursor: pointer;
+    background-color: rgb(94, 94, 94);
+    color: white;
+}
+
+.label.selected {
+    background-color: rgb(94, 94, 94);
+    color: white;
+    transition: ease 250ms;
+    text-decoration: underline solid #F3C114 ;
+}

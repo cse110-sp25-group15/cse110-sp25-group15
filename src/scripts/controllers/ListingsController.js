@@ -37,7 +37,10 @@ export class ListingController {
       
       // Fetch listings from model
       const listings = await this.model.fetchAllListings();
-      
+
+      // Fetch listings from model sorted by price
+      //const listings = await this.model.fetchAllListingsSortByPrice(false);
+       
       // Render each listing
       listings.forEach((listing) => {
         this.renderListingCard(listing);

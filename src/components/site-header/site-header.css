@@ -1,0 +1,75 @@
+/* ─── VARIABLES & RESET ─── */
+:root {
+    --nav-h: 76px;
+    --blue: #04133B;
+    --gold: #F3C114;
+    --white: #FFFFFF;
+    --font: "Segoe UI", Arial, sans-serif;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  :host {
+    display: block;
+    font-family: var(--font);
+  }
+  
+  .site-header {
+    height: var(--nav-h);
+    background: var(--blue);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    padding: 0 1rem;
+    z-index: 10;
+  }
+  
+  .site-header .logo {
+    display: inline-flex;
+    align-items: center;
+    color: var(--gold);
+    font-weight: bold;
+  }
+  
+  .site-header .logo img {
+    height: 32px;
+    margin-right: 0.5rem;
+  }
+  
+  .site-header .logo span {
+    font-size: 1.2rem;
+  }
+  
+  .main-nav {
+    justify-self: center;
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .main-nav a {
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  
+  .user-icons {
+    justify-self: end;
+    font-size: 1.25rem;
+  }
+  
+  .icon-button {
+    background: none;
+    border: none;
+    color: var(--white);
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 1.25rem;
+  }

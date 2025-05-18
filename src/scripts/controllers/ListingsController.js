@@ -23,7 +23,7 @@ export class ListingController {
   }
   
   /**
-   * Loads listings from the model and renders them
+   * Loads all listings from the model and renders them
    */
   async loadListings() {
     try {

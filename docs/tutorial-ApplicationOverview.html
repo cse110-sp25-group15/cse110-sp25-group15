@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Tutorial: ApplicationOverview - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="CategoryItem.html">CategoryItem</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ApplicationOverview.html">ApplicationOverview</a></li><li><a href="tutorial-OnBoarding.html">OnBoarding</a></li><li><a href="tutorial-SupabaseIntegration.html">SupabaseIntegration</a></li><li><a href="tutorial-WebComponentGuide.html">WebComponentGuide</a></li><li><a href="tutorial-database.html">database</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Tutorial: ApplicationOverview</h1>
+    
+
+    <section>
+
+<header>
+    
+
+    <h2>ApplicationOverview</h2>
+</header>
+
+<article>
+    <h1>Application Overview</h1>
+<p>The application is a streamlined CRUD (Create, Read, Update, Delete) application built using vanilla web technologies without relying on external frameworks. This approach gives us full control over the architecture while reducing bundle size and dependency overhead.</p>
+<p>We've implemented a tailored version of the MVC (Model-View-Controller) architectural pattern that's specifically optimized for web components.</p>
+<p>The architecture consists of three distinct layers:</p>
+<ol>
+<li>
+<p><strong>Custom Web Components as Views</strong>: Encapsulated, reusable UI elements that manage their own rendering through Shadow DOM and respond to attribute changes.</p>
+</li>
+<li>
+<p><strong>Domain Models</strong>: Pure JavaScript classes that encapsulate business logic and data structures, completely independent from presentation concerns.</p>
+</li>
+<li>
+<p><strong>Controllers as Coordinators</strong>: Mediator objects that handle the event flow between components, update models in response to user actions, and reflect model changes back to the views.</p>
+</li>
+</ol>
+<p>This approach allows us to achieve several key objectives:</p>
+<ul>
+<li><strong>Maintainability</strong>: Clear separation between UI, business logic, and application flow</li>
+<li><strong>Testability</strong>: Isolated components that can be tested independently</li>
+<li><strong>Reusability</strong>: Components and models that can be repurposed across different parts of the application</li>
+<li><strong>Performance</strong>: Minimal overhead with no framework abstractions</li>
+</ul>
+<h2>The View Layer</h2>
+<p>The view is implemented through JavaScript-based custom web components that we're building. These components encapsulate their own DOM structure and styling through the Shadow DOM.</p>
+<pre class="prettyprint source lang-javascript"><code>attributeChangedCallback(name) {
+    if (name === 'checked') {
+      this.updateCheckedStyle();
+    }
+  }
+
+  updateCheckedStyle() {
+    if (!this.checkbox) { return; }
+    this.checkbox.classList.toggle('checked', this.hasAttribute('checked'));
+  }
+</code></pre>
+<p>The view's primary responsibility is to update the final appearance of each visual element based on the attributes assigned to the component. Components listen for attribute changes through the built-in <code>attributeChangedCallback()</code> lifecycle method and update their internal DOM accordingly.</p>
+<p>We have considered using properties instead of attributes but concluded that attributes are better for several compelling reasons:</p>
+<ol>
+<li>
+<p><strong>Declarative HTML Support</strong>: Attributes can be set directly in HTML markup, supporting a more declarative programming model that aligns with web standards.</p>
+</li>
+<li>
+<p><strong>CSS Selector Targeting</strong>: Attributes enable targeting different component states with CSS selectors (e.g., <code>checkbox-item[checked]</code>), providing more styling flexibility.</p>
+</li>
+<li>
+<p><strong>Developer Tooling</strong>: Attributes are visible in browser DevTools element inspection, making debugging and state visualization much easier.</p>
+</li>
+<li>
+<p><strong>Progressive Enhancement</strong>: Attributes work well with server-rendered HTML and can maintain state even when JavaScript is delayed or disabled.</p>
+</li>
+<li>
+<p><strong>Serialization</strong>: Attributes are automatically serialized to strings, creating a clear contract for data types at the component boundary.</p>
+</li>
+</ol>
+<p>Each component maintains its own isolated visual representation while exposing a clear attribute-based API for the controller to interact with. Internal implementation details remain encapsulated, allowing the component to evolve independently while maintaining its external interface.</p>
+<p>For complex user interactions that don't affect the model (such as hover states, focus handling, or animations), components manage these states internally without controller involvement. However, for interactions that should affect application state, components emit events that bubble up to controller listeners.</p>
+<p>This approach creates a clean separation where components are responsible for their own rendering and internal behavior, while the broader application flow and state management remain the controller's domain.</p>
+<h2>The Controller Layer</h2>
+<p>The controller will reside in the <code>scripts/controllers</code> folder, maintaining proper separation from the models directory. The controller will be responsible for both updating the model and the view, which aligns with certain MVC variants like Model-View-Presenter (MVP).</p>
+<p>We determined that the web component architecture's view layer lacks an elegant built-in mechanism to subscribe directly to model changes. While <code>attributeChangedCallback()</code> provides reactivity, it only responds to attribute changes rather than model state changes. Implementing a direct model subscription system would require either convoluted boilerplate code or dependency on external reactive libraries. Therefore, we've adopted a pragmatic approach: updating the view through attribute changes managed by the controller.</p>
+<p>Our controller implementation will:</p>
+<ol>
+<li>Add event listeners for events propagated from individual components</li>
+<li>Update the model based on these events</li>
+<li>Reflect model changes back to components by updating their attributes</li>
+</ol>
+<p>This approach maintains clear separation of concerns while avoiding unnecessary complexity. Components will still independently manage their internal UI states (such as hover effects or animations), while the controller handles application state and coordination. For efficiency with multiple components, we'll implement event delegation by listening at the container level rather than attaching listeners to each component.</p>
+<p>This pattern resembles the Model-View-Adapter variation of MVC, where the controller acts as an adapter between the model and view, translating between them while keeping them decoupled. This provides us with the core benefits of architectural separation while remaining practical for web component implementation.</p>
+<h2>The Model Layer</h2>
+<p>The model layer resides in the <code>scripts/models</code> directory and serves as the authoritative source of application data and business logic. Unlike simple state containers, our models encapsulate complete domain knowledge, validation rules, and data manipulation methods.</p>
+<p>The model layer's primary responsibilities include:</p>
+<ol>
+<li>
+<p><strong>Data &amp; Business Logic</strong>: Managing core data structures while implementing the rules that govern how this data can be created, modified, and validated, ensuring application data integrity.</p>
+</li>
+<li>
+<p><strong>Domain Knowledge Encapsulation</strong>: Representing the essential concepts and relationships in our application domain, independent of how they might be displayed or interacted with.</p>
+</li>
+<li>
+<p><strong>State Persistence</strong>: Handling the saving and loading of application state to/from storage mechanisms like localStorage or external APIs, maintaining continuity across sessions.</p>
+</li>
+</ol>
+<p>Our models intentionally know nothing about the view layer or controllers. They operate as independent entities focused solely on data and business rules. This decoupling ensures that models can be tested in isolation and potentially reused across different interfaces.</p>
+<p>By centralizing all data manipulation in the model layer, we ensure consistent application behavior regardless of which controller or view component initiates a change. This single source of truth approach prevents data inconsistencies and simplifies debugging by providing clear audit trails of state changes.</p>
+<p>The model never directly manipulates the DOM or responds to user events - those responsibilities belong to the view and controller layers respectively. This separation allows our model logic to remain focused on the core business problem domain rather than presentation concerns.</p>
+</article>
+
+</section>
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Sat May 17 2025 12:37:15 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

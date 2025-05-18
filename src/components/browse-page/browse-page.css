@@ -1,0 +1,96 @@
+.categories {
+    position: sticky;
+    z-index: 2;
+
+}
+
+.browse-title {
+    font-size: 3em;
+    font-weight: bold;
+    font-family: Arial;
+    padding: 10px 20px;
+    justify-self: flex-start;
+}
+
+.browse-categories {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.category-list {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    
+}
+.sort-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.sort-option > p {
+    font-family: Arial;
+    font-weight: 600;
+}
+
+
+/* Flexbox css and styling for product listings */
+
+:host {
+  --gap: 16px;
+  --max-columns: 6;
+  --max-container-width: 1800px;
+}
+
+.products-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  height: auto;
+  overflow: visible;
+  gap: var(--gap);
+  background: var(--background-color);
+  max-width: var(--max-container-width) !important;
+  min-width: min(var(--max-container-width), 100%);
+  padding: var(--gap);
+  box-sizing: border-box;
+  scrollbar-width: none;               /* Firefox */
+}
+.products-container::-webkit-scrollbar { display: none; }
+
+/* host element for the card */
+.card {
+  aspect-ratio: 3 / 4;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+/* 2 columns */
+@media (max-width: 950px) {
+  .card { width: calc(50% - (var(--gap) / 2)); }
+}
+/* 3 columns */
+@media (min-width: 951px) and (max-width: 1250px) {
+  .card { width: calc(33.3333% - (var(--gap) * 2 / 3)); }
+}
+/* 4 columns */
+@media (min-width: 1251px) and (max-width: 1550px) {
+  .card { width: calc(25% - (var(--gap) * 3 / 4)); }
+}
+/* 5 columns */
+@media (min-width: 1551px) and (max-width: 1950px) {
+  .card { width: calc(20% - (var(--gap) * 4 / 5)); }
+}
+/* 6 columns (maximum) */
+@media (min-width: 1951px) {
+  .card { width: calc(16.6667% - (var(--gap) * 5 / 6)); }
+  .products-container { max-width: var(--max-container-width); }
+}

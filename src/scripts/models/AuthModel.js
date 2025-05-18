@@ -3,22 +3,14 @@ import supabase from '../utils/supabase.js';
 export class AuthModel {
   constructor() {
     this.session = null;
-    this.listeners = [];
   }
 
   /**
-   * Initialize the auth model and setup auth state change listeners
+   * Initialize the auth model
    */
-  init() {
-    // Set up auth state change listener
-    supabase.auth.onAuthStateChange((event, session) => {
-      console.log('Auth state changed:', event);
-      this.session = session;
-      this.notifyListeners();
-    });
-    
+  async init() {
     // Initial session check
-    this.refreshSession();
+    return this.refreshSession();
   }
   
   /**
@@ -26,10 +18,42 @@ export class AuthModel {
    * @returns {Promise<Object|null>} The current session or null
    */
   async refreshSession() {
+    // Initialize the model 
     const { data: { session } } = await supabase.auth.getSession();
     this.session = session;
-    this.notifyListeners();
+    
+    // If user is logged in, fetch user data with identities
+    if (session?.user?.id) {
+      await this.fetchUserWithIdentities();
+    }
+    
     return session;
+  }
+  
+  /**
+   * Fetch user data with identities for avatar
+   * @returns {Promise<Object|null>} User data with identities or null
+   */
+  async fetchUserWithIdentities() {
+    if (!this.session?.user?.id) {
+      return null;
+    }
+    
+    const { data: user, error } = await supabase.auth.admin.getUserById(
+      this.session.user.id,
+    );
+    
+    if (error) {
+      console.error('Error fetching user with identities:', error.message);
+      return null;
+    }
+    
+    if (user) {
+      // Update the session user with the full user data
+      this.session.user = user;
+    }
+    
+    return user;
   }
   
   /**
@@ -58,6 +82,8 @@ export class AuthModel {
       provider,
       options: {
         redirectTo: window.location.origin,
+        // Request profile data including avatar
+        scopes: 'email profile',
       },
     });
     
@@ -82,36 +108,5 @@ export class AuthModel {
     }
     
     await this.refreshSession();
-  }
-  
-  /**
-   * Add a listener for auth state changes
-   * @param {Function} listener - Callback function when auth state changes
-   */
-  addListener(listener) {
-    if (typeof listener === 'function' && !this.listeners.includes(listener)) {
-      this.listeners.push(listener);
-    }
-  }
-  
-  /**
-   * Remove a listener
-   * @param {Function} listener - Listener to remove
-   */
-  removeListener(listener) {
-    this.listeners = this.listeners.filter((l) => l !== listener);
-  }
-  
-  /**
-   * Notify all listeners of auth state change
-   */
-  notifyListeners() {
-    this.listeners.forEach((listener) => {
-      try {
-        listener(this.session);
-      } catch (error) {
-        console.error('Error in auth listener:', error);
-      }
-    });
   }
 }

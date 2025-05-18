@@ -1,10 +1,11 @@
 import supabase from '../utils/supabase.js';
+import { CategoryEnum } from '../constants/CategoryEnum.js';
 
 export class ListingModel {
   constructor() {
     this.listings = [];
   }
-  
+
   /**
    * Fetches all listings from the database
    * @returns {Promise<Array>} Array of listing objects
@@ -14,12 +15,12 @@ export class ListingModel {
       const { data: listings, error } = await supabase
         .from('listings')
         .select();
-      
+
       if (error) {
         console.error('Error fetching listings:', error);
         throw error;
       }
-      
+
       this.listings = listings;
       return this.listings;
     } catch (err) {
@@ -27,7 +28,54 @@ export class ListingModel {
       throw err;
     }
   }
-  
+
+  async fetchListingsByCategory(category) {
+    if (!Object.values(CategoryEnum).includes(category)) {
+      throw new Error(`Invalid category: ${category}`);
+    }
+
+    try {
+      const { data: listings, error } = await supabase
+        .from('listings')
+        .select()
+        .eq('category', category);
+
+      if (error) {
+        console.error(`Error fetching ${category} listings:`, error);
+        throw error;
+      }
+
+      return listings;
+    } catch (err) {
+      console.error(`Failed to fetch ${category} listings:`, err);
+      throw err;
+    }
+  }
+
+  /**
+   * Fetches listings sorted by date
+   * @param {boolean} ascending - true for oldest to newest, false for newest to oldest
+   * @returns {Promise<Array>} Sorted array of listing objects
+   */
+  async fetchAllListingsSortByDate(ascending = false) {
+    try {
+      const { data: listings, error } = await supabase
+        .from('listings')
+        .select()
+        .order('date_posted', { ascending });
+
+      if (error) {
+        console.error('Error fetching listings:', error);
+        throw error;
+      }
+
+      return listings;
+    } catch (err) {
+      console.error('Failed to fetch listings:', err);
+      throw err;
+    }
+  }
+
   /**
    * Gets a listing by ID
    * @param {number} listingId - The ID of the listing to retrieve
@@ -36,7 +84,7 @@ export class ListingModel {
   getListingById(listingId) {
     return this.listings.find((listing) => listing.listing_id === listingId) || null;
   }
-  
+
   /**
    * Formats a listing object for presentation
    * 

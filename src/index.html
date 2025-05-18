@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="/styles/marketplace.css">
         <link rel="stylesheet" href="/styles/flexbox.css">
         <link rel="stylesheet" href="/styles/login.css">
+        <link rel="stylesheet" href="/styles/user-pill.css">
         <title>UCSD Marketplace</title>
         <script type="module" src="/components/category-item/category-item.js"></script>
         <script type="module" src="/components/checkbox-item/checkbox-item.js"></script>
@@ -57,12 +58,19 @@
                     <span slot="label">Show only items from UCSD students</span>
                 </checkbox-item>
 
-                <!-- Auth container with class-based hiding instead of inline styles -->
+                <!-- Auth container with Google-style user pill -->
                 <div class="auth-container">
                     <button id="login-button" class="hidden">Sign In with Google</button>
-                    <button id="logout-button" class="hidden">Sign Out</button>
                     <div id="user-info" class="hidden">
-                        <p id="user-email"></p>
+                        <div class="user-pill">
+                            <div class="avatar" id="user-avatar">
+                                <div class="fallback"></div>
+                            </div>
+                            <div class="user-info">
+                                <span id="user-email"></span>
+                            </div>
+                        </div>
+                        <button id="logout-button">Sign Out</button>
                     </div>
                 </div>
             </aside>

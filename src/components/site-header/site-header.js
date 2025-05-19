@@ -88,7 +88,7 @@ class SiteHeader extends HTMLElement {
       };
       document.head.appendChild(script);
     } else if (window.google && window.google.accounts) {
-      // Script already loaded
+      // Script already loaded(s)
       this.googleAuthInitialized = true;
       this.renderGoogleSignInButton();
     }

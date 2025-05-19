@@ -43,7 +43,7 @@
   display: none;
   position: absolute;
   top: 50px;
-  background-color: #F3C114;
+  background-color: rgb(217, 217, 217);
   box-shadow: 2px 2px 5px hsla(0, 0%, 0%, 0.8);
   padding: 5px;
   border-radius: 10px;

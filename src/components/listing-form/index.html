@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Listing Form Test</title>
+        <script src="listing-form.js" type="module"></script>
+        <style>
+        body {
+            padding: 2rem;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #04133B;
+        }
+        </style>
+    </head>
+    <body>
+        <h1>My Listing Form</h1>
+        <listing-form></listing-form>
+    
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('listing-form');
+            
+            form.addEventListener('listing-complete', (e) => {
+                console.log('Form submitted:', e.detail);
+                alert('Form submitted successfully!');
+            });
+            
+            form.addEventListener('listing-preview', (e) => {
+                console.log('Preview generated:', e.detail);
+                alert('Preview generated! Check console for details.');
+            });
+        });
+        </script>
+    </body>
+</html>

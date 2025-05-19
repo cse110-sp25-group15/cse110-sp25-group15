@@ -1,13 +1,57 @@
-/* global google */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>site-header/site-header.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
 
-import html from './site-header.html?raw';
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="CategoryItem.html">CategoryItem</a></li><li><a href="HeroBanner.html">HeroBanner</a><ul class='methods'><li data-type='method'><a href="HeroBanner.html#connectedCallback">connectedCallback</a></li><li data-type='method'><a href="HeroBanner.html#setupEventListeners">setupEventListeners</a></li></ul></li><li><a href="ProductViewer.html">ProductViewer</a></li><li><a href="SiteHeader.html">SiteHeader</a><ul class='methods'><li data-type='method'><a href="SiteHeader.html#attributeChangedCallback">attributeChangedCallback</a></li><li data-type='method'><a href="SiteHeader.html#connectedCallback">connectedCallback</a></li><li data-type='method'><a href="SiteHeader.html#getInitials">getInitials</a></li><li data-type='method'><a href="SiteHeader.html#handleGoogleSignIn">handleGoogleSignIn</a></li><li data-type='method'><a href="SiteHeader.html#initGoogleAuth">initGoogleAuth</a></li><li data-type='method'><a href="SiteHeader.html#parseJwt">parseJwt</a></li><li data-type='method'><a href="SiteHeader.html#renderGoogleSignInButton">renderGoogleSignInButton</a></li><li data-type='method'><a href="SiteHeader.html#renderUserMenu">renderUserMenu</a></li><li data-type='method'><a href="SiteHeader.html#setLoginStatus">setLoginStatus</a></li><li data-type='method'><a href="SiteHeader.html#setUser">setUser</a></li><li data-type='method'><a href="SiteHeader.html#setupEventListeners">setupEventListeners</a></li><li data-type='method'><a href="SiteHeader.html#showLoginButton">showLoginButton</a></li><li data-type='method'><a href="SiteHeader.html#signOut">signOut</a></li><li data-type='method'><a href="SiteHeader.html#toggleSearch">toggleSearch</a></li></ul></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ApplicationOverview.html">ApplicationOverview</a></li><li><a href="tutorial-database.html">database</a></li><li><a href="tutorial-OnBoarding.html">OnBoarding</a></li><li><a href="tutorial-SupabaseIntegration.html">SupabaseIntegration</a></li><li><a href="tutorial-WebComponentGuide.html">WebComponentGuide</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">site-header/site-header.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import html from './site-header.html?raw';
 import css from './site-header.css?raw';
 
 /**
  * Site Header Component with Google OAuth integration
  * Displays the main navigation header with logo, links, and user authentication
-  */
- 
+ */
 class SiteHeader extends HTMLElement {
   /**
    * Constructor initializes the component
@@ -30,9 +74,9 @@ class SiteHeader extends HTMLElement {
    * Lifecycle callback when attributes change
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) {return;}
+    if (oldValue === newValue) return;
     
-    if (name === 'username' && newValue) {
+    if (name === 'username' &amp;&amp; newValue) {
       // Update the user name if attribute changes
       const userData = this.currentUser || {};
       userData.name = newValue;
@@ -40,7 +84,7 @@ class SiteHeader extends HTMLElement {
       this.setUser(userData);
     }
     
-    if (name === 'avatar-url' && newValue) {
+    if (name === 'avatar-url' &amp;&amp; newValue) {
       // Update the avatar if attribute changes
       const userData = this.currentUser || {};
       userData.avatarUrl = newValue;
@@ -55,7 +99,7 @@ class SiteHeader extends HTMLElement {
     // Create template and add to shadow DOM
     const template = document.createElement('template');
     template.innerHTML = `
-      <style>${css}</style>
+      &lt;style>${css}&lt;/style>
       ${html}
     `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
@@ -67,7 +111,7 @@ class SiteHeader extends HTMLElement {
     // Dispatch event when component is fully connected
     this.dispatchEvent(new CustomEvent('header-connected', {
       bubbles: true,
-      composed: true,
+      composed: true
     }));
   }
 
@@ -87,7 +131,7 @@ class SiteHeader extends HTMLElement {
         this.renderGoogleSignInButton();
       };
       document.head.appendChild(script);
-    } else if (window.google && window.google.accounts) {
+    } else if (window.google &amp;&amp; window.google.accounts) {
       // Script already loaded
       this.googleAuthInitialized = true;
       this.renderGoogleSignInButton();
@@ -98,10 +142,10 @@ class SiteHeader extends HTMLElement {
    * Render Google Sign-In button
    */
   renderGoogleSignInButton() {
-    if (!this.googleAuthInitialized || !window.google) {return;}
+    if (!this.googleAuthInitialized || !window.google) return;
 
     const authContainer = this.shadowRoot.querySelector('.auth-container');
-    if (!authContainer) {return;}
+    if (!authContainer) return;
 
     // Check if there's stored user data in local storage
     const storedUser = localStorage.getItem('tritonUser');
@@ -157,7 +201,7 @@ class SiteHeader extends HTMLElement {
           this.dispatchEvent(new CustomEvent('search-submit', {
             bubbles: true,
             composed: true,
-            detail: { query },
+            detail: { query }
           }));
           
           // Reset and close the search after submission
@@ -169,7 +213,7 @@ class SiteHeader extends HTMLElement {
     
     // Close search when ESC key is pressed
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && searchContainer && searchContainer.classList.contains('active')) {
+      if (e.key === 'Escape' &amp;&amp; searchContainer &amp;&amp; searchContainer.classList.contains('active')) {
         searchContainer.classList.remove('active');
       }
     });
@@ -186,10 +230,10 @@ class SiteHeader extends HTMLElement {
     document.addEventListener('click', (e) => {
       // Check if we have a user pill and it's expanded
       const userPill = this.shadowRoot.querySelector('.user-pill');
-      if (userPill && userPill.classList.contains('expanded')) {
+      if (userPill &amp;&amp; userPill.classList.contains('expanded')) {
         // Check if click is outside the user pill
         const path = e.composedPath();
-        if (!path.some((el) => el === userPill)) {
+        if (!path.some(el => el === userPill)) {
           userPill.classList.remove('expanded');
         }
       }
@@ -210,7 +254,7 @@ class SiteHeader extends HTMLElement {
       email: payload.email,
       avatarUrl: payload.picture,
       initials: this.getInitials(payload.name),
-      id: payload.sub, // Google's unique identifier for the user
+      id: payload.sub // Google's unique identifier for the user
     };
     
     // Save user data to local storage
@@ -224,7 +268,7 @@ class SiteHeader extends HTMLElement {
     this.dispatchEvent(new CustomEvent('user-signed-in', {
       bubbles: true,
       composed: true,
-      detail: { userData },
+      detail: { userData }
     }));
   }
 
@@ -236,7 +280,7 @@ class SiteHeader extends HTMLElement {
   parseJwt(token) {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map((c) => {
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
     
@@ -249,12 +293,12 @@ class SiteHeader extends HTMLElement {
    * @returns {string} Initials (max 2 characters)
    */
   getInitials(name) {
-    if (!name) {return 'U';}
+    if (!name) return 'U';
     
-    const names = name.split(' ').filter((n) => n.length > 0);
+    const names = name.split(' ').filter(n => n.length > 0);
     
-    if (names.length === 0) {return 'U';}
-    if (names.length === 1) {return names[0].charAt(0).toUpperCase();}
+    if (names.length === 0) return 'U';
+    if (names.length === 1) return names[0].charAt(0).toUpperCase();
     
     return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
   }
@@ -263,10 +307,10 @@ class SiteHeader extends HTMLElement {
    * Render user dropdown menu
    */
   renderUserMenu() {
-    if (!this.currentUser) {return;}
+    if (!this.currentUser) return;
     
     const userPill = this.shadowRoot.querySelector('.user-pill');
-    if (!userPill || !userPill.classList.contains('expanded')) {return;}
+    if (!userPill || !userPill.classList.contains('expanded')) return;
     
     // Create user menu if it doesn't exist yet
     let userMenu = this.shadowRoot.querySelector('.user-dropdown-menu');
@@ -274,14 +318,14 @@ class SiteHeader extends HTMLElement {
       userMenu = document.createElement('div');
       userMenu.className = 'user-dropdown-menu';
       userMenu.innerHTML = `
-        <div class="user-menu-header">
-          <div class="user-menu-name">${this.currentUser.name}</div>
-          <div class="user-menu-email">${this.currentUser.email}</div>
-        </div>
-        <div class="user-menu-divider"></div>
-        <div class="user-menu-item" id="profile-link">Profile</div>
-        <div class="user-menu-item" id="settings-link">Settings</div>
-        <div class="user-menu-item" id="signout-button">Sign Out</div>
+        &lt;div class="user-menu-header">
+          &lt;div class="user-menu-name">${this.currentUser.name}&lt;/div>
+          &lt;div class="user-menu-email">${this.currentUser.email}&lt;/div>
+        &lt;/div>
+        &lt;div class="user-menu-divider">&lt;/div>
+        &lt;div class="user-menu-item" id="profile-link">Profile&lt;/div>
+        &lt;div class="user-menu-item" id="settings-link">Settings&lt;/div>
+        &lt;div class="user-menu-item" id="signout-button">Sign Out&lt;/div>
       `;
       
       userPill.appendChild(userMenu);
@@ -297,7 +341,7 @@ class SiteHeader extends HTMLElement {
         this.dispatchEvent(new CustomEvent('navigate', {
           bubbles: true,
           composed: true,
-          detail: { path: '/profile' },
+          detail: { path: '/profile' }
         }));
         userPill.classList.remove('expanded');
       });
@@ -307,7 +351,7 @@ class SiteHeader extends HTMLElement {
         this.dispatchEvent(new CustomEvent('navigate', {
           bubbles: true,
           composed: true,
-          detail: { path: '/settings' },
+          detail: { path: '/settings' }
         }));
         userPill.classList.remove('expanded');
       });
@@ -328,11 +372,11 @@ class SiteHeader extends HTMLElement {
     // Dispatch event that user has signed out
     this.dispatchEvent(new CustomEvent('user-signed-out', {
       bubbles: true,
-      composed: true,
+      composed: true
     }));
     
     // If Google sign-in is available, sign out there too
-    if (window.google && window.google.accounts && window.google.accounts.id) {
+    if (window.google &amp;&amp; window.google.accounts &amp;&amp; window.google.accounts.id) {
       google.accounts.id.disableAutoSelect();
     }
   }
@@ -359,11 +403,11 @@ class SiteHeader extends HTMLElement {
       userPill.style.display = 'flex';
     }
     
-    if (userData.name && nameElement) {
+    if (userData.name &amp;&amp; nameElement) {
       nameElement.textContent = userData.name;
     }
     
-    if (userData.initials && initialsElement) {
+    if (userData.initials &amp;&amp; initialsElement) {
       initialsElement.textContent = userData.initials.substring(0, 2).toUpperCase();
     }
     
@@ -371,7 +415,7 @@ class SiteHeader extends HTMLElement {
       // If avatar URL provided, replace initials with image
       const avatarDiv = this.shadowRoot.querySelector('.user-avatar');
       if (avatarDiv) {
-        avatarDiv.innerHTML = `<img src="${userData.avatarUrl}" alt="${userData.name} avatar">`;
+        avatarDiv.innerHTML = `&lt;img src="${userData.avatarUrl}" alt="${userData.name} avatar">`;
       }
     }
     
@@ -398,25 +442,25 @@ class SiteHeader extends HTMLElement {
     }
     
     const authContainer = this.shadowRoot.querySelector('.auth-container');
-    if (!authContainer) {return;}
+    if (!authContainer) return;
 
     // Use the standard login button (doesn't show Google branding initially)
     authContainer.innerHTML = `
-      <button class="auth-button" id="loginButton">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#04133B">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-        </svg>
+      &lt;button class="auth-button" id="loginButton">
+        &lt;svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#04133B">
+          &lt;path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+        &lt;/svg>
         Login
-      </button>
+      &lt;/button>
     `;
     
     // Initialize Google Sign-In
-    if (window.google && window.google.accounts && window.google.accounts.id) {
+    if (window.google &amp;&amp; window.google.accounts &amp;&amp; window.google.accounts.id) {
       google.accounts.id.initialize({
         client_id: '123456789-example.apps.googleusercontent.com', // Replace with your actual client ID
         callback: this.handleGoogleSignIn.bind(this),
         auto_select: false,
-        cancel_on_tap_outside: true,
+        cancel_on_tap_outside: true
       });
       
       // Add click handler to open Google Sign-In
@@ -446,9 +490,9 @@ class SiteHeader extends HTMLElement {
           dialog.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
           dialog.style.zIndex = '9999';
           dialog.innerHTML = `
-            <h3 style="margin-top:0;">Connecting to Google</h3>
-            <p>Initializing Google Sign-In. This will only take a moment.</p>
-            <button style="padding:8px 16px; background:#04133B; color:white; border:none; border-radius:4px; cursor:pointer;">Close</button>
+            &lt;h3 style="margin-top:0;">Connecting to Google&lt;/h3>
+            &lt;p>Initializing Google Sign-In. This will only take a moment.&lt;/p>
+            &lt;button style="padding:8px 16px; background:#04133B; color:white; border:none; border-radius:4px; cursor:pointer;">Close&lt;/button>
           `;
           document.body.appendChild(dialog);
           
@@ -479,7 +523,7 @@ class SiteHeader extends HTMLElement {
     if (searchContainer) {
       if (show) {
         searchContainer.classList.add('active');
-        if (searchInput) {searchInput.focus();}
+        if (searchInput) searchInput.focus();
       } else {
         searchContainer.classList.remove('active');
       }
@@ -505,4 +549,28 @@ class SiteHeader extends HTMLElement {
 }
 
 // Register the custom element
-customElements.define('site-header', SiteHeader);
+customElements.define('site-header', SiteHeader);</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Sun May 18 2025 20:36:10 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

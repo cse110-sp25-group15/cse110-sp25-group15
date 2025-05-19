@@ -39,3 +39,4 @@ class HeroBanner extends HTMLElement {
 }
 
 customElements.define('hero-banner', HeroBanner);
+export default HeroBanner;

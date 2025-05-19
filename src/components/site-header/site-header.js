@@ -506,3 +506,4 @@ class SiteHeader extends HTMLElement {
 
 // Register the custom element
 customElements.define('site-header', SiteHeader);
+export default SiteHeader;

@@ -3,14 +3,7 @@ import { ListingModel } from '../models/ListingsModel.js';
 export class ListingController {
   constructor() {
     this.model = new ListingModel();
-    this.productsContainer = document.querySelector('.products-container');
-    
-    // Set up event delegation for card clicks
-    if (this.productsContainer) {
-      this.productsContainer.addEventListener('card-click', (event) => {
-        this.handleCardClick(event.detail.listingId);
-      });
-    }
+    this.browsePage = document.querySelector('browse-page');
   }
   
   /**
@@ -21,15 +14,18 @@ export class ListingController {
     document.addEventListener('listing-submit', this.handleListingSubmit.bind(this));
     
     // Load listings when DOM is ready
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('browse-page-connected', () => {
+      console.log('Browse page connected');
+      this.productsContainer = this.browsePage.shadowRoot.querySelector('.products-container');
+      if (!this.productsContainer) {
+        console.error('Products container not found');
+        return;
+      }
       this.loadListings();
-    });
+    } );
   }
   
   /**
-<<<<<<< HEAD
-   * Loads all listings from the model and renders them
-=======
    * Handle the listing-submit event from the listing-form component
    * @param {CustomEvent} event - The custom event containing listing data
    */
@@ -65,7 +61,6 @@ export class ListingController {
   
   /**
    * Loads listings from the model and renders them
->>>>>>> 47405a6c05234686f69a9f5d31dd0dc10580a590
    */
   async loadListings() {
     try {

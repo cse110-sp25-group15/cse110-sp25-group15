@@ -4,83 +4,51 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/styles/marketplace.css">
-        <link rel="stylesheet" href="/styles/flexbox.css">
-        <link rel="stylesheet" href="/styles/login.css">
-        <link rel="stylesheet" href="/styles/user-pill.css">
         <title>UCSD Marketplace</title>
-        <script type="module" src="/components/category-item/category-item.js"></script>
-        <script type="module" src="/components/checkbox-item/checkbox-item.js"></script>
-        <script type="module" src="/components/product-card/product-card.js"></script>
+        <!-- Styles -->
+        <link rel="stylesheet" href="./styles/landing.css">
+        <link rel="stylesheet" href="./styles/header.css">
+        <title>UCSD Marketplace</title>
+
         <script type="module" src="/scripts/main.js"></script>
+        
+        <!-- broswer -->
+        <script type="module" src="/components/browse-page/browse-page.js"></script>
+        <script type="module" src="/components/category-button/category-button.js"></script>
+
+        <!-- hero -->
+        <script type="module" src="./components/hero-banner/hero-banner.js"></script>
+
+        <!-- header -->
+        <script type="module" src="./components/search-box/search-box.js"></script>
+        <script type="module" src="./components/auth-pill/auth-pill.js"></script>
     </head>
 
     <body>
-        <div class="marketplace-container">
-            <!-- Left sidebar -->
-            <aside class="filters-sidebar">
-                <div class="sidebar-header">
-                    <h2>UCSD Marketplace</h2>
+        <header>
+            <div class="site-header">
+                <div class="logo">
+                    <img src="../../assets/triton.png" alt="Triton trident">
+                    <span>MARKETPLACE</span>
                 </div>
+                <nav class="main-nav">
+                    <a href="/browse">BROWSE</a>
+                    <a href="/list">LIST AN ITEM</a>
+                </nav>
+                <div class="user-icons">
+                    <search-box></search-box>
+                    <auth-pill></auth-pill>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <hero-banner></hero-banner>
+            <section class="marketplace-content">
+                <browse-page></browse-page>
+            </section>
+        </main>
 
-                <h3>Categories</h3>
-                <div class="category-list">
-                    <category-item selected>
-                        <span slot="icon">📚</span>
-                        <span slot="label">Textbooks</span>
-                    </category-item>
-                    <category-item>
-                        <span slot="icon">🛴</span>
-                        <span slot="label">Transportation</span>
-                    </category-item>
-                    <category-item>
-                        <span slot="icon">💻</span>
-                        <span slot="label">Tech</span>
-                    </category-item>
-                    <category-item>
-                        <span slot="icon">📝</span>
-                        <span slot="label">Course Supplies</span>
-                    </category-item>
-                    <category-item>
-                        <span slot="icon">🛏️</span>
-                        <span slot="label">Dorm Life</span>
-                    </category-item>
-                    <category-item>
-                        <span slot="icon">🏀</span>
-                        <span slot="label">Sports Equipment</span>
-                    </category-item>
-                    <category-item>
-                        <span slot="icon">🎽</span>
-                        <span slot="label">Merch</span>
-                    </category-item>
-                </div>
-                <checkbox-item checked>
-                    <span slot="label">Show only items from UCSD students</span>
-                </checkbox-item>
-
-                <!-- Auth container with Google-style user pill -->
-                <div class="auth-container">
-                    <button id="login-button" class="hidden">Sign In with Google</button>
-                    <div id="user-info" class="hidden">
-                        <div class="user-pill">
-                            <div class="avatar" id="user-avatar">
-                                <div class="fallback"></div>
-                            </div>
-                            <div class="user-info">
-                                <span id="user-email"></span>
-                            </div>
-                        </div>
-                        <button id="logout-button">Sign Out</button>
-                    </div>
-                </div>
-            </aside>
-
-            <!-- Right content area -->
-            <main class="content-area">
-                <div class="products-container">
-                    <!-- Cards will be loaded dynamically -->
-                </div>
-            </main>
         </div>
     </body>
 

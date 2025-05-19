@@ -21,20 +21,6 @@ class HeroBanner extends HTMLElement {
       ${html}
     `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-    this.setupEventListeners();
-  }
-
-  /**
-   * Sets up event listeners for the component
-   */
-  setupEventListeners() {
-    const ctaButton = this.shadowRoot.querySelector('.btn');
-    ctaButton.addEventListener('click', () => {
-      this.dispatchEvent(new CustomEvent('hero-start', {
-        bubbles: true,
-        composed: true,
-      }));
-    });
   }
 }
 

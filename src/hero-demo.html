@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>UCSD Marketplace</title>
+        <!-- Styles -->
+        <link rel="stylesheet" href="./styles/landing.css">
+        <!-- Component imports -->
+        <script type="module" src="./components/site-header/site-header.js"></script>
+        <script type="module" src="./components/hero-banner/hero-banner.js"></script>
+    </head>
+    <body>
+        <header>
+            <site-header></site-header>
+        </header>
+        
+        <main>
+            <hero-banner></hero-banner>
+            
+            <section class="marketplace-content">
+                <h2>Welcome to the Marketplace</h2>
+                <p>A trusted digital marketplace for students and staff at UCSD.</p>
+            </section>
+        </main>
+        
+        <footer>
+            <!-- Footer content would go here -->
+        </footer>
+        
+        <script>
+            // Event listeners for site-header
+            document.querySelector('site-header').addEventListener('search-click', () => {
+                console.log('Search clicked');
+                // Add search functionality
+            });
+            
+            document.querySelector('site-header').addEventListener('profile-click', () => {
+                console.log('Profile clicked');
+                // Add profile functionality
+            });
+            
+            // Event listener for hero-banner
+            document.querySelector('hero-banner').addEventListener('hero-start', () => {
+                console.log('User clicked Start Browsing button');
+                // Redirect to browse page
+                // window.location.href = '/browse';
+            });
+        </script>
+    </body>
+</html>

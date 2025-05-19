@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>product-card/product-card.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="CategoryItem.html">CategoryItem</a></li><li><a href="CheckItem.html">CheckItem</a><ul class='methods'><li data-type='method'><a href="CheckItem.html#attributeChangedCallback">attributeChangedCallback</a></li><li data-type='method'><a href="CheckItem.html#connectedCallback">connectedCallback</a></li></ul></li><li><a href="MarketplaceCard.html">MarketplaceCard</a><ul class='methods'><li data-type='method'><a href="MarketplaceCard.html#attributeChangedCallback">attributeChangedCallback</a></li><li data-type='method'><a href="MarketplaceCard.html#connectedCallback">connectedCallback</a></li></ul></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ApplicationOverview.html">ApplicationOverview</a></li><li><a href="tutorial-OnBoarding.html">OnBoarding</a></li><li><a href="tutorial-SupabaseIntegration.html">SupabaseIntegration</a></li><li><a href="tutorial-WebComponentGuide.html">WebComponentGuide</a></li><li><a href="tutorial-database.html">database</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">product-card/product-card.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import html from './product-card.html?raw';
+import css from './product-card.css?raw';
+
+/**
+ * Product card component for displaying marketplace listings.
+ * Displays product information including image, title, and price.
+ * @class
+ * @extends HTMLElement
+ */
+class MarketplaceCard extends HTMLElement {
+  /**
+   * Attributes to observe for changes.
+   * @static
+   * @returns {string[]} Array of attribute names to observe.
+   */
+  static get observedAttributes() {
+    return ['listing-id', 'title', 'price', 'image-url'];
+  }
+
+  /**
+   * Creates an instance of MarketplaceCard and attaches a shadow DOM.
+   * @constructor
+   */
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+
+  /**
+   * Lifecycle callback when the element is added to the DOM.
+   * Sets up the component template, adds event listeners, and initializes content.
+   */
+  connectedCallback() {
+    const template = document.createElement('template');
+    template.innerHTML = `
+      &lt;style>${css}&lt;/style>
+      ${html}
+    `;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+        
+    // Set initial data if attributes are present
+    this._updateContent();
+    
+    // Add click event listener that emits a custom event
+    this.shadowRoot.querySelector('.card-container')?.addEventListener('click', () => {
+      this.dispatchEvent(new CustomEvent('card-click', {
+        bubbles: true,
+        composed: true,
+        detail: { listingId: this.getAttribute('listing-id') },
+      }));
+    });
+  }
+
+  /**
+   * Lifecycle callback that is called when an observed attribute changes.
+   * Updates the card content when attributes change.
+   * @param {string} name - The name of the attribute that changed.
+   * @param {string} oldValue - The previous value of the attribute.
+   * @param {string} newValue - The new value of the attribute.
+   */
+  attributeChangedCallback(name, oldValue, newValue) {
+    // Only update if the value actually changed
+    if (oldValue !== newValue &amp;&amp; this.shadowRoot) {
+      this._updateContent();
+    }
+  }
+
+  /**
+   * Updates the card content based on current attribute values.
+   * Updates title, price, and image elements.
+   * @private
+   */
+  _updateContent() {
+    // Get elements
+    const titleElement = this.shadowRoot.querySelector('.card-title');
+    const priceElement = this.shadowRoot.querySelector('.card-price');
+    const imageElement = this.shadowRoot.querySelector('.card-image');
+        
+    // Set title
+    const title = this.getAttribute('title');
+    if (titleElement) {
+      titleElement.textContent = title || '';
+    }
+        
+    // Set price
+    const price = this.getAttribute('price');
+    if (priceElement) {
+      priceElement.textContent = price ? `$${price}` : '';
+    }
+        
+    // Set image
+    const imageUrl = this.getAttribute('image-url');
+    if (imageElement) {
+      imageElement.src = imageUrl || 'https://via.placeholder.com/300x400';
+      imageElement.alt = title || 'Product image';
+    }
+  }
+}
+
+customElements.define('product-card', MarketplaceCard);
+
+export default MarketplaceCard;</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Thu May 15 2025 17:56:22 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

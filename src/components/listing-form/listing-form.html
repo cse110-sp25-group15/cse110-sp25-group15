@@ -1,12 +1,16 @@
 <div class="card-container">
     <div class="media-upload">
-        <label for="media-upload" class="media-label">
-            <span class="icon camera" title="Upload Photo"></span>
-            <span class="icon video-icon" title="Upload Video"></span>
+        <label
+            for="media-upload"
+            class="media-label"
+            title="Upload Media"
+        >
+            <span class="folder-icon"></span> Upload Files
             <input
                 type="file"
                 id="media-upload"
                 name="media"
+                accept="image/*,video/*"
                 multiple 
                 hidden
             >
@@ -63,11 +67,6 @@
     </div>
 
     <div class="actions">
-        <button
-            type="button"
-            id="preview-button"
-            class="pre-button"
-        >See Preview</button>
         <button type="submit" class="comp-button">Complete</button>
     </div>
 </div>

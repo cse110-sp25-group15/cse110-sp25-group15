@@ -45,13 +45,16 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import html from './site-header.html?raw';
+            <pre class="prettyprint source linenums"><code>/* global google */
+
+import html from './site-header.html?raw';
 import css from './site-header.css?raw';
 
 /**
  * Site Header Component with Google OAuth integration
  * Displays the main navigation header with logo, links, and user authentication
- */
+  */
+ 
 class SiteHeader extends HTMLElement {
   /**
    * Constructor initializes the component
@@ -74,7 +77,7 @@ class SiteHeader extends HTMLElement {
    * Lifecycle callback when attributes change
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
+    if (oldValue === newValue) {return;}
     
     if (name === 'username' &amp;&amp; newValue) {
       // Update the user name if attribute changes
@@ -111,7 +114,7 @@ class SiteHeader extends HTMLElement {
     // Dispatch event when component is fully connected
     this.dispatchEvent(new CustomEvent('header-connected', {
       bubbles: true,
-      composed: true
+      composed: true,
     }));
   }
 
@@ -132,7 +135,7 @@ class SiteHeader extends HTMLElement {
       };
       document.head.appendChild(script);
     } else if (window.google &amp;&amp; window.google.accounts) {
-      // Script already loaded
+      // Script already loaded(s)
       this.googleAuthInitialized = true;
       this.renderGoogleSignInButton();
     }
@@ -142,10 +145,10 @@ class SiteHeader extends HTMLElement {
    * Render Google Sign-In button
    */
   renderGoogleSignInButton() {
-    if (!this.googleAuthInitialized || !window.google) return;
+    if (!this.googleAuthInitialized || !window.google) {return;}
 
     const authContainer = this.shadowRoot.querySelector('.auth-container');
-    if (!authContainer) return;
+    if (!authContainer) {return;}
 
     // Check if there's stored user data in local storage
     const storedUser = localStorage.getItem('tritonUser');
@@ -201,7 +204,7 @@ class SiteHeader extends HTMLElement {
           this.dispatchEvent(new CustomEvent('search-submit', {
             bubbles: true,
             composed: true,
-            detail: { query }
+            detail: { query },
           }));
           
           // Reset and close the search after submission
@@ -233,7 +236,7 @@ class SiteHeader extends HTMLElement {
       if (userPill &amp;&amp; userPill.classList.contains('expanded')) {
         // Check if click is outside the user pill
         const path = e.composedPath();
-        if (!path.some(el => el === userPill)) {
+        if (!path.some((el) => el === userPill)) {
           userPill.classList.remove('expanded');
         }
       }
@@ -254,7 +257,7 @@ class SiteHeader extends HTMLElement {
       email: payload.email,
       avatarUrl: payload.picture,
       initials: this.getInitials(payload.name),
-      id: payload.sub // Google's unique identifier for the user
+      id: payload.sub, // Google's unique identifier for the user
     };
     
     // Save user data to local storage
@@ -268,7 +271,7 @@ class SiteHeader extends HTMLElement {
     this.dispatchEvent(new CustomEvent('user-signed-in', {
       bubbles: true,
       composed: true,
-      detail: { userData }
+      detail: { userData },
     }));
   }
 
@@ -280,7 +283,7 @@ class SiteHeader extends HTMLElement {
   parseJwt(token) {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map((c) => {
       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
     
@@ -293,12 +296,12 @@ class SiteHeader extends HTMLElement {
    * @returns {string} Initials (max 2 characters)
    */
   getInitials(name) {
-    if (!name) return 'U';
+    if (!name) {return 'U';}
     
-    const names = name.split(' ').filter(n => n.length > 0);
+    const names = name.split(' ').filter((n) => n.length > 0);
     
-    if (names.length === 0) return 'U';
-    if (names.length === 1) return names[0].charAt(0).toUpperCase();
+    if (names.length === 0) {return 'U';}
+    if (names.length === 1) {return names[0].charAt(0).toUpperCase();}
     
     return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
   }
@@ -307,10 +310,10 @@ class SiteHeader extends HTMLElement {
    * Render user dropdown menu
    */
   renderUserMenu() {
-    if (!this.currentUser) return;
+    if (!this.currentUser) {return;}
     
     const userPill = this.shadowRoot.querySelector('.user-pill');
-    if (!userPill || !userPill.classList.contains('expanded')) return;
+    if (!userPill || !userPill.classList.contains('expanded')) {return;}
     
     // Create user menu if it doesn't exist yet
     let userMenu = this.shadowRoot.querySelector('.user-dropdown-menu');
@@ -341,7 +344,7 @@ class SiteHeader extends HTMLElement {
         this.dispatchEvent(new CustomEvent('navigate', {
           bubbles: true,
           composed: true,
-          detail: { path: '/profile' }
+          detail: { path: '/profile' },
         }));
         userPill.classList.remove('expanded');
       });
@@ -351,7 +354,7 @@ class SiteHeader extends HTMLElement {
         this.dispatchEvent(new CustomEvent('navigate', {
           bubbles: true,
           composed: true,
-          detail: { path: '/settings' }
+          detail: { path: '/settings' },
         }));
         userPill.classList.remove('expanded');
       });
@@ -372,7 +375,7 @@ class SiteHeader extends HTMLElement {
     // Dispatch event that user has signed out
     this.dispatchEvent(new CustomEvent('user-signed-out', {
       bubbles: true,
-      composed: true
+      composed: true,
     }));
     
     // If Google sign-in is available, sign out there too
@@ -442,7 +445,7 @@ class SiteHeader extends HTMLElement {
     }
     
     const authContainer = this.shadowRoot.querySelector('.auth-container');
-    if (!authContainer) return;
+    if (!authContainer) {return;}
 
     // Use the standard login button (doesn't show Google branding initially)
     authContainer.innerHTML = `
@@ -460,7 +463,7 @@ class SiteHeader extends HTMLElement {
         client_id: '123456789-example.apps.googleusercontent.com', // Replace with your actual client ID
         callback: this.handleGoogleSignIn.bind(this),
         auto_select: false,
-        cancel_on_tap_outside: true
+        cancel_on_tap_outside: true,
       });
       
       // Add click handler to open Google Sign-In
@@ -523,7 +526,7 @@ class SiteHeader extends HTMLElement {
     if (searchContainer) {
       if (show) {
         searchContainer.classList.add('active');
-        if (searchInput) searchInput.focus();
+        if (searchInput) {searchInput.focus();}
       } else {
         searchContainer.classList.remove('active');
       }
@@ -549,7 +552,9 @@ class SiteHeader extends HTMLElement {
 }
 
 // Register the custom element
-customElements.define('site-header', SiteHeader);</code></pre>
+customElements.define('site-header', SiteHeader);
+export default SiteHeader;
+</code></pre>
         </article>
     </section>
 
@@ -563,7 +568,7 @@ customElements.define('site-header', SiteHeader);</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Sun May 18 2025 20:36:10 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Sun May 18 2025 21:14:05 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

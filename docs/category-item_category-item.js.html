@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Tutorial: SupabaseIntegration - Documentation</title>
+    <title>category-item/category-item.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -35,22 +35,50 @@
 
 <div id="main">
     
-    <h1 class="page-title">Tutorial: SupabaseIntegration</h1>
+    <h1 class="page-title">category-item/category-item.js</h1>
     
 
+    
+
+
+
+    
     <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import templateHTML from './category-item.html?raw';
+import templateCSS from './category-item.css?raw';
 
-<header>
-    
+/**
+ * Web component representing a category item.
+ * 
+ * Meant to be used in a list of categories, where each item can have an icon and a label.
+ * 
+ * @example
+ * &lt;category-item>
+ *   &lt;span slot="icon">🔔&lt;/span>
+ *   &lt;span slot="label">Notifications&lt;/span>
+ * &lt;/category-item>
+ */
+class CategoryItem extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
 
-    <h2>SupabaseIntegration</h2>
-</header>
+  connectedCallback() {
+    const template = document.createElement('template');
+    template.innerHTML = `&lt;style>${templateCSS}&lt;/style>${templateHTML}`;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+  }
+}
 
-<article>
-    <h1>Supabase Integration</h1>
-</article>
+customElements.define('category-item', CategoryItem);
+</code></pre>
+        </article>
+    </section>
 
-</section>
+
+
 
     
     

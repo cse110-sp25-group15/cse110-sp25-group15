@@ -27,6 +27,9 @@ export class ListingController {
   }
   
   /**
+<<<<<<< HEAD
+   * Loads all listings from the model and renders them
+=======
    * Handle the listing-submit event from the listing-form component
    * @param {CustomEvent} event - The custom event containing listing data
    */
@@ -62,6 +65,7 @@ export class ListingController {
   
   /**
    * Loads listings from the model and renders them
+>>>>>>> 47405a6c05234686f69a9f5d31dd0dc10580a590
    */
   async loadListings() {
     try {

@@ -9,9 +9,9 @@
 - [x] Adam Connor 
 - [x] Ahmed Abdullahi 
 - [x] Anthony Nguyen 
-- [] Damian Nieto 
+- [ ] Damian Nieto 
 - [x] Hetvi Gandhi 
-- [] Kiichiro Wang 
+- [ ] Kiichiro Wang 
 - [x] Nasser 
 - [x] Pantea Foroutan
 

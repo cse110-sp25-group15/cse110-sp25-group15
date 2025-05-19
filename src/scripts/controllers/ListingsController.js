@@ -17,13 +17,55 @@ export class ListingController {
    * Initialize the controller
    */
   init() {
+    // Listen for listing-submit events from the listing form component
+    document.addEventListener('listing-submit', this.handleListingSubmit.bind(this));
+    
+    // Load listings when DOM is ready
     document.addEventListener('DOMContentLoaded', () => {
       this.loadListings();
     });
   }
   
   /**
+<<<<<<< HEAD
    * Loads all listings from the model and renders them
+=======
+   * Handle the listing-submit event from the listing-form component
+   * @param {CustomEvent} event - The custom event containing listing data
+   */
+  async handleListingSubmit(event) {
+    try {
+      // Extract listing data from the event
+      const listingData = event.detail;
+      
+      // Use the model to create a new listing
+      const { data, error } = await this.model.createListing(listingData);
+      
+      if (error) {
+        this.notifyError(error.message || 'Failed to create listing');
+        return;
+      }
+      
+      // Notify success
+      this.notifySuccess('Listing created successfully');
+      
+      // Reset the form if possible
+      if (event.target && typeof event.target.resetForm === 'function') {
+        event.target.resetForm();
+      }
+      
+      // Reload listings to show the new one
+      await this.loadListings();
+      
+    } catch (error) {
+      console.error('Error handling listing submission:', error);
+      this.notifyError('An unexpected error occurred');
+    }
+  }
+  
+  /**
+   * Loads listings from the model and renders them
+>>>>>>> 47405a6c05234686f69a9f5d31dd0dc10580a590
    */
   async loadListings() {
     try {
@@ -37,7 +79,10 @@ export class ListingController {
       
       // Fetch listings from model
       const listings = await this.model.fetchAllListings();
-      
+
+      // Fetch listings from model sorted by price
+      //const listings = await this.model.fetchAllListingsSortByPrice(false);
+       
       // Render each listing
       listings.forEach((listing) => {
         this.renderListingCard(listing);
@@ -82,5 +127,21 @@ export class ListingController {
     // Navigate to product detail page or show modal, etc.
     console.log(`Card clicked for listing: ${listingId}`);
     window.location.href = `/product.html?id=${listingId}`;
+  }
+  
+  /**
+   * Display an error notification
+   * @param {string} message - The error message to display
+   */
+  notifyError(message) {
+    alert(message); // Simple alert for now, could be replaced with a proper notification system
+  }
+  
+  /**
+   * Display a success notification
+   * @param {string} message - The success message to display
+   */
+  notifySuccess(message) {
+    alert(message); // Simple alert for now, could be replaced with a proper notification system
   }
 }

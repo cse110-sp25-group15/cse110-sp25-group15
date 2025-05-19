@@ -77,6 +77,30 @@ export class ListingModel {
   }
 
   /**
+   * Fetches listings sorted by price 
+   * @param {boolean} ascending - true for lowest to highest, false for highest to lowest
+   * @returns {Promise<Array<Object>>} Sorted array of listing objects
+   */
+  async fetchAllListingsSortByPrice(ascending) {
+    try {
+      const { data: listings, error } = await supabase
+        .from('listings')
+        .select()
+        .order('price', { ascending });
+
+      if (error) {
+        console.error('Error fetching listings by price:', error);
+        throw error;
+      }
+
+      return listings;
+    } catch (err) {
+      console.error('Failed to fetch listings by price:', err);
+      throw err;
+    }
+  } 
+
+  /**
    * Gets a listing by ID
    * @param {number} listingId - The ID of the listing to retrieve
    * @returns {Object|null} The listing object or null if not found

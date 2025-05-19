@@ -17,7 +17,36 @@
             <!-- Sort Options -->
             <div class="sort-option">
                 <p>Sort by:</p>
-                <category-button>Newest</category-button>
+                <category-button class="sort-button">Newest</category-button>
+                <div class="content">
+                    <label>
+                        <input
+                            type="radio"
+                            name="order"
+                            value="newest"
+                            checked
+                        > 
+                        Newest
+                    </label>
+                    
+                    <label>
+                        <input
+                            type="radio"
+                            name="order"
+                            value="oldest"
+                        >
+                        Oldest
+                    </label>
+
+                    <div class="price">
+                        <p class="price-text">Price: </p>
+                        <input 
+                            type="range"
+                            min= "0"
+                            max= "2"
+                        >
+                    </div>
+                </div>
             </div>
         </div>
 

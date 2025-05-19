@@ -35,6 +35,28 @@
     font-weight: 600;
 }
 
+.sort-option {
+  position: relative;
+}
+
+.content{
+  display: none;
+  position: absolute;
+  top: 50px;
+  background-color: #F3C114;
+  box-shadow: 2px 2px 5px hsla(0, 0%, 0%, 0.8);
+  padding: 5px;
+  border-radius: 10px;
+  font-family: Arial;
+  font-weight: 600;
+}
+.content label {
+  display: block;
+}
+
+.sort-option:hover .content{
+  display: block;
+}
 
 /* Flexbox css and styling for product listings */
 

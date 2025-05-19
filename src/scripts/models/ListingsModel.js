@@ -98,7 +98,7 @@ export class ListingModel {
       console.error('Failed to fetch listings by price:', err);
       throw err;
     }
-  }
+  } 
 
   /**
    * Gets a listing by ID

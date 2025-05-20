@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Function to check if hero banner is scrolled out of view
   const checkHeroBannerVisibility = () => {
-    if (!heroBanner) return;
+    if (!heroBanner) {return;}
     
     const heroBannerRect = heroBanner.getBoundingClientRect();
     // If hero banner is scrolled completely out of view

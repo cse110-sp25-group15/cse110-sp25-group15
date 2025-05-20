@@ -9,18 +9,18 @@ class HeroBanner extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
-  }
-
-  /**
-   * Lifecycle callback when component is connected to the DOM
-   */
-  connectedCallback() {
     const template = document.createElement('template');
     template.innerHTML = `
       <style>${css}</style>
       ${html}
     `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
+  }
+
+  /**
+   * Lifecycle callback when component is connected to the DOM
+   */
+  connectedCallback() {
   }
 }
 

@@ -5,6 +5,12 @@ class CategoryButton extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+    const template = document.createElement('template');
+    template.innerHTML = `
+            <style>${css}</style>
+            ${html}
+        `;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
   static get observedAttributes() {
@@ -12,19 +18,10 @@ class CategoryButton extends HTMLElement {
   }
 
   connectedCallback() {
-    const template = document.createElement('template');
-    template.innerHTML = `
-            <style>${css}</style>
-            ${html}
-        `;
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-
     // event listener for onclick
     const button = this.shadowRoot.querySelector('.label');
     button.addEventListener('click', () => {
-            
       this.toggleAttribute('selected');
-
     });
   }
 

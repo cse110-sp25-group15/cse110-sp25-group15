@@ -6,12 +6,15 @@ class AuthPill extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
-    this.currentUser = null;
-    this.userAvatar = null;
-    this.avatarFallback = null;
-    this.userDropdownMenu = null;
-    this.userMenuName = null;
-    this.userMenuEmail = null;
+    const template = document.createElement('template');
+    template.innerHTML = `<style>${css}</style>${html}`;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+    this.userAvatar = this.shadowRoot.querySelector('.user-avatar');
+    this.avatarFallback = this.shadowRoot.querySelector('.initials');
+    this.userDropdownMenu = this.shadowRoot.querySelector('.user-dropdown-menu');
+    this.userMenuName = this.shadowRoot.querySelector('.user-menu-name');
+    this.userMenuEmail = this.shadowRoot.querySelector('.user-menu-email');
   }
 
   static get observedAttributes() {
@@ -34,19 +37,8 @@ class AuthPill extends HTMLElement {
   }
 
   connectedCallback() {
-    const template = document.createElement('template');
-    template.innerHTML = `<style>${css}</style>${html}`;
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-
-    this.userAvatar = this.shadowRoot.querySelector('.user-avatar');
-    this.avatarFallback = this.shadowRoot.querySelector('.initials');
-    this.userDropdownMenu = this.shadowRoot.querySelector('.user-dropdown-menu');
-    this.userMenuName = this.shadowRoot.querySelector('.user-menu-name');
-    this.userMenuEmail = this.shadowRoot.querySelector('.user-menu-email');
-
     this.initAuth();
     this.setupEventListeners();
-
     this.dispatchEvent(new CustomEvent('auth-connected', { bubbles: true, composed: true }));
   }
 

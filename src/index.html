@@ -16,6 +16,8 @@
         <!-- browser -->
         <script type="module" src="/components/browse-page/browse-page.js"></script>
         <script type="module" src="/components/category-button/category-button.js"></script>
+        <script type="module" src="/components/product-detail/product-detail.js"></script>
+        <script type="module" src="/components/product-overlay/product-overlay.js"></script>
 
         <!-- hero -->
         <script type="module" src="./components/hero-banner/hero-banner.js"></script>
@@ -33,12 +35,12 @@
     <body>
         <header>
             <div class="site-header">
-                <div class="logo">
+                <div class="logo" style="cursor: pointer;">
                     <img src="../../assets/triton.png" alt="Triton trident">
                     <span>MARKETPLACE</span>
                 </div>
                 <nav class="main-nav">
-                    <a href="/browse">BROWSE</a>
+                    <a href="#marketplace" id="browse-link">BROWSE</a>
                     <a href="/list">LIST AN ITEM</a>
                 </nav>
                 <div class="user-icons">
@@ -50,13 +52,17 @@
         
         <main>
             <hero-banner></hero-banner>
-            <section class="marketplace-content">
+            <section id="marketplace" class="marketplace-content">
                 <browse-page></browse-page>
             </section>
         </main>
+    
         
         <!-- Chat Widget Component -->
         <chat-widget></chat-widget>
+        
+        <!-- Product Overlay Component -->
+        <product-overlay id="product-detail-overlay"></product-overlay>
         
     </body>
 

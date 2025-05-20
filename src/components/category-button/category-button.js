@@ -21,11 +21,22 @@ class CategoryButton extends HTMLElement {
     // event listener for onclick
     const button = this.shadowRoot.querySelector('.label');
     button.addEventListener('click', () => {
-      this.toggleAttribute('selected');
+      // Get the text content from the slot
+      const slotElement = this.shadowRoot.querySelector('slot');
+      const category = slotElement.assignedNodes().map((node) => node.textContent).join('').trim();
+      
+      const selectedEvent = new CustomEvent('filter-changed', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          category: category,
+        },
+      });
+      this.dispatchEvent(selectedEvent);
     });
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
+  attributeChangedCallback(name, _oldValue, _newValue) {
     if (name === 'selected'){
       const isSelected = this.hasAttribute('selected');
       this.updateSelected(isSelected);
@@ -35,12 +46,7 @@ class CategoryButton extends HTMLElement {
   updateSelected(isSelected) {
     this.shadowRoot.querySelector('.label')
       .classList.toggle('selected', isSelected);
-
-    const selectedEvent = new CustomEvent('selected', {
-      bubbles: true,
-      composed: true,
-    });
-    this.dispatchEvent(selectedEvent);
+    
   }
     
 }

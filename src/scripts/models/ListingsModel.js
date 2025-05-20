@@ -7,58 +7,6 @@ export class ListingModel {
   }
 
   /**
-   * Creates a new listing in the database
-   * @param {Object} listingData - Data for the new listing
-   * @returns {Promise<Object>} Object containing data and/or error
-   */
-  async createListing(listingData) {
-    try {
-      // Check if user is authenticated
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
-      
-      if (authError || !user) {
-        return { 
-          error: { 
-            message: 'You must be signed in to create a listing', 
-          },
-        };
-      }
-      
-      // Add user_id and current date to the listing data
-      const fullListingData = {
-        ...listingData,
-        user_id: user.id,
-        date_posted: new Date().toISOString(),
-      };
-      
-      // Insert the listing into the database
-      const { data, error } = await supabase
-        .from('listings')
-        .insert([fullListingData])
-        .select();
-      
-      if (error) {
-        console.error('Error creating listing:', error);
-        return { error };
-      }
-      
-      // Add the new listing to our local cache
-      if (data && data.length > 0) {
-        this.listings.push(data[0]);
-      }
-      
-      return { data: data?.[0] || null };
-    } catch (error) {
-      console.error('Exception creating listing:', error);
-      return { 
-        error: { 
-          message: 'An unexpected error occurred', 
-        }, 
-      };
-    }
-  }
-
-  /**
    * Fetches all listings from the database
    * @returns {Promise<Array>} Array of listing objects
    */

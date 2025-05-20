@@ -10,20 +10,17 @@ class ChatWidget extends HTMLElement {
       { id: 2, name: 'Bob', preview: 'See you soon.', timestamp: '9:14 AM', unread: false },
       { id: 3, name: 'Carol', preview: 'Got it.', timestamp: 'Yesterday', unread: true },
     ];
-  }
-
-  connectedCallback() {
     const template = document.createElement('template');
     template.innerHTML = `<style>${css}</style>${html}`;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
 
     // Close on "X" icon
-    this.shadowRoot.querySelector('.close-icon').addEventListener('click', () => this.remove());
+    this.shadowRoot.querySelector('.close-icon').addEventListener('click', () => this.hideWidget());
 
     // Global Escape key handler
     this._handleEsc = (e) => {
-      if (e.key === 'Escape' && this.isConnected && this.parentElement) {
-        this.remove();
+      if (e.key === 'Escape' && this.isConnected && this._isVisible) {
+        this.hideWidget();
       }
     };
     document.addEventListener('keydown', this._handleEsc);
@@ -34,7 +31,39 @@ class ChatWidget extends HTMLElement {
       this._renderConversations(term);
     });
 
+    // Add event listener to chat bubble
+    this.shadowRoot.querySelector('.chat-bubble').addEventListener('click', () => {
+      this.toggleWidget();
+    });
+
+    // Initially hide the widget container, show only the bubble
+    this.shadowRoot.querySelector('.widget-container').style.display = 'none';
     this._renderConversations();
+    this._isVisible = false;
+  }
+
+  connectedCallback() {
+    console.log('ChatWidget connected');
+  }
+
+  toggleWidget() {
+    if (this._isVisible) {
+      this.hideWidget();
+    } else {
+      this.showWidget();
+    }
+  }
+
+  showWidget() {
+    this.shadowRoot.querySelector('.widget-container').style.display = 'block';
+    this.shadowRoot.querySelector('.chat-bubble').style.display = 'none';
+    this._isVisible = true;
+  }
+
+  hideWidget() {
+    this.shadowRoot.querySelector('.widget-container').style.display = 'none';
+    this.shadowRoot.querySelector('.chat-bubble').style.display = 'flex';
+    this._isVisible = false;
   }
 
   _renderConversations(filter = '') {
@@ -62,6 +91,10 @@ class ChatWidget extends HTMLElement {
         });
         list.appendChild(item);
       });
+  }
+
+  disconnectedCallback() {
+    document.removeEventListener('keydown', this._handleEsc);
   }
 }
 

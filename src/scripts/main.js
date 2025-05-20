@@ -1,5 +1,14 @@
-import { ListingController } from './controllers/ListingsController.js';
-
+import { ListingDisplayController } from './controllers/ListingsDisplayController.js';
+import { ListingSubmissionController } from './controllers/ListingsSubmissionController.js';
+import supabase from './utils/supabase.js';
 // Initialize the controller
-const listingController = new ListingController();
-listingController.init();
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const listingDisplayController = new ListingDisplayController();
+  listingDisplayController.init();
+  
+  const listingSubmissionController = new ListingSubmissionController();
+  listingSubmissionController.init();
+
+});
+

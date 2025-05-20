@@ -1,85 +1,52 @@
-//import html from './listing-form.html?raw';
-//import css from './listing-form.css?raw';
+import html from './listing-form.html?raw';
+import css from './listing-form.css?raw';
 
-class CreateListing extends HTMLElement {
+class ListingForm extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
-    //this.shadowRoot.innerHTML = `
-    //<style>${css}</style>
-    //${html}
-    //`;
-    this._loadAssets();
+    this.shadowRoot.innerHTML = `<style>${css}</style>${html}`;
+    this._setupForm();
   }
-  async _loadAssets() {
-    try {
-      const [htmlRes, cssRes] = await Promise.all([
-        fetch('listing-form.html'),
-        fetch('listing-form.css'),
-      ]);
-      
-      const html = await htmlRes.text();
-      const css = await cssRes.text();
-      
-      this.shadowRoot.innerHTML = `
-        <style>${css}</style>
-        ${html}
-      `;
-      
-      this._setupComponent();
-    } catch (error) {
-      console.error('Error loading assets:', error);
-      this.shadowRoot.innerHTML = `
-        <style>
-          :host { display: block; padding: 20px; color: red; }
-        </style>
-        <p>Error loading component. Check console.</p>
-      `;
-    }
-  }
-  _setupComponent() {
-         
-    this.card = this.shadowRoot.querySelector('#card-container') || this.shadowRoot.querySelector('.card-container');
+
+  _setupForm() {
+    this.form = this.shadowRoot.querySelector('.listing-form');
     this.wordCounter = this.shadowRoot.querySelector('#word-count');
-    this.description = this.shadowRoot.querySelector('#description');
-    this.fileInput = this.shadowRoot.querySelector('#media-upload');
+    this.descriptionField = this.shadowRoot.querySelector('#description');
+    this.mediaInput = this.shadowRoot.querySelector('#media-upload');
     this.previewContainer = this.shadowRoot.querySelector('#preview-container');
 
-    this.card.addEventListener('submit', this._handleSubmit.bind(this));
-    this.shadowRoot.querySelector('#preview-button')?.addEventListener('click', this._handlePreview.bind(this));
-    this.description.addEventListener('input', this._updateWordCount.bind(this));
-    this.fileInput.addEventListener('change', this._previewFiles.bind(this));
+    this.form.addEventListener('submit', this._handleSubmit.bind(this));
+    this.descriptionField.addEventListener('input', this._updateWordCount.bind(this));
+    this.mediaInput.addEventListener('change', this._previewMedia.bind(this));
   }
-        
+
   _updateWordCount() {
-    const wordCount = this.description.value.trim().split(/\s+/).filter(Boolean).length;
+    const wordCount = this.descriptionField.value.trim().split(/\s+/).filter(Boolean).length;
     this.wordCounter.textContent = `${wordCount}/250`;
   }
 
-  _previewFiles() {
-    const files = this.fileInput.files;
+  _previewMedia() {
+    const files = this.mediaInput.files;
     this.previewContainer.innerHTML = '';
     Array.from(files).forEach((file) => {
-      const type = file.type;
-      let element;
+      const element = file.type.startsWith('image/')
+        ? document.createElement('img')
+        : file.type.startsWith('video/')
+          ? document.createElement('video')
+          : null;
 
-      if (type.startsWith('image/')) {
-        element = document.createElement('img');
+      if (element) {
         element.className = 'thumbnail';
         element.src = URL.createObjectURL(file);
-        element.onload = () => URL.revokeObjectURL(element.src);
-      
-      } else if (type.startsWith('video/')) {
-        element = document.createElement('video');
-        element.className = 'thumbnail';
-        element.src = URL.createObjectURL(file);
-        element.controls = true;
-        element.muted = true;
-        element.loop = true;
-        element.onloadeddata = () => URL.revokeObjectURL(element.src);
+        if (element.tagName === 'VIDEO') {
+          element.controls = true;
+          element.muted = true;
+          element.loop = true;
+        }
+        element.onload = element.onloadeddata = () => URL.revokeObjectURL(element.src);
+        this.previewContainer.appendChild(element);
       }
-
-      if (element) {this.previewContainer.appendChild(element);}
     });
   }
 
@@ -93,21 +60,22 @@ class CreateListing extends HTMLElement {
 
   _gatherFormData() {
     return {
-      title: this.form.title.value.trim(),
-      price: this.form.price.value.trim(),
-      category: this.form.category.value,
-      condition: this.form.condition.value,
-      description: this.form.description.value.trim(),
-      files: Array.from(this.fileInput.files).map((file) => file.name),
+      title: this.form.querySelector('input[name="title"]').value.trim(),
+      price: this.form.querySelector('input[name="price"]').value.trim(),
+      category: this.form.querySelector('select[name="category"]').value,
+      condition: this.form.querySelector('select[name="condition"]').value,
+      description: this.form.querySelector('textarea[name="description"]').value.trim(),
+      files: Array.from(this.mediaInput.files),  // Full File objects, not just names
     };
   }
 
   _handleSubmit(event) {
+    console.log('Form submitted');
     event.preventDefault();
     const data = this._gatherFormData();
     const errors = this._validateForm(data);
     if (errors.length === 0) {
-      this.dispatchEvent(new CustomEvent('listing-complete', {
+      this.dispatchEvent(new CustomEvent('listing-submit', {
         bubbles: true,
         composed: true,
         detail: data,
@@ -118,5 +86,5 @@ class CreateListing extends HTMLElement {
   }
 }
 
-customElements.define('listing-form', CreateListing);
-export default CreateListing;
+customElements.define('listing-form', ListingForm);
+export default ListingForm;

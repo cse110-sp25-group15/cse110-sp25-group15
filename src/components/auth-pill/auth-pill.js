@@ -106,8 +106,10 @@ class AuthPill extends HTMLElement {
     });
   }
 
-  setUserFromSession(user) {
-    if (!user) {return;}
+  async setUserFromSession(user) {
+    if (!user) { return; }
+
+    await this.addUserToTable(); // <-- Ensure user is added to the table
 
     const avatarUrl = this.getUserAvatarUrl(user);
     const userData = {
@@ -161,6 +163,22 @@ class AuthPill extends HTMLElement {
   hideUserMenu() {
     if (this.userDropdownMenu) {
       this.userDropdownMenu.style.display = 'none';
+    }
+  }
+  async addUserToTable() {
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (session) {
+      const user = session.user;
+      const { error: insertError } = await supabase
+        .from('users')
+        .upsert([{ id: user.id, email: user.email }], { onConflict: ['id'] });
+
+      if (insertError) {
+        console.error('Failed to insert user into table:', insertError.message);
+      } else {
+        console.log('User upserted successfully:', user.email);
+      }
     }
   }
 

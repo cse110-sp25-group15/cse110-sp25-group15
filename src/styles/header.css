@@ -1,0 +1,46 @@
+.site-header {
+  height: var(--nav-h);
+  background: var(--blue);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 0 1rem;
+  z-index: 10;
+}
+
+.site-header .logo {
+  display: inline-flex;
+  align-items: center;
+  color: var(--gold);
+  font-weight: bold;
+}
+
+.site-header .logo img {
+  height: 32px;
+  margin-right: 0.5rem;
+}
+
+.site-header .logo span {
+  font-size: 1.2rem;
+}
+
+.main-nav {
+  justify-self: center;
+  display: flex;
+  gap: 2rem;
+}
+
+.main-nav a {
+  color: var(--gold);
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.user-icons {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

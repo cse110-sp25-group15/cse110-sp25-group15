@@ -14,6 +14,14 @@ class ProductViewer extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._currentIndex = 0;
+    if (!this.shadowRoot.hasChildNodes()) {
+      const template = document.createElement('template');
+      template.innerHTML = `
+      <style>${templateCSS}</style>
+      ${templateHTML}
+    `;
+      this.shadowRoot.appendChild(template.content.cloneNode(true));
+    }
   }
 
   static get observedAttributes() {
@@ -27,18 +35,8 @@ class ProductViewer extends HTMLElement {
   }
 
   connectedCallback() {
-    if (!this.shadowRoot.hasChildNodes()) {
-      const template = document.createElement('template');
-      template.innerHTML = `
-      <style>${templateCSS}</style>
-      ${templateHTML}
-    `;
-      this.shadowRoot.appendChild(template.content.cloneNode(true));
-    }
-
     this._updateContent();
     this._addEventListeners();
-
   }
 
   get images() {

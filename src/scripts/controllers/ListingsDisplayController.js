@@ -46,30 +46,23 @@ export class ListingDisplayController {
       this.showProductDetail(listingId);
     });
 
-    // Listen for the close-overlay event from our component
     document.addEventListener('close-overlay', () => {
       this.closeProductDetail();
     });
 
-    // Listen for filter-changed event from category-button
-    // Since the events bubble and are composed, we can listen at the document level
     document.addEventListener('filter-changed', (event) => {
       console.log('Filter changed event received:', event.detail);
       const selectedCategory = event.detail.category;
       this.setSelectedCategory(selectedCategory);
     });
   }
-  /**
- * Sets the selected category and updates all category buttons
- * @param {string} category - The category name to select
- */
+
   setSelectedCategory(category) {
   // Update current category
     this.currentCategory = category;
   
     // Update button states
     this.categoryButtons.forEach((button) => {
-    // Get the text content from the button's slot
       const slotElement = button.shadowRoot.querySelector('slot');
       const buttonCategory = slotElement.assignedNodes().map((node) => node.textContent).join('').trim();
     
@@ -80,10 +73,7 @@ export class ListingDisplayController {
       }
     });
   
-    // Log the category change
     console.log('Category selected:', category);
-  
-    // Filter listings based on selected category
     this.filterListingsByCategory(category);
   }
 
@@ -98,18 +88,13 @@ export class ListingDisplayController {
         return;
       }
 
-      // Clear current listings
       this.productsContainer.innerHTML = '';
-    
-      // Fetch all listings
       const allListings = await this.model.fetchAllListings();
     
-      // Filter listings if a category is selected and is not "All"
       const filteredListings = category === 'All' 
         ? allListings
         : allListings.filter((listing) => listing.category === category);
     
-      // Render filtered listings
       filteredListings.forEach((listing) => {
         this.renderListingCard(listing);
       });
@@ -122,7 +107,6 @@ export class ListingDisplayController {
 
   async loadListings() {
     try {
-      // Check again if productsContainer exists before attempting to use it
       if (!this.productsContainer) {
         console.error('Products container not found');
         return;
@@ -131,7 +115,6 @@ export class ListingDisplayController {
       this.productsContainer.innerHTML = '';
       const listings = await this.model.fetchAllListings();
 
-      // Only proceed if productsContainer is still valid
       if (!this.productsContainer) {
         console.error('Products container no longer available');
         return;
@@ -148,7 +131,6 @@ export class ListingDisplayController {
   }
 
   renderListingCard(listing) {
-    // Check if productsContainer exists before attempting to append to it
     if (!this.productsContainer) {
       console.error('Cannot render card, products container not available');
       return;
@@ -168,20 +150,17 @@ export class ListingDisplayController {
 
   async showProductDetail(listingId) {
     try {
-      // Fetch the listing details
       const listing = await this.model.getListingById(listingId);
       if (!listing) {
         console.error(`Listing with ID ${listingId} not found`);
         return;
       }
 
-      // Check if overlay exists
       if (!this.overlay) {
         console.error('Product overlay component not found');
         return;
       }
 
-      // Create product detail element
       const productDetail = document.createElement('product-detail');
       productDetail.setAttribute('name', listing.title || '');
       productDetail.setAttribute('price', listing.price || '');

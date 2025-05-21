@@ -6,273 +6,202 @@ class AuthPill extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
-    const template = document.createElement('template');
-    template.innerHTML = `<style>${css}</style>${html}`;
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-
-    this.userAvatar = this.shadowRoot.querySelector('.user-avatar');
-    this.avatarFallback = this.shadowRoot.querySelector('.initials');
-    this.userDropdownMenu = this.shadowRoot.querySelector('.user-dropdown-menu');
-    this.userMenuName = this.shadowRoot.querySelector('.user-menu-name');
-    this.userMenuEmail = this.shadowRoot.querySelector('.user-menu-email');
-  }
-
-  static get observedAttributes() {
-    return ['username', 'avatar-url'];
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) {return;}
-    if (name === 'username' && newValue) {
-      const userData = this.currentUser || {};
-      userData.name = newValue;
-      userData.initials = this.getInitials(newValue);
-      this.setUser(userData);
-    }
-    if (name === 'avatar-url' && newValue) {
-      const userData = this.currentUser || {};
-      userData.avatarUrl = newValue;
-      this.setUser(userData);
-    }
+    this.shadowRoot.innerHTML = `<style>${css}</style>${html}`;
+    this.user = null;
   }
 
   connectedCallback() {
-    this.initAuth();
-    this.setupEventListeners();
-    this.dispatchEvent(new CustomEvent('auth-connected', { bubbles: true, composed: true }));
+    this.setupElements();
+    this.checkAuthState();
+    this.setupListeners();
   }
 
-  async initAuth() {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session) {
-      this.setUserFromSession(session.user);
+  setupElements() {
+    this.pill = this.shadowRoot.querySelector('.user-pill');
+    this.loginBtn = this.shadowRoot.querySelector('#loginButton');
+    this.userPill = this.shadowRoot.querySelector('#loggedInPill');
+    this.menu = this.shadowRoot.querySelector('.user-dropdown-menu');
+    this.nameEl = this.shadowRoot.querySelector('.user-name');
+    this.menuName = this.shadowRoot.querySelector('.user-menu-name');
+    this.menuEmail = this.shadowRoot.querySelector('.user-menu-email');
+    this.avatar = this.shadowRoot.querySelector('.user-avatar');
+    this.initials = this.shadowRoot.querySelector('.initials');
+    this.signoutBtn = this.menu?.querySelector('#signout-button');
+    this.profileLink = this.menu?.querySelector('#profile-link');
+    this.settingsLink = this.menu?.querySelector('#settings-link');
+  }
+
+  setupListeners() {
+    // Login button
+    this.loginBtn?.addEventListener('click', () => {
+      supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.origin },
+      });
+    });
+    
+    // Toggle menu
+    this.pill?.addEventListener('click', this.toggleMenu.bind(this));
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', this.handleOutsideClick.bind(this));
+    
+    // Menu actions
+    this.signoutBtn?.addEventListener('click', this.handleSignout.bind(this));
+    this.profileLink?.addEventListener('click', () => this.handleNavigation('/profile'));
+    this.settingsLink?.addEventListener('click', () => this.handleNavigation('/settings'));
+    
+    // Auth change listener
+    supabase.auth.onAuthStateChange(this.handleAuthChange.bind(this));
+  }
+
+  handleOutsideClick(e) {
+    if (this.pill?.classList.contains('expanded') && !e.composedPath().includes(this.pill)) {
+      this.pill.classList.remove('expanded');
+      this.menu.style.display = 'none';
+    }
+  }
+
+  handleSignout(e) {
+    e.stopPropagation();
+    this.logout();
+  }
+
+  handleNavigation(path) {
+    this.dispatchEvent(new CustomEvent('navigate', { 
+      bubbles: true, composed: true, detail: { path }, 
+    }));
+    this.menu.style.display = 'none';
+    this.pill?.classList.remove('expanded');
+  }
+
+  handleAuthChange(event, session) {
+    if (event === 'SIGNED_IN' && session) {
+      this.updateUser(session.user);
+    } else if (event === 'SIGNED_OUT') {
+      this.showLoginUI();
+    }
+  }
+
+  toggleMenu() {
+    this.pill.classList.toggle('expanded');
+    
+    if (this.pill.classList.contains('expanded')) {
+      this.updateMenuContent();
+      this.menu.style.display = 'block';
     } else {
-      this.showLoginButton();
+      this.menu.style.display = 'none';
     }
   }
 
-  setupEventListeners() {
-    const userPill = this.shadowRoot.querySelector('.user-pill');
-    const loginButton = this.shadowRoot.querySelector('#loginButton');
-
-    if (userPill) {
-      userPill.addEventListener('click', () => {
-        userPill.classList.toggle('expanded');
-        this.toggleUserMenu();
-      });
+  async checkAuthState() {
+    const { data } = await supabase.auth.getSession();
+    if (data.session?.user) {
+      this.updateUser(data.session.user);
+    } else {
+      this.showLoginUI();
     }
-
-    if (loginButton) {
-      loginButton.addEventListener('click', () => {
-        this.signInWithProvider('google');
-      });
-    }
-
-    document.addEventListener('click', (e) => {
-      const userPill = this.shadowRoot.querySelector('.user-pill');
-      if (userPill && userPill.classList.contains('expanded')) {
-        const path = e.composedPath();
-        if (!path.some((el) => el === userPill)) {
-          userPill.classList.remove('expanded');
-          this.hideUserMenu();
-        }
-      }
-    });
-
-    if (this.userDropdownMenu) {
-      const signoutButton = this.userDropdownMenu.querySelector('#signout-button');
-      const profileLink = this.userDropdownMenu.querySelector('#profile-link');
-      const settingsLink = this.userDropdownMenu.querySelector('#settings-link');
-
-      signoutButton?.addEventListener('click', (e) => { e.stopPropagation(); this.signOut(); });
-      profileLink?.addEventListener('click', (e) => { e.stopPropagation(); this.navigate('/profile'); });
-      settingsLink?.addEventListener('click', (e) => { e.stopPropagation(); this.navigate('/settings'); });
-    }
-
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        this.setUserFromSession(session.user);
-      } else if (event === 'SIGNED_OUT') {
-        this.showLoginButton();
-      }
-    });
   }
 
-  async setUserFromSession(user) {
-    if (!user) { return; }
-
-    await this.addUserToTable(); // <-- Ensure user is added to the table
-
-    const avatarUrl = this.getUserAvatarUrl(user);
-    const userData = {
-      id: user.id,
-      email: user.email,
-      name: user.user_metadata?.full_name || user.email,
-      initials: this.getInitials(user.user_metadata?.full_name || user.email),
-      avatarUrl,
-      user,
+  async updateUser(userData) {
+    if (!userData) {return;}
+    
+    // Save to database
+    this.saveUserToDatabase(userData);
+    
+    // Set user data
+    this.user = {
+      id: userData.id,
+      email: userData.email,
+      name: userData.user_metadata?.full_name || userData.email,
+      avatarUrl: this.getAvatarUrl(userData),
     };
-
-    this.currentUser = userData;
-    this.setUser(userData);
-    this.dispatchEvent(new CustomEvent('user-signed-in', { bubbles: true, composed: true, detail: { userData } }));
+    
+    // Update UI
+    this.userPill.style.display = 'flex';
+    this.loginBtn.style.display = 'none';
+    
+    if (this.nameEl) {this.nameEl.textContent = this.user.name;}
+    
+    this.updateAvatar();
+    
+    this.dispatchEvent(new CustomEvent('user-signed-in', { 
+      bubbles: true, composed: true, detail: { userData: this.user }, 
+    }));
   }
 
-  getUserAvatarUrl(user) {
-    const identity = user?.identities?.[0];
-    if (identity?.identity_data?.avatar_url) {return identity.identity_data.avatar_url;}
-    if (user?.user_metadata?.avatar_url) {return user.user_metadata.avatar_url;}
+  async saveUserToDatabase(user) {
+    try {
+      await supabase
+        .from('users')
+        .upsert([{ id: user.id, email: user.email }], { onConflict: ['id'] });
+    } catch (err) {
+      console.error('Failed to save user:', err);
+    }
+  }
 
+  updateAvatar() {
+    if (!this.user) {return;}
+    
+    if (this.user.avatarUrl) {
+      const img = document.createElement('img');
+      img.src = this.user.avatarUrl;
+      img.alt = 'User avatar';
+      img.onerror = () => {
+        img.remove();
+        this.initials.textContent = this.getInitials(this.user.name);
+      };
+      
+      this.avatar.innerHTML = '';
+      this.avatar.appendChild(img);
+      this.initials.textContent = '';
+    } else {
+      this.initials.textContent = this.getInitials(this.user.name);
+    }
+  }
+
+  updateMenuContent() {
+    if (!this.user) {return;}
+    
+    if (this.menuName) {this.menuName.textContent = this.user.name;}
+    if (this.menuEmail) {this.menuEmail.textContent = this.user.email;}
+  }
+
+  getAvatarUrl(user) {
+    // Try provider avatar
+    const avatarUrl = user?.identities?.[0]?.identity_data?.avatar_url || 
+                      user?.user_metadata?.avatar_url;
+    
+    if (avatarUrl) {return avatarUrl;}
+    
+    // Generate placeholder
     const name = user?.user_metadata?.full_name || user?.email || 'User';
     const initials = this.getInitials(name);
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=random`;
   }
 
-  async signInWithProvider(provider) {
-    try {
-      await supabase.auth.signInWithOAuth({
-        provider,
-        options: { redirectTo: window.location.origin },
-      });
-    } catch (error) {
-      console.error(`Sign in with ${provider} failed:`, error);
-    }
-  }
-
-  toggleUserMenu() {
-    if (!this.currentUser || !this.userDropdownMenu) {return;}
-    const userPill = this.shadowRoot.querySelector('.user-pill');
-    if (!userPill) {return;}
-
-    if (userPill.classList.contains('expanded')) {
-      this.updateUserMenuContent();
-      this.userDropdownMenu.style.display = 'block';
-    } else {
-      this.hideUserMenu();
-    }
-  }
-
-  hideUserMenu() {
-    if (this.userDropdownMenu) {
-      this.userDropdownMenu.style.display = 'none';
-    }
-  }
-  async addUserToTable() {
-    const { data: { session } } = await supabase.auth.getSession();
-
-    if (session) {
-      const user = session.user;
-      const { error: insertError } = await supabase
-        .from('users')
-        .upsert([{ id: user.id, email: user.email }], { onConflict: ['id'] });
-
-      if (insertError) {
-        console.error('Failed to insert user into table:', insertError.message);
-      } else {
-        console.log('User upserted successfully:', user.email);
-      }
-    }
-  }
-
-  updateUserMenuContent() {
-    if (!this.currentUser || !this.userMenuName || !this.userMenuEmail) {return;}
-    this.userMenuName.textContent = this.currentUser.name;
-    this.userMenuEmail.textContent = this.currentUser.email;
-  }
-
-  async signOut() {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error('Error signing out:', error);
-      return;
-    }
-    this.currentUser = null;
-    this.showLoginButton();
-    this.dispatchEvent(new CustomEvent('user-signed-out', { bubbles: true, composed: true }));
-  }
-
-  setUser(userData) {
-    if (!userData) {
-      this.showLoginButton();
-      return;
-    }
-
-    const userPill = this.shadowRoot.querySelector('#loggedInPill');
-    const nameElement = this.shadowRoot.querySelector('.user-name');
-
-    if (userPill) {userPill.style.display = 'flex';}
-    if (userData.name && nameElement) {nameElement.textContent = userData.name;}
-
-    if (userData.avatarUrl) {
-      this.updateUserAvatar(userData.avatarUrl);
-    } else if (userData.initials) {
-      this.setAvatarFallback(userData.name || userData.email);
-    }
-
-    this.updateUserMenuContent();
-
-    const loginButton = this.shadowRoot.querySelector('#loginButton');
-    if (loginButton) {loginButton.style.display = 'none';}
-  }
-
-  updateUserAvatar(avatarUrl) {
-    if (!this.userAvatar) {return;}
-
-    const existingImg = this.userAvatar.querySelector('img');
-    if (existingImg) {existingImg.remove();}
-
-    const img = document.createElement('img');
-    img.src = avatarUrl;
-    img.alt = 'User avatar';
-    img.onerror = () => {
-      img.remove();
-      this.setAvatarFallback(this.currentUser?.email);
-    };
-
-    this.userAvatar.appendChild(img);
-    if (this.avatarFallback) {this.avatarFallback.textContent = '';}
-  }
-
-  setAvatarFallback(identifier) {
-    if (!this.avatarFallback || !identifier) {return;}
-    const initials = this.getInitials(identifier);
-    this.avatarFallback.textContent = initials;
-  }
-
-  showLoginButton() {
-    const userPill = this.shadowRoot.querySelector('#loggedInPill');
-    if (userPill) {
-      userPill.style.display = 'none';
-      userPill.classList.remove('expanded');
-    }
-    this.hideUserMenu();
-    const loginButton = this.shadowRoot.querySelector('#loginButton');
-    if (loginButton) {loginButton.style.display = 'flex';}
-  }
-
   getInitials(name) {
     if (!name) {return 'U';}
-    const names = name.split(' ').filter(Boolean);
-    if (names.length === 0) {return 'U';}
-    if (names.length === 1) {return names[0][0].toUpperCase();}
-    return (names[0][0] + names[names.length - 1][0]).toUpperCase();
+    const parts = name.split(' ').filter(Boolean);
+    return parts.length <= 1 
+      ? (parts[0]?.[0] || 'U').toUpperCase()
+      : (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
   }
 
-  setLoginStatus(userData) {
-    if (userData) {
-      this.currentUser = userData;
-      this.setUser(userData);
-    } else {
-      this.signOut();
-    }
-    return this;
+  showLoginUI() {
+    this.userPill.style.display = 'none';
+    this.pill?.classList.remove('expanded');
+    this.loginBtn.style.display = 'flex';
+    this.menu.style.display = 'none';
+    this.user = null;
   }
 
-  navigate(path) {
-    this.dispatchEvent(new CustomEvent('navigate', { bubbles: true, composed: true, detail: { path } }));
-    this.hideUserMenu();
-    const userPill = this.shadowRoot.querySelector('.user-pill');
-    if (userPill) {userPill.classList.remove('expanded');}
+  async logout() {
+    await supabase.auth.signOut();
+    this.showLoginUI();
+    this.dispatchEvent(new CustomEvent('user-signed-out', { 
+      bubbles: true, composed: true, 
+    }));
   }
 }
 

@@ -48,4 +48,27 @@ describe('<chat-widget>', () => {
     expect(typeof detail.id).toBe('number');
   });
 
+  it('displays correct chat title and message on convo click', () => {
+    const convoData = element._conversations[0]; // safely reference the first convo from internal data
+
+    const convo = element.shadowRoot.querySelectorAll('.convo')[0];
+    convo.click();
+
+    const title = element.shadowRoot.querySelector('.chat-title').textContent;
+    const msg = element.shadowRoot.querySelector('.messages .message').textContent;
+
+    expect(title).toBe(convoData.name);
+    expect(msg).toBe(convoData.preview);
+  });
+
+  it('shows convo list when back button is clicked', async () => {
+    const convo = element.shadowRoot.querySelector('.convo');
+    convo.click(); // open chat
+    const backButton = element.shadowRoot.querySelector('.back-button');
+    backButton.click(); // simulate back
+    const chatScreen = element.shadowRoot.querySelector('.chat-screen');
+    const convoList = element.shadowRoot.querySelector('.convo-list');
+    expect(chatScreen.classList.contains('hidden')).toBe(true);
+    expect(convoList.style.display).toBe('block');
+  });
 });

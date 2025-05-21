@@ -1,11 +1,13 @@
+
 .site-header {
-  height: var(--nav-h);
+  min-height: var(--nav-h);
   background: var(--blue);
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex; 
   align-items: center;
   padding: 0 1rem;
   z-index: 10;
+  flex-wrap: wrap; 
+  justify-content: space-between; 
 }
 
 .site-header .logo {
@@ -13,6 +15,8 @@
   align-items: center;
   color: var(--gold);
   font-weight: bold;
+  transition: transform 0.2s ease;
+  min-width: max-content;
 }
 
 .site-header .logo img {
@@ -20,14 +24,19 @@
   margin-right: 0.5rem;
 }
 
+.site-header .logo:hover {
+  transform: scale(1.015);
+}
+
 .site-header .logo span {
   font-size: 1.2rem;
 }
 
 .main-nav {
-  justify-self: center;
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
+  margin-left: 2rem;
+  flex-wrap: wrap;
 }
 
 .main-nav a {
@@ -36,11 +45,67 @@
   font-size: 0.9rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  padding: 28px 10px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+
+.main-nav a:hover {
+  background-color: rgba(243, 193, 20, 0.15);
+  border-radius: 3px;
 }
 
 .user-icons {
-  justify-self: end;
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-left: auto; 
+  min-width: max-content; 
+}
+
+
+@media (max-width: 800px) {
+  .site-header {
+flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .site-header .logo {
+    flex: 1 1 auto;
+ margin-right: 1rem;
+  }
+  
+  .main-nav {
+    width: 100%;
+    order: 3;
+    margin-left: 0;
+    padding: 0;
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    gap: 0.5rem;
+  }
+  
+  .main-nav a {
+    padding: 10px;
+    flex: 0 0 auto; 
+  }
+  
+  .user-icons {
+  margin-left: 1rem;
+  }
+}
+
+
+@media (max-width: 500px) {
+  .main-nav {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .main-nav a {
+    padding: 8px;
+    margin: 2px;
+    font-size: 0.8rem;
+  }
 }

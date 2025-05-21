@@ -2,7 +2,7 @@
   height: var(--nav-h);
   background: var(--blue);
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto auto 1fr;
   align-items: center;
   padding: 0 1rem;
   z-index: 10;
@@ -13,6 +13,7 @@
   align-items: center;
   color: var(--gold);
   font-weight: bold;
+  transition: transform 0.2s ease;
 }
 
 .site-header .logo img {
@@ -20,14 +21,19 @@
   margin-right: 0.5rem;
 }
 
+.site-header .logo:hover {
+  transform: scale(1.015);
+}
+
 .site-header .logo span {
   font-size: 1.2rem;
 }
 
 .main-nav {
-  justify-self: center;
+  justify-self: start;
   display: flex;
-  gap: 2rem;
+  gap: 3rem;
+  margin-left: 3rem;
 }
 
 .main-nav a {
@@ -36,6 +42,13 @@
   font-size: 0.9rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  padding: 28px 15px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.main-nav a:hover {
+  background-color: rgba(243, 193, 20, 0.15);
+  border-radius: 3px;
 }
 
 .user-icons {

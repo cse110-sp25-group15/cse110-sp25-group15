@@ -46,6 +46,7 @@ input[type = "search"] {
 .convo-list {
     max-height: 300px;
     overflow-y: auto;
+    display: block;
 }
 
 .convo {
@@ -70,6 +71,49 @@ input[type = "search"] {
     flex-shrink: 0;
 }
 
+.chat-screen {
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    background: var(--white);
+}
+
+.chat-screen.hidden {
+    display: none;
+}
+
+.chat-header {
+    background: var(--blue);
+    color: var(--white);
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: bold;
+}
+
+.message-input {
+    border: none;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+    font-size: 14px;
+    outline: none;
+}
+
+.messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.message {
+    background: #eee;
+    padding: 8px 12px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    max-width: 70%;
+}
+
 .details {
     flex-grow: 1;
     overflow: hidden;
@@ -78,9 +122,19 @@ input[type = "search"] {
 .details > div:first-child {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.details > div:first-child .name {
     font-weight: 600;
     font-size: 0.9rem;
     color: var(--navy-text);
+}
+
+.details > div:first-child .timestamp {
+    font-size: 0.75rem;
+    color: var(--navy-text);
+    font-weight: normal;
 }
 
 .details > div:last-child {

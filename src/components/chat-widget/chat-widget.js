@@ -17,6 +17,9 @@ class ChatWidget extends HTMLElement {
     template.innerHTML = `<style>${css}</style>${html}`;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
 
+    // Prevents body scroll when chat is open
+    document.body.style.overflow = 'hidden';
+
     // Close on "X" icon
     this.shadowRoot.querySelector('.close-icon').addEventListener('click', () => this.remove());
 
@@ -35,6 +38,20 @@ class ChatWidget extends HTMLElement {
     });
 
     this._renderConversations();
+
+    // Back button
+    const backButton = this.shadowRoot.querySelector('.back-button');
+    if (backButton) {
+      backButton.addEventListener('click', () => {
+        this.shadowRoot.querySelector('.chat-screen').classList.add('hidden');
+        this.shadowRoot.querySelector('.convo-list').style.display = 'block';
+      });
+    }
+  }
+
+  disconnectedCallback() {
+    document.removeEventListener('keydown', this._handleEsc);
+    document.body.style.overflow = '';
   }
 
   _renderConversations(filter = '') {
@@ -48,12 +65,23 @@ class ChatWidget extends HTMLElement {
         item.innerHTML = `
             <div class="avatar"></div>
             <div class="details">
-            <div><strong>${convo.name}</strong> <small>${convo.timestamp}</small></div>
+            <div>
+              <span class="name">${convo.name}</span>
+              <span class="timestamp">${convo.timestamp}</span>
+            </div>
             <div>${convo.preview}</div>
             </div>
             ${convo.unread ? '<div class="unread-badge"></div>' : ''}
             `;
         item.addEventListener('click', () => {
+          this.shadowRoot.querySelector('.convo-list').style.display = 'none';
+          const screen = this.shadowRoot.querySelector('.chat-screen');
+          screen.classList.remove('hidden');
+          screen.querySelector('.chat-title').textContent = convo.name;
+
+          const messagesContainer = screen.querySelector('.messages');
+          messagesContainer.innerHTML = `<div class="message">${convo.preview}</div>`;
+
           this.dispatchEvent(new CustomEvent('chat-open', {
             detail: { id: convo.id },
             bubbles: true,

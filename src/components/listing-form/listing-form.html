@@ -1,0 +1,79 @@
+<form class="listing-form">
+    <div class="media-upload">
+        <label
+            for="media-upload"
+            class="media-label"
+            title="Upload Media"
+        >
+            <span class="folder-icon"></span> Upload Files
+            <input
+                type="file"
+                id="media-upload"
+                name="media"
+                accept="image/*,video/*"
+                multiple
+                hidden
+            >
+        </label>
+        <div id="preview-container" class="preview-container"></div>
+    </div>
+
+    <div class="field-cluster">
+        <label>
+            Title
+            <input
+                type="text"
+                name="title"
+                required
+            >
+        </label>
+        <label>
+            Price
+            <input
+                type="text"
+                name="price"
+                required
+            >
+        </label>
+        <label>
+            Category
+            <select name="category" required>
+                <option value="">Select category</option>
+                <option value="Sports">Sports</option>
+                <option value="Books">Books</option>
+                <option value="Supplies">Supplies</option>
+                <option value="Tech">Tech</option>
+                <option value="Transportation">Transportation</option>
+                <option value="Apparel">Apparel</option>
+                <option value="Dorm_life">Dorm Life</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Other">Other</option>
+            </select>
+        </label>
+        <label>
+            Condition
+            <select name="condition" required>
+                <option value="">Select condition</option>
+                <option value="New">New</option>
+                <option value="Like New">Like New</option>
+                <option value="Lightly Used">Lightly Used</option>
+                <option value="Used">Used</option>
+            </select>
+        </label>
+    </div>
+
+    <div class="description">
+        <label for="description">Description</label>
+        <textarea
+            id="description"
+            name="description"
+            rows="5"
+            placeholder="Describe your item..."
+        ></textarea>
+        <div id="word-count">0/250</div>
+    </div>
+
+    <div class="actions">
+        <button type="submit" class="comp-button">Complete</button>
+    </div>
+</form>

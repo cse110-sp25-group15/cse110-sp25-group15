@@ -1,7 +1,7 @@
 
 
 # UCSD MARKETPLACE 🛡️ 
-
+VIDEO LINK: https://youtu.be/sgobDVVz7kk
 A student-focused, modular, and scalable HTML/CSS-based web application for buying and selling goods within the UCSD community.
 
 ## Introduction

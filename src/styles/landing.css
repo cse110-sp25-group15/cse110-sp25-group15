@@ -13,6 +13,8 @@ body, html {
     height: 100%;
     background-color: var(--blue);
     font-family: var(--font);
+    display: flex;
+    flex-direction: column;
 }
 
 /* Header positioning */
@@ -27,20 +29,21 @@ header {
 /* Main content area */
 main {
     padding-top: var(--nav-h); /* Height of the header */
-    height: calc(100% - var(--nav-h));
+     display: flex;
+     flex: 1;
+    flex-direction: column;
 }
 
 /* Hero banner component takes full height of available space */
 hero-banner {
     display: block;
-    height: 100%;
+    height: calc(100vh - var(--nav-h));
 }
 
 /* Additional section styles */
 .marketplace-content {
     background: #F1F2F6;
     color: var(--blue);
-    padding: 3rem 1rem;
     text-align: center;
 }
 
@@ -54,4 +57,7 @@ hero-banner {
     max-width: 40ch;
     margin: 0 auto;
     opacity: 0.7;
+}
+bottom-nav {
+    margin-top: auto;
 }

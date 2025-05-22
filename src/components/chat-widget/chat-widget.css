@@ -3,18 +3,22 @@
     --gold: #F3C114;
     --white: #FFFFFF;
     --navy-text: #04133B;
-
+    
     display: block;
     position: fixed;
     bottom: 20px;
     right: 20px;
+    z-index: 999;
+}
+
+/* Chat Widget Main Container */
+.widget-container {
     width: 300px;
     border: 1px solid var(--blue);
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     background: var(--white);
     font-family: sans-serif;
-    z-index: 999;
 }
 
 header {
@@ -25,6 +29,7 @@ header {
     justify-content: space-between;
     align-items: center;
     font-size: 16px;
+    border-radius: 8px 8px 0 0;
 }
 
 .menu-icon, .close-icon {
@@ -152,4 +157,47 @@ input[type = "search"] {
     border-radius: 50%;
     margin-left: 6px;
     flex-shrink: 0;
+}
+
+/* Chat Bubble Styles */
+.chat-bubble {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--blue);
+    color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chat-bubble:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.chat-bubble svg {
+    width: 28px;
+    height: 28px;
+}
+
+.unread-count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--gold);
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--white);
 }

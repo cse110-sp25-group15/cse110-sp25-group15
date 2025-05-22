@@ -10,9 +10,6 @@ class ChatWidget extends HTMLElement {
       { id: 2, name: 'Bob', preview: 'See you soon.', timestamp: '9:14 AM', unread: false },
       { id: 3, name: 'Carol', preview: 'Got it.', timestamp: 'Yesterday', unread: true },
     ];
-  }
-
-  connectedCallback() {
     const template = document.createElement('template');
     template.innerHTML = `<style>${css}</style>${html}`;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
@@ -21,12 +18,12 @@ class ChatWidget extends HTMLElement {
     document.body.style.overflow = 'hidden';
 
     // Close on "X" icon
-    this.shadowRoot.querySelector('.close-icon').addEventListener('click', () => this.remove());
+    this.shadowRoot.querySelector('.close-icon').addEventListener('click', () => this.hideWidget());
 
     // Global Escape key handler
     this._handleEsc = (e) => {
-      if (e.key === 'Escape' && this.isConnected && this.parentElement) {
-        this.remove();
+      if (e.key === 'Escape' && this.isConnected && this._isVisible) {
+        this.hideWidget();
       }
     };
     document.addEventListener('keydown', this._handleEsc);
@@ -37,6 +34,13 @@ class ChatWidget extends HTMLElement {
       this._renderConversations(term);
     });
 
+    // Add event listener to chat bubble
+    this.shadowRoot.querySelector('.chat-bubble').addEventListener('click', () => {
+      this.toggleWidget();
+    });
+
+    // Initially hide the widget container, show only the bubble
+    this.shadowRoot.querySelector('.widget-container').style.display = 'none';
     this._renderConversations();
 
     // Back button
@@ -90,6 +94,10 @@ class ChatWidget extends HTMLElement {
         });
         list.appendChild(item);
       });
+  }
+
+  disconnectedCallback() {
+    document.removeEventListener('keydown', this._handleEsc);
   }
 }
 

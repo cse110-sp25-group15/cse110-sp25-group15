@@ -46,10 +46,6 @@ export class ListingDisplayController {
       this.showProductDetail(listingId);
     });
 
-    document.addEventListener('close-overlay', () => {
-      this.closeProductDetail();
-    });
-
     document.addEventListener('filter-changed', (event) => {
       console.log('Filter changed event received:', event.detail);
       const selectedCategory = event.detail.category;
@@ -178,12 +174,6 @@ export class ListingDisplayController {
 
     } catch (error) {
       console.error('Error showing product detail:', error);
-    }
-  }
-
-  closeProductDetail() {
-    if (this.overlay) {
-      this.overlay.hide();
     }
   }
 

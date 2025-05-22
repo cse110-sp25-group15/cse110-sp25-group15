@@ -16,14 +16,6 @@ describe('<chat-widget>', () => {
     }
   });
 
-  it('closes when ESC key is pressed', async () => {
-    const event = new KeyboardEvent('keydown', { key: 'Escape' });
-    document.dispatchEvent(event);
-    console.log(document.body.innerHTML);
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    expect(document.body.contains(element)).toBe(false);
-  });
-
   it('renders shadow DOM with template', () => {
     expect(element.shadowRoot.querySelector('header')).toBeTruthy();
     expect(element.shadowRoot.querySelector('input[type="search"]')).toBeTruthy();

@@ -1,9 +1,8 @@
 
 
 .categories {
-    position: sticky;
-    top: 0; /* This is the key addition - tells when to stick */
-    z-index: 20;
+
+    z-index: 1;
     display: flex;
     gap: 10px;
     align-items: center;
@@ -11,7 +10,7 @@
     background-color: white; /* Adding background color so content doesn't show through */
     width: 100%;
     padding: 10px 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional: adds a subtle shadow when sticky */
+
 }
 .browse-area {
     display: flex;

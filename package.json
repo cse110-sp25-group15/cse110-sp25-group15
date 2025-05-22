@@ -16,6 +16,7 @@
   },
   "scripts": {
     "lint": "eslint --ext .js,.html,.css,.mjs --ignore-pattern docs/",
+    "lint:fix": "eslint --ext .js,.html,.css,.mjs --ignore-pattern docs/ --fix",
     "test": "vitest",
     "dev": "vite --config vite.config.js",
     "build": "vite build",

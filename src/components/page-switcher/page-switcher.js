@@ -48,7 +48,7 @@ class PageSwitcher extends HTMLElement {
 
     // Page number buttons
     const pageButtons = this.shadowRoot.querySelectorAll('.page-btn[data-page]');
-    pageButtons.forEach(button => {
+    pageButtons.forEach((button) => {
       button.addEventListener('click', () => {
         const page = parseInt(button.getAttribute('data-page'));
         this.currentPage = page;
@@ -61,7 +61,7 @@ class PageSwitcher extends HTMLElement {
   updateActiveButton() {
     // Remove active class from all page buttons
     const pageButtons = this.shadowRoot.querySelectorAll('.page-btn[data-page]');
-    pageButtons.forEach(button => {
+    pageButtons.forEach((button) => {
       button.classList.remove('active');
     });
 

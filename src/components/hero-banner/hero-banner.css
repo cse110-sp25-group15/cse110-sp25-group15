@@ -87,6 +87,9 @@
   border-radius: 1.8rem 0 0 1.8rem;
 }
 
+.sell-color {
+  color: var(--gold);
+}
 .hero-image::after {
   content: '';
   position: absolute;

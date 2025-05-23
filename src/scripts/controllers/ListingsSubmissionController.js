@@ -12,8 +12,20 @@ export class ListingSubmissionController {
     document.addEventListener('listing-submit', this.handleListingSubmit.bind(this));
   }
 
-  async _uploadFile(file, userId) {
-    const filePath = `${file.name}`;
+  /**
+   * Generate a UUID v4
+   * @returns {string} UUID
+   */
+  _generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+  async _uploadFile(file, userId, listingId) {
+    const filePath = `${userId}/${listingId}/${file.name}`;
     const { data, error } = await supabase
       .storage
       .from('listimages')
@@ -58,11 +70,14 @@ export class ListingSubmissionController {
         return;
       }
 
+      // Generate unique listing ID
+      const listingId = this._generateUUID();
+
       // Handle file upload if files exist
       let thumbnailUrl = null;
       if (listingData.files && listingData.files.length > 0) {
         try {
-          thumbnailUrl = await this._uploadFile(listingData.files[0], user.id);
+          thumbnailUrl = await this._uploadFile(listingData.files[0], user.id, listingId);
           //remove the file field from the listing data
           delete listingData.files;
         } catch (uploadError) {
@@ -74,6 +89,7 @@ export class ListingSubmissionController {
 
       const fullListingData = {
         ...listingData,
+        listing_id: listingId,
         user_id: user.id,
         thumbnail: thumbnailUrl,  // Add the uploaded image URL
       };
@@ -99,6 +115,7 @@ export class ListingSubmissionController {
       this.notifyError('An unexpected error occurred');
     }
   }
+  
   notifyError(message) {
     alert(message);
   }

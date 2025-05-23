@@ -143,6 +143,7 @@ export class ListingDisplayController {
     card.setAttribute('title', formattedListing.title || '');
     card.setAttribute('price', formattedListing.price || '');
     card.setAttribute('image-url', formattedListing.image_url || '');
+    card.setAttribute('date', formattedListing.date_posted || '');
     card.classList.add('card');
 
     this.productsContainer.appendChild(card);

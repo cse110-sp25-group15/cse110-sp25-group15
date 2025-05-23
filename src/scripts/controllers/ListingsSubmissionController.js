@@ -28,7 +28,9 @@ export class ListingSubmissionController {
   }
 
   async convertImageToWebP(file) {
-    if (!file) throw new Error("No file provided");
+    if (!file) {
+      throw new Error('No file provided');
+    }
 
     const fileType = file.type;
     let convertedBlob;

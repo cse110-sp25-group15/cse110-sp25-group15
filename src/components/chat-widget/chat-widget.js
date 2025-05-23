@@ -21,14 +21,25 @@ class ChatWidget extends HTMLElement {
     document.body.style.overflow = 'hidden';
 
     // Close on "X" icon
-    this.shadowRoot.querySelector('.close-icon').addEventListener('click', () => this.remove());
+    this.shadowRoot.querySelector('.close-icon').addEventListener('click', () =>         this.hideWidget()  );
 
     // Global Escape key handler
     this._handleEsc = (e) => {
       if (e.key === 'Escape' && this.isConnected && this.parentElement) {
-        this.remove();
+        this.hideWidget();
       }
     };
+
+    // Add event listener to chat bubble
+    this.shadowRoot.querySelector('.chat-bubble').addEventListener('click', () => {
+      this.toggleWidget();
+    });
+
+    // Initially hide the widget container, show only the bubble
+    this.shadowRoot.querySelector('.widget-container').style.display = 'none';
+    this._renderConversations();
+    this._isVisible = false;
+    
     document.addEventListener('keydown', this._handleEsc);
 
     // Filter conversations
@@ -47,6 +58,26 @@ class ChatWidget extends HTMLElement {
         this.shadowRoot.querySelector('.convo-list').style.display = 'block';
       });
     }
+  }
+
+  toggleWidget() {
+    if (this._isVisible) {
+      this.hideWidget();
+    } else {
+      this.showWidget();
+    }
+  }
+
+  showWidget() {
+    this.shadowRoot.querySelector('.widget-container').style.display = 'block';
+    this.shadowRoot.querySelector('.chat-bubble').style.display = 'none';
+    this._isVisible = true;
+  }
+
+  hideWidget() {
+    this.shadowRoot.querySelector('.widget-container').style.display = 'none';
+    this.shadowRoot.querySelector('.chat-bubble').style.display = 'flex';
+    this._isVisible = false;
   }
 
   disconnectedCallback() {

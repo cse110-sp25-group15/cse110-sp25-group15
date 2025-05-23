@@ -105,7 +105,7 @@ class ProductViewer extends HTMLElement {
       if (e.key === 'ArrowRight') {this._cycleImage(1);};
     });
 
-    this.shadowRoot.querySelector('.contact-btn')?.addEventListener('click', () => {
+    this.shadowRoot.querySelector('.send-btn')?.addEventListener('click', () => {
       this.dispatchEvent(new CustomEvent('contact-seller', { bubbles: true, composed: true }));
     });
 

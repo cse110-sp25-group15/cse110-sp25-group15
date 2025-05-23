@@ -87,6 +87,7 @@ textarea {
     gap: 1rem;
 }
 
+.pre-button,
 .comp-button {
     padding: 0.75rem 1.5rem;
     border-radius: 8px;
@@ -101,4 +102,15 @@ textarea {
 .comp-button:hover {
     background-color: var(--navy-text);
     color: var(--white);
+}
+
+.pre-button{
+    background: var(--gold);
+    border: 2px solid var(--blue);
+    color:var(--navy-text);
+}
+
+.pre-button:hover{
+    background-color: var(--navy-text);
+    color: var(--white); 
 }

@@ -69,6 +69,21 @@ class ListingForm extends HTMLElement {
     };
   }
 
+  _handlePreview(event) {
+    event.preventDefault();
+    const data = this._gatherFormData();
+    const errors = this._validateForm(data);
+    if (errors.length === 0) {
+      this.dispatchEvent(new CustomEvent('listing-preview', {
+        bubbles: true,
+        composed: true,
+        detail: data,
+      }));
+    } else {
+      alert(errors.join('\n'));
+    }
+  }
+  
   _handleSubmit(event) {
     console.log('Form submitted');
     event.preventDefault();

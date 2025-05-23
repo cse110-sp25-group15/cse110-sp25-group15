@@ -36,19 +36,33 @@ export class ListingSubmissionController {
     let convertedBlob;
 
     try {
-      if (fileType === 'image/heic' || file.name.endsWith('.heic')) {
+      if (fileType === 'image/heic' || file.name.endsWith('.HEIC')) {
         // convert HEIC to WebP
         convertedBlob = await heic2any({
           blob: file,
           toType: 'image/webp',
           quality: 0.8,
         });
+
+        // Wrap the blob in a File (so we can compress it)
+        const tempWebPFile = new File([convertedBlob], file.name.replace(/\.\w+$/, '.webp'), {
+          type: 'image/webp',
+        });
+
+        // Compress the WebP file
+        convertedBlob = await imageCompression(tempWebPFile, {
+          maxSizeMB: 0.1, // max size 100 KB
+          maxWidthOrHeight: 800,
+          fileType: 'image/webp',
+          useWebWorker: true, // enables background processing
+        });
       } else {
         // compress and convert other types (JPEG, PNG) to WebP
         convertedBlob = await imageCompression(file, {
-          maxSizeMB: 1, // try to compress image to under 1 MB
+          maxSizeMB: 0.1, // try to compress image to under  100 KB
           maxWidthOrHeight: 800, // resize image if it's larger in width/height
           fileType: 'image/webp', // convert to WebP
+          useWebWorker: true, // enables background processing
         });
       }
 
@@ -114,7 +128,13 @@ export class ListingSubmissionController {
       let thumbnailUrl = null;
       if (listingData.files && listingData.files.length > 0) {
         try {
-          thumbnailUrl = await this._uploadFile(listingData.files[0], user.id, listingId);
+          const convertedFile = await this.convertImageToWebP(listingData.files[0]);
+          // rename the converted file 
+          const newFileName = listingData.files[0].name.replace(/\.\w+$/, '.webp');
+          const webpFile = new File([convertedFile], newFileName, { type: 'image/webp' });
+
+          thumbnailUrl = await this._uploadFile(webpFile, user.id, listingId);
+          //thumbnailUrl = await this._uploadFile(listingData.files[0], user.id, listingId);
           //remove the file field from the listing data
           delete listingData.files;
         } catch (uploadError) {

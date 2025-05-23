@@ -99,10 +99,6 @@ class ProductViewer extends HTMLElement {
    * @fires contact-seller
    */
   _addEventListeners() {
-    const left = this.shadowRoot.querySelector('.arrow.left');
-    const right = this.shadowRoot.querySelector('.arrow.right');
-    left?.addEventListener('click', () => this._cycleImage(-1));
-    right?.addEventListener('click', () => this._cycleImage(1));
     // Keyboard navigation
     this.shadowRoot.querySelector('.gallery')?.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {this._cycleImage(-1);};
@@ -111,6 +107,10 @@ class ProductViewer extends HTMLElement {
 
     this.shadowRoot.querySelector('.contact-btn')?.addEventListener('click', () => {
       this.dispatchEvent(new CustomEvent('contact-seller', { bubbles: true, composed: true }));
+    });
+
+    this.shadowRoot.querySelector('.close-btn')?.addEventListener('click', () => {
+      //TODO: hide element
     });
   }
 

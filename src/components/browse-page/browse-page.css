@@ -106,17 +106,18 @@
   flex-shrink: 0;
 }
 
+
 /* 2 columns */
 @media (max-width: 950px) {
   .card { width: calc(50% - (var(--gap) / 2)); }
 }
-/* 3 columns */
+/* 5 columns */
 @media (min-width: 951px) and (max-width: 1250px) {
-  .card { width: calc(33.3333% - (var(--gap) * 2 / 3)); }
+  .card { width: calc(19.7% - (var(--gap) * 2 / 3)); }
 }
-/* 4 columns */
+/* 6 columns */
 @media (min-width: 1251px) and (max-width: 1550px) {
-  .card { width: calc(25% - (var(--gap) * 3 / 4)); }
+  .card { width: calc(16.5% - (var(--gap) * 3 / 4)); }
 }
 /* 5 columns */
 @media (min-width: 1551px) and (max-width: 1950px) {

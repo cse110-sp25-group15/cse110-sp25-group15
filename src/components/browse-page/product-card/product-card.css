@@ -1,6 +1,8 @@
 /* marketplace-card.css - Optimized version */
 :host {
     display: block;
+      width: 100%;
+  box-sizing: border-box;
   }
   
   .card-container {
@@ -13,6 +15,9 @@
     transform: translateZ(0);
     will-change: transform, box-shadow;
     transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
   
   .card-container:hover {

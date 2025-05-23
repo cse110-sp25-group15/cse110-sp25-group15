@@ -46,10 +46,6 @@ export class ListingDisplayController {
       this.showProductDetail(listingId);
     });
 
-    document.addEventListener('close-overlay', () => {
-      this.closeProductDetail();
-    });
-
     document.addEventListener('filter-changed', (event) => {
       console.log('Filter changed event received:', event.detail);
       const selectedCategory = event.detail.category;
@@ -151,17 +147,24 @@ export class ListingDisplayController {
 
   async showProductDetail(listingId) {
     try {
-      const listing = await this.model.getListingById(listingId);
+      // First try to find the listing in the cached listings
+      let listing = this.model.listings.find((l) => l.listing_id === listingId);
+      
+      // Only fetch from database if not found in cache
+      if (!listing) {
+        listing = await this.model.getListingById(listingId);
+      }
+      
       if (!listing) {
         console.error(`Listing with ID ${listingId} not found`);
         return;
       }
-
+  
       if (!this.overlay) {
         console.error('Product overlay component not found');
         return;
       }
-
+  
       const productDetail = document.createElement('product-detail');
       productDetail.setAttribute('name', listing.title || '');
       productDetail.setAttribute('price', listing.price || '');
@@ -176,15 +179,9 @@ export class ListingDisplayController {
       
       // Show the overlay
       this.overlay.show();
-
+  
     } catch (error) {
       console.error('Error showing product detail:', error);
-    }
-  }
-
-  closeProductDetail() {
-    if (this.overlay) {
-      this.overlay.hide();
     }
   }
 

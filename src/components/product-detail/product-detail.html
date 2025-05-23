@@ -1,36 +1,38 @@
 
-<section class="product-detail">
-    <button
-        class="close-btn"
-        type="button"
-        aria-label="Close"
-    >&times;</button>
-    <div class="gallery" tabindex="0">
-        <div class="gallery-main">
-            <div class="thumb-strip"></div>
-            <img
-                class="main-image"
-                src=""
-                alt="Product image"
-            >
+<div class="overlay">
+    <section class="product-detail">
+        <button
+            class="close-btn"
+            type="button"
+            aria-label="Close"
+        >&times;</button>
+        <div class="gallery" tabindex="0">
+            <div class="gallery-main">
+                <div class="thumb-strip"></div>
+                <img
+                    class="main-image"
+                    src=""
+                    alt="Product image"
+                >
+            </div>
         </div>
-    </div>
-    <div class="meta-panel">
-        <h1 class="product-name"></h1>
-        <div class="price"></div>
-        <div class="meta-table">
-            <div class="date"></div>
-            <div class="condition"></div>
+        <div class="meta-panel">
+            <h1 class="product-name"></h1>
+            <div class="price"></div>
+            <div class="meta-table">
+                <div class="date"></div>
+                <div class="condition"></div>
+            </div>
+            <b>Description:</b>
+            <p class="description-block"></p>
+            <div class="contact-box">
+                <textarea class="contact-message" rows="1">Hi, is this still available?</textarea>
+                <button class="send-btn" type="button">
+                    <span class="chat-icon" aria-hidden="true">💬</span>
+                    Send Message
+                </button>
+            </div>
+            <slot></slot>
         </div>
-        <b>Description:</b>
-        <p class="description-block"></p>
-        <div class="contact-box">
-            <textarea class="contact-message" rows="1">Hi, is this still available?</textarea>
-            <button class="send-btn" type="button">
-                <span class="chat-icon" aria-hidden="true">💬</span>
-                Send Message
-            </button>
-        </div>
-        <slot></slot>
-    </div>
-</section>
+    </section>
+</div>

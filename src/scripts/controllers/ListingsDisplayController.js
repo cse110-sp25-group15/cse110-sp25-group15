@@ -149,6 +149,7 @@ export class ListingDisplayController {
   }
 
   async showProductDetail(listingId) {
+    console.log('Showing product detail for listing ID:', listingId);
     try {
       const listing = await this.model.getListingById(listingId);
       if (!listing) {
@@ -161,19 +162,12 @@ export class ListingDisplayController {
         return;
       }
 
-      const productDetail = document.createElement('product-detail');
-      productDetail.setAttribute('name', listing.title || '');
-      productDetail.setAttribute('price', listing.price || '');
-      productDetail.setAttribute('condition', listing.condition || '');
-      productDetail.setAttribute('date', listing.date_posted || '');
-      productDetail.setAttribute('description', listing.description || '');
-      productDetail.setAttribute('images', listing.thumbnail || '');
-      
-      // Clear previous content and add new product detail
-      this.overlay.innerHTML = '';
-      this.overlay.appendChild(productDetail);
-      
-      // Show the overlay
+      this.overlay.setAttribute('name', listing.title || '');
+      this.overlay.setAttribute('price', listing.price || '');
+      this.overlay.setAttribute('condition', listing.condition || '');
+      this.overlay.setAttribute('date', listing.date_posted || '');
+      this.overlay.setAttribute('description', listing.description || '');
+      this.overlay.setAttribute('images', listing.thumbnail || '');
       this.overlay.show();
 
     } catch (error) {

@@ -29,7 +29,7 @@
 <nav >
     
     
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BottomNav.html">BottomNav</a></li><li><a href="HeroBanner.html">HeroBanner</a><ul class='methods'><li data-type='method'><a href="HeroBanner.html#connectedCallback">connectedCallback</a></li></ul></li><li><a href="PageSwitcher.html">PageSwitcher</a></li><li><a href="ProductOverlay.html">ProductOverlay</a><ul class='methods'><li data-type='method'><a href="ProductOverlay.html#hide">hide</a></li><li data-type='method'><a href="ProductOverlay.html#show">show</a></li></ul></li><li><a href="ProductViewer.html">ProductViewer</a></li><li><a href="SearchBox.html">SearchBox</a><ul class='methods'><li data-type='method'><a href="SearchBox.html#connectedCallback">connectedCallback</a></li><li data-type='method'><a href="SearchBox.html#setupEventListeners">setupEventListeners</a></li><li data-type='method'><a href="SearchBox.html#toggleSearch">toggleSearch</a></li></ul></li><li><a href="SearchHero.html">SearchHero</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ApplicationOverview.html">ApplicationOverview</a></li><li><a href="tutorial-database.html">database</a></li><li><a href="tutorial-OnBoarding.html">OnBoarding</a></li><li><a href="tutorial-SupabaseIntegration.html">SupabaseIntegration</a></li><li><a href="tutorial-WebComponentGuide.html">WebComponentGuide</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BottomNav.html">BottomNav</a></li><li><a href="HeroBanner.html">HeroBanner</a><ul class='methods'><li data-type='method'><a href="HeroBanner.html#connectedCallback">connectedCallback</a></li></ul></li><li><a href="ProductOverlay.html">ProductOverlay</a><ul class='methods'><li data-type='method'><a href="ProductOverlay.html#hide">hide</a></li><li data-type='method'><a href="ProductOverlay.html#show">show</a></li></ul></li><li><a href="ProductViewer.html">ProductViewer</a></li><li><a href="SearchBox.html">SearchBox</a><ul class='methods'><li data-type='method'><a href="SearchBox.html#connectedCallback">connectedCallback</a></li><li data-type='method'><a href="SearchBox.html#setupEventListeners">setupEventListeners</a></li><li data-type='method'><a href="SearchBox.html#toggleSearch">toggleSearch</a></li></ul></li><li><a href="SearchHero.html">SearchHero</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ApplicationOverview.html">ApplicationOverview</a></li><li><a href="tutorial-database.html">database</a></li><li><a href="tutorial-OnBoarding.html">OnBoarding</a></li><li><a href="tutorial-SupabaseIntegration.html">SupabaseIntegration</a></li><li><a href="tutorial-WebComponentGuide.html">WebComponentGuide</a></li></ul>
     
 </nav>
 
@@ -72,13 +72,12 @@ class ProductOverlay extends HTMLElement {
     `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     
+    // Local state for visibility
+    this._isVisible = false;
+    
     // Bind methods to this instance
     this._onBackgroundClick = this._onBackgroundClick.bind(this);
     this._onKeyDown = this._onKeyDown.bind(this);
-  }
-
-  static get observedAttributes() {
-    return ['visible'];
   }
 
   connectedCallback() {
@@ -97,40 +96,37 @@ class ProductOverlay extends HTMLElement {
     document.body.style.overflow = 'auto';
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (name === 'visible' &amp;&amp; oldValue !== newValue) {
-      this._updateVisibility();
-    }
-  }
-
   /**
    * Show the overlay
    */
   show() {
-    this.setAttribute('visible', '');
+    console.log('show');
+    this._isVisible = true;
+    this._updateVisibility();
   }
 
   /**
    * Hide the overlay
    */
   hide() {
-    this.removeAttribute('visible');
+    this._isVisible = false;
+    this._updateVisibility();
   }
 
   /**
-   * Update the visibility of the overlay based on the 'visible' attribute
+   * Update the visibility of the overlay based on the internal state
    * @private
    */
   _updateVisibility() {
-    const isVisible = this.hasAttribute('visible');
     const overlay = this.shadowRoot.querySelector('.overlay');
     
     if (overlay) {
-      overlay.style.display = isVisible ? 'flex' : 'none';
+      overlay.style.display = this._isVisible ? 'flex' : 'none';
     }
     
     // Prevent/restore body scrolling
-    document.body.style.overflow = isVisible ? 'hidden' : 'auto';
+    //document.body.style.overflow = this._isVisible ? 'hidden' : 'auto';
+    console.log('Overlay visibility set to:', this._isVisible);
   }
 
   /**
@@ -168,7 +164,6 @@ class ProductOverlay extends HTMLElement {
     const overlay = this.shadowRoot.querySelector('.overlay');
     if (event.target === overlay) {
       this.hide();
-      this._dispatchCloseEvent();
     }
   }
 
@@ -178,23 +173,11 @@ class ProductOverlay extends HTMLElement {
    * @private
    */
   _onKeyDown(event) {
-    if (event.key === 'Escape' &amp;&amp; this.hasAttribute('visible')) {
+    if (event.key === 'Escape' &amp;&amp; this._isVisible) {
       this.hide();
-      this._dispatchCloseEvent();
     }
   }
 
-  /**
-   * Dispatch a custom event when the overlay is closed
-   * @private
-   * @fires close-overlay
-   */
-  _dispatchCloseEvent() {
-    this.dispatchEvent(new CustomEvent('close-overlay', {
-      bubbles: true,
-      composed: true,
-    }));
-  }
 }
 
 customElements.define('product-overlay', ProductOverlay);</code></pre>
@@ -211,7 +194,7 @@ customElements.define('product-overlay', ProductOverlay);</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Thu May 22 2025 00:50:14 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Thu May 22 2025 23:13:22 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

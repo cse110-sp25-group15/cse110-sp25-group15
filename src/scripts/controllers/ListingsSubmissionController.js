@@ -3,6 +3,9 @@ import { ListingModel } from '../models/ListingsModel.js';
 import { CategoryEnum } from '../constants/CategoryEnum.js';
 import { ConditionEnum } from '../constants/ConditionEnum.js';
 
+import heic2any from 'https://cdn.skypack.dev/heic2any';
+import imageCompression from 'https://cdn.skypack.dev/browser-image-compression';
+
 export class ListingSubmissionController {
   constructor() {
     this.model = new ListingModel();
@@ -17,11 +20,43 @@ export class ListingSubmissionController {
    * @returns {string} UUID
    */
   _generateUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       const r = Math.random() * 16 | 0;
       const v = c === 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     });
+  }
+
+  async convertImageToWebP(file) {
+    if (!file) throw new Error("No file provided");
+
+    const fileType = file.type;
+    let convertedBlob;
+
+    try {
+      if (fileType === 'image/heic' || file.name.endsWith('.heic')) {
+        // convert HEIC to WebP
+        convertedBlob = await heic2any({
+          blob: file,
+          toType: 'image/webp',
+          quality: 0.8,
+        });
+      } else {
+        // compress and convert other types (JPEG, PNG) to WebP
+        convertedBlob = await imageCompression(file, {
+          maxSizeMB: 1, // try to compress image to under 1 MB
+          maxWidthOrHeight: 800, // resize image if it's larger in width/height
+          fileType: 'image/webp', // convert to WebP
+        });
+      }
+
+      // convertedBlob is a WebP image 
+      return convertedBlob;
+
+    } catch (err) {
+      console.error('Conversion failed:', err);
+      throw err;
+    }
   }
 
   async _uploadFile(file, userId, listingId) {
@@ -115,7 +150,7 @@ export class ListingSubmissionController {
       this.notifyError('An unexpected error occurred');
     }
   }
-  
+
   notifyError(message) {
     alert(message);
   }

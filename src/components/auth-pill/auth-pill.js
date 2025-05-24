@@ -8,6 +8,7 @@ class AuthPill extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.innerHTML = `<style>${css}</style>${html}`;
     this.user = null;
+    this.savedUser = false;
   }
 
   connectedCallback() {
@@ -104,9 +105,10 @@ class AuthPill extends HTMLElement {
   }
 
   async updateUser(userData) {
-    if (!userData) {return;}
+    if (!userData || this.hasSavedUser) {return;}
     
     // Save to database
+    this.hasSavedUser = true;
     this.saveUserToDatabase(userData);
     
     // Set user data

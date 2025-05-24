@@ -14,33 +14,50 @@
 }
 
 .categories {
-  z-index: 1;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: space-between;
-  background-color: white;
-  width: 80%;
-  max-width: 1500px;
-  padding: 20px 0;
-  margin: 0 auto;
+    position: sticky;
+    top: 70px;
+    z-index: 1;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    background-color: #131612; /* Adding background color so content doesn't show through */
+    width: 100%; /* 80 % */
+    padding: 20px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional: adds a subtle shadow when sticky */
+    max-width: 1500px;
+    margin: 0 auto;
+}
+.browse-area {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    align-items: center;
 }
 
 .browse-title {
-  font-size: 2.5rem;
-  font-weight: bold;
-  font-family: Arial;
-  color: var(--blue, #04133B);
-  flex-shrink: 0;
+    font-size: 2.5em;
+    font-weight: bold;
+    font-family: Arial;
+    padding: 10px 20px;
+    justify-self: flex-start;
+    color: white;
 }
 
 .category-list {
-  flex: 1;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin: 0 1rem;
+    flex: 1;
+    gap: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    margin: 0 1rem;
+}
+
+.sort-option > p {
+    font-family: Arial;
+    font-weight: 600;
+    color: rgb(233, 233, 233);
+
 }
 
 .sort-option {
@@ -48,36 +65,24 @@
   align-items: center;
   gap: 6px;
   position: relative;
-  flex-shrink: 0;
+  margin-right: 10px;
 }
 
-.sort-option > p {
-  font-family: Arial;
-  font-weight: 600;
-  margin: 0;
+#dropdown {
+  padding: 6px;
+  background-color: #131612;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  border-radius: 4px;
+  border: 1px solid #777777;
+  cursor: pointer;
+}
+#dropdown option {
+  font-family: sans-serif;
+  font-weight: bold;
 }
 
-.content {
-  display: none;
-  position: absolute;
-  top: 50px;
-  right: 0;
-  background-color: rgb(217, 217, 217);
-  box-shadow: 2px 2px 5px hsla(0, 0%, 0%, 0.8);
-  padding: 5px;
-  border-radius: 10px;
-  font-family: Arial;
-  font-weight: 600;
-  z-index: 10;
-}
-
-.content label {
-  display: block;
-}
-
-.sort-option:hover .content {
-  display: block;
-}
 
 .products-container {
   display: flex;

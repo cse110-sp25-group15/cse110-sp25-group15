@@ -72,5 +72,4 @@ class SearchHero extends HTMLElement {
   }
 }
 
-customElements.define('search-hero', SearchHero);
-export default SearchHero;
+customElements.define('search-banner', SearchHero);

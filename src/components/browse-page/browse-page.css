@@ -84,21 +84,37 @@
 }
 
 
+
+
+
 .products-container {
+
   display: flex;
+
   flex-wrap: wrap;
+
   justify-content: flex-start;
+
   align-content: flex-start;
+
   height: auto;
+
   overflow: visible;
+
   gap: var(--gap);
-  background: white;
-  width: 80%;
-  max-width: 1500px;
-  margin: 1rem auto 0 auto;
+
+  background: var(--background-color);
+
+  max-width: var(--max-container-width) !important;
+
+  min-width: min(var(--max-container-width), 100%);
+
   padding: var(--gap);
+
   box-sizing: border-box;
-  scrollbar-width: none;
+
+  scrollbar-width: none;               /* Firefox */
+
 }
 
 .products-container::-webkit-scrollbar { 
@@ -117,18 +133,17 @@
   flex-shrink: 0;
 }
 
-
 /* 2 columns */
 @media (max-width: 950px) {
   .card { width: calc(50% - (var(--gap) / 2)); }
 }
-/* 5 columns */
+/* 3 columns */
 @media (min-width: 951px) and (max-width: 1250px) {
-  .card { width: calc(19.7% - (var(--gap) * 2 / 3)); }
+  .card { width: calc(33.3333% - (var(--gap) * 2 / 3)); }
 }
-/* 6 columns */
+/* 4 columns */
 @media (min-width: 1251px) and (max-width: 1550px) {
-  .card { width: calc(16.5% - (var(--gap) * 3 / 4)); }
+  .card { width: calc(25% - (var(--gap) * 3 / 4)); }
 }
 /* 5 columns */
 @media (min-width: 1551px) and (max-width: 1950px) {
@@ -138,52 +153,4 @@
 @media (min-width: 1951px) {
   .card { width: calc(16.6667% - (var(--gap) * 5 / 6)); }
   .products-container { max-width: var(--max-container-width); }
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-  .categories {
-    width: 90%;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 0;
-  }
-  
-  .browse-title {
-    font-size: 2rem;
-    text-align: center;
-  }
-  
-  .category-list {
-    order: 2;
-    margin: 0;
-    gap: 6px;
-  }
-  
-  .sort-option {
-    order: 3;
-    align-self: flex-end;
-  }
-  
-  .products-container {
-    width: 90%;
-  }
-}
-
-@media (max-width: 480px) {
-  .categories {
-    width: 95%;
-  }
-  
-  .browse-title {
-    font-size: 1.8rem;
-  }
-  
-  .category-list {
-    gap: 4px;
-  }
-  
-  .products-container {
-    width: 95%;
-  }
 }

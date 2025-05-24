@@ -1,6 +1,5 @@
 import html from './chat-widget.html?raw';
 import css from './chat-widget.css?raw';
-
 class ChatWidget extends HTMLElement {
   constructor() {
     super();
@@ -10,42 +9,47 @@ class ChatWidget extends HTMLElement {
       { id: 2, name: 'Bob', preview: 'See you soon.', timestamp: '9:14 AM', unread: false },
       { id: 3, name: 'Carol', preview: 'Got it.', timestamp: 'Yesterday', unread: true },
     ];
+  }
+  connectedCallback() {
     const template = document.createElement('template');
     template.innerHTML = `<style>${css}</style>${html}`;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-
+    // Prevents body scroll when chat is open
+    //document.body.style.overflow = 'hidden';
     // Close on "X" icon
-    this.shadowRoot.querySelector('.close-icon').addEventListener('click', () => this.hideWidget());
-
+    this.shadowRoot.querySelector('.close-icon').addEventListener('click', () =>         this.hideWidget()  );
     // Global Escape key handler
     this._handleEsc = (e) => {
-      if (e.key === 'Escape' && this.isConnected && this._isVisible) {
+      if (e.key === 'Escape' && this.isConnected && this.parentElement) {
         this.hideWidget();
       }
     };
+    // Add event listener to chat bubble
+    this.shadowRoot.querySelector('.chat-bubble').addEventListener('click', () => {
+      this.toggleWidget();
+    });
+    // Initially hide the widget container, show only the bubble
+    this.shadowRoot.querySelector('.widget-container').style.display = 'none';
+    this._renderConversations();
+    this._isVisible = false;
     document.addEventListener('keydown', this._handleEsc);
-
     // Filter conversations
     this.shadowRoot.querySelector('input').addEventListener('input', (e) => {
       const term = e.target.value.toLowerCase();
       this._renderConversations(term);
     });
-
-    // Add event listener to chat bubble
-    this.shadowRoot.querySelector('.chat-bubble').addEventListener('click', () => {
-      this.toggleWidget();
-    });
-
-    // Initially hide the widget container, show only the bubble
-    this.shadowRoot.querySelector('.widget-container').style.display = 'none';
     this._renderConversations();
-    this._isVisible = false;
+    // Back button
+    const backButton = this.shadowRoot.querySelector('.back-button');
+    if (backButton) {
+      backButton.addEventListener('click', () => {
+        this.shadowRoot.querySelector('.chat-screen').classList.add('hidden');
+        this.shadowRoot.querySelector('.convo-list').style.display = 'block';
+        this.shadowRoot.querySelector('header').style.display = 'flex';
+        this.shadowRoot.querySelector('input').style.display = 'block';
+      });
+    }
   }
-
-  connectedCallback() {
-    console.log('ChatWidget connected');
-  }
-
   toggleWidget() {
     if (this._isVisible) {
       this.hideWidget();
@@ -53,19 +57,20 @@ class ChatWidget extends HTMLElement {
       this.showWidget();
     }
   }
-
   showWidget() {
     this.shadowRoot.querySelector('.widget-container').style.display = 'block';
     this.shadowRoot.querySelector('.chat-bubble').style.display = 'none';
     this._isVisible = true;
   }
-
   hideWidget() {
     this.shadowRoot.querySelector('.widget-container').style.display = 'none';
     this.shadowRoot.querySelector('.chat-bubble').style.display = 'flex';
     this._isVisible = false;
   }
-
+  disconnectedCallback() {
+    document.removeEventListener('keydown', this._handleEsc);
+    document.body.style.overflow = '';
+  }
   _renderConversations(filter = '') {
     const list = this.shadowRoot.querySelector('.convo-list');
     list.innerHTML = '';
@@ -77,12 +82,23 @@ class ChatWidget extends HTMLElement {
         item.innerHTML = `
             <div class="avatar"></div>
             <div class="details">
-            <div><strong>${convo.name}</strong> <small>${convo.timestamp}</small></div>
+            <div>
+              <span class="name">${convo.name}</span>
+              <span class="timestamp">${convo.timestamp}</span>
+            </div>
             <div>${convo.preview}</div>
             </div>
             ${convo.unread ? '<div class="unread-badge"></div>' : ''}
             `;
         item.addEventListener('click', () => {
+          this.shadowRoot.querySelector('.convo-list').style.display = 'none';
+          this.shadowRoot.querySelector('header').style.display = 'none';
+          this.shadowRoot.querySelector('input').style.display = 'none';
+          const screen = this.shadowRoot.querySelector('.chat-screen');
+          screen.classList.remove('hidden');
+          screen.querySelector('.chat-title').textContent = convo.name;
+          const messagesContainer = screen.querySelector('.messages');
+          messagesContainer.innerHTML = `<div class="message">${convo.preview}</div>`;
           this.dispatchEvent(new CustomEvent('chat-open', {
             detail: { id: convo.id },
             bubbles: true,
@@ -92,11 +108,6 @@ class ChatWidget extends HTMLElement {
         list.appendChild(item);
       });
   }
-
-  disconnectedCallback() {
-    document.removeEventListener('keydown', this._handleEsc);
-  }
 }
-
 customElements.define('chat-widget', ChatWidget);
 export default ChatWidget;

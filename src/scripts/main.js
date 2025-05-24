@@ -8,6 +8,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   const listingSubmissionController = new ListingSubmissionController();
   listingSubmissionController.init();
+
+  // Logo click handler
+  const logo = document.querySelector('.logo');
+  if (logo) {
+    logo.addEventListener('click', () => {
+      window.location.href = '/';
+    });
+  }
   
   // Get the hero banner element
   const heroBanner = document.querySelector('hero-banner');

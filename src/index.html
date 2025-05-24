@@ -24,9 +24,15 @@
         <!-- header -->
         <script type="module" src="./components/search-box/search-box.js"></script>
         <script type="module" src="./components/auth-pill/auth-pill.js"></script>
+
+        <!-- search banner -->
+        <script type="module" src="/components/search-banner/search-banner.js"></script>
         
         <!-- chat widget -->
         <script type="module" src="./components/chat-widget/chat-widget.js"></script>
+
+        <!-- bottom nav -->
+        <script type="module" src="./components/bottom-nav/bottom-nav.js"></script>
         
 
     </head>
@@ -51,12 +57,14 @@
         
         <main>
             <hero-banner></hero-banner>
-            <section id="marketplace" class="marketplace-content">
-                <browse-page></browse-page>
-            </section>
+            <!-- 1st: Landing section -->
+            <search-banner></search-banner>
+            <!-- 2nd: Browsing section -->
+
+            <browse-page id="marketplace"></browse-page>
         </main>
-    
-        
+        <!-- Bottom Navigation -->
+        <bottom-nav></bottom-nav>
         <!-- Chat Widget Component -->
         <chat-widget></chat-widget>
         

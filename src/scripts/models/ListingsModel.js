@@ -156,6 +156,7 @@ export class ListingModel {
       title: listing.title,
       price: listing.price,
       image_url: listing.thumbnail || 'https://via.placeholder.com/300x400',
+      date_posted: listing.date_posted,
     };
   }
 }

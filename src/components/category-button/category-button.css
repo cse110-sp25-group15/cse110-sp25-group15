@@ -1,11 +1,10 @@
 .label {
     font-family: Arial;
-    padding: 6px 10px 6px 10px;
+    padding: 6px 0px;
     font-weight: bold;
-    color: rgb(0, 0, 0);
+    color: rgb(170, 170, 170);
     /* background-color: rgb(238, 239, 240); */
-    background-color: rgb(246, 246, 247);
-    border-radius: 20px;
+    background-color: #131612;
     /* border: 1px solid rgb(179, 179, 179); */
     border: 0px;
     font-size: 1.1em;
@@ -13,12 +12,11 @@
 
 .label:hover {
     cursor: pointer;
-    background-color: rgb(94, 94, 94);
     color: white;
 }
 
 .label.selected {
-    background-color: rgb(94, 94, 94);
     color: white;
     transition: ease 250ms;
+    border-bottom: 2px solid white;
 }

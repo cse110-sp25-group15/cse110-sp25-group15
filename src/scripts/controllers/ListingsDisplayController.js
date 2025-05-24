@@ -146,15 +146,9 @@ export class ListingDisplayController {
   }
 
   async showProductDetail(listingId) {
+    console.log('Showing product detail for listing ID:', listingId);
     try {
-      // First try to find the listing in the cached listings
-      let listing = this.model.listings.find((l) => l.listing_id === listingId);
-      
-      // Only fetch from database if not found in cache
-      if (!listing) {
-        listing = await this.model.getListingById(listingId);
-      }
-      
+      const listing = await this.model.getListingById(listingId);
       if (!listing) {
         console.error(`Listing with ID ${listingId} not found`);
         return;
@@ -164,20 +158,13 @@ export class ListingDisplayController {
         console.error('Product overlay component not found');
         return;
       }
-  
-      const productDetail = document.createElement('product-detail');
-      productDetail.setAttribute('name', listing.title || '');
-      productDetail.setAttribute('price', listing.price || '');
-      productDetail.setAttribute('condition', listing.condition || '');
-      productDetail.setAttribute('date', listing.date_posted || '');
-      productDetail.setAttribute('description', listing.description || '');
-      productDetail.setAttribute('images', listing.thumbnail || '');
-      
-      // Clear previous content and add new product detail
-      this.overlay.innerHTML = '';
-      this.overlay.appendChild(productDetail);
-      
-      // Show the overlay
+
+      this.overlay.setAttribute('name', listing.title || '');
+      this.overlay.setAttribute('price', listing.price || '');
+      this.overlay.setAttribute('condition', listing.condition || '');
+      this.overlay.setAttribute('date', listing.date_posted || '');
+      this.overlay.setAttribute('description', listing.description || '');
+      this.overlay.setAttribute('images', listing.thumbnail || '');
       this.overlay.show();
   
     } catch (error) {

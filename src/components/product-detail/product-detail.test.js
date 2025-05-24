@@ -56,7 +56,7 @@ describe('<product-detail>', () => {
   it('emits "contact-seller" event when contact button is clicked', () => {
     const listener = vi.fn();
     el.addEventListener('contact-seller', listener);
-    const contactBtn = el.shadowRoot.querySelector('.contact-btn');
+    const contactBtn = el.shadowRoot.querySelector('.send-btn');
     contactBtn?.click();
     expect(listener).toHaveBeenCalledTimes(1);
   });
@@ -66,21 +66,5 @@ describe('<product-detail>', () => {
     thumbnails[1]?.click();
     const mainImage = el.shadowRoot.querySelector('.main-image');
     expect(mainImage.src).toContain('image2.jpg');
-  });
-
-  it('cycles to next image when right arrow is clicked', () => {
-    const rightArrow = el.shadowRoot.querySelector('.arrow.right');
-    rightArrow?.click();
-    const mainImage = el.shadowRoot.querySelector('.main-image');
-    expect(mainImage.src).toContain('image2.jpg');
-  });
-
-  it('cycles to previous image when left arrow is clicked', () => {
-    const rightArrow = el.shadowRoot.querySelector('.arrow.right');
-    rightArrow?.click();
-    const leftArrow = el.shadowRoot.querySelector('.arrow.left');
-    leftArrow?.click();
-    const mainImage = el.shadowRoot.querySelector('.main-image');
-    expect(mainImage.src).toContain('image1.jpg');
   });
 });

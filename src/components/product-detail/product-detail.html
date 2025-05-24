@@ -1,39 +1,40 @@
-<section class="product-detail">
-    <div class="gallery" tabindex="0">
-        <div class="gallery-main">
-            <button class="arrow left" aria-label="Previous image">&lt;</button>
-            <img
-                class="main-image"
-                src=""
-                alt="Product image"
-                width="400"
-                height="400"
-                loading="lazy"
-                decoding="async"
-            >
-            <button class="arrow right" aria-label="Next image">&gt;</button>
+<div class="overlay">
+    <section class="product-detail">
+        <button
+            class="close-btn"
+            type="button"
+            aria-label="Close"
+        >&times;</button>
+        <div class="gallery" tabindex="0">
+            <div class="gallery-main">
+                <div class="thumb-strip"></div>
+                <img
+                    class="main-image"
+                    src=""
+                    alt="Product image"
+                    width="400"
+                    height="400"
+                    loading="lazy"
+                    decoding="async"
+                >
+            </div>
         </div>
-        <div class="thumb-strip"></div>
-    </div>
-    <div class="meta-panel">
-        <h1 class="product-name"></h1>
-        <div class="price"></div>
-        <b>Details</b>
-        <table class="meta-table">
-            <tr>
-                <th>Condition</th>
-                <td class="condition"></td>
-            </tr>
-            <tr>
-                <th>Date Listed</th>
-                <td class="date"></td>
-            </tr>
-        </table>
-        <div class="description-block"></div>
-        <button class="contact-btn" type="button">
-            <span class="chat-icon" aria-hidden="true">💬</span>
-            Contact Seller
-        </button>
-        <slot></slot>
-    </div>
-</section>
+        <div class="meta-panel">
+            <h1 class="product-name"></h1>
+            <div class="price"></div>
+            <div class="meta-table">
+                <div class="date"></div>
+                <div class="condition"></div>
+            </div>
+            <b class="description-title">Description:</b>
+            <p class="description-block"></p>
+            <div class="contact-box">
+                <textarea class="contact-message" rows="1">Hi, is this still available?</textarea>
+                <button class="send-btn" type="button">
+                    <span class="chat-icon" aria-hidden="true">💬</span>
+                    Send Message
+                </button>
+            </div>
+            <slot></slot>
+        </div>
+    </section></div>

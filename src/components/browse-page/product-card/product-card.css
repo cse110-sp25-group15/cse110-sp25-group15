@@ -41,6 +41,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 20px;
     /* Make image loading more efficient */
     backface-visibility: hidden;
     transform: translateZ(0);
@@ -58,6 +59,7 @@
     width: 60px;
     height: 60px;
     opacity: 0.3;
+    border-radius: 20px;
   }
   
   .card-content {
@@ -72,7 +74,7 @@
     font-size: 1rem;
     font-weight: 1000;
     margin: 0;
-    color: #333;
+    color: black;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;

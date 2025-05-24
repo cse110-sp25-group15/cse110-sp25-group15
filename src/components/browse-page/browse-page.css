@@ -27,7 +27,9 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional: adds a subtle shadow when sticky */
     max-width: 1500px;
     margin: 0 auto;
+    border-radius: 8px;
 }
+
 .browse-area {
     display: flex;
     flex-direction: column;
@@ -84,9 +86,6 @@
 }
 
 
-
-
-
 .products-container {
 
   display: flex;
@@ -114,6 +113,8 @@
   box-sizing: border-box;
 
   scrollbar-width: none;               /* Firefox */
+
+  
 
 }
 

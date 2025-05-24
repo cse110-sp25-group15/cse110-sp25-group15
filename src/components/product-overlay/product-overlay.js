@@ -25,13 +25,12 @@ class ProductOverlay extends HTMLElement {
     `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     
+    // Local state for visibility
+    this._isVisible = false;
+    
     // Bind methods to this instance
     this._onBackgroundClick = this._onBackgroundClick.bind(this);
     this._onKeyDown = this._onKeyDown.bind(this);
-  }
-
-  static get observedAttributes() {
-    return ['visible'];
   }
 
   connectedCallback() {
@@ -50,40 +49,37 @@ class ProductOverlay extends HTMLElement {
     document.body.style.overflow = 'auto';
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (name === 'visible' && oldValue !== newValue) {
-      this._updateVisibility();
-    }
-  }
-
   /**
    * Show the overlay
    */
   show() {
-    this.setAttribute('visible', '');
+    console.log('show');
+    this._isVisible = true;
+    this._updateVisibility();
   }
 
   /**
    * Hide the overlay
    */
   hide() {
-    this.removeAttribute('visible');
+    this._isVisible = false;
+    this._updateVisibility();
   }
 
   /**
-   * Update the visibility of the overlay based on the 'visible' attribute
+   * Update the visibility of the overlay based on the internal state
    * @private
    */
   _updateVisibility() {
-    const isVisible = this.hasAttribute('visible');
     const overlay = this.shadowRoot.querySelector('.overlay');
     
     if (overlay) {
-      overlay.style.display = isVisible ? 'flex' : 'none';
+      overlay.style.display = this._isVisible ? 'flex' : 'none';
     }
     
     // Prevent/restore body scrolling
-    document.body.style.overflow = isVisible ? 'hidden' : 'auto';
+    //document.body.style.overflow = this._isVisible ? 'hidden' : 'auto';
+    console.log('Overlay visibility set to:', this._isVisible);
   }
 
   /**
@@ -121,7 +117,6 @@ class ProductOverlay extends HTMLElement {
     const overlay = this.shadowRoot.querySelector('.overlay');
     if (event.target === overlay) {
       this.hide();
-      this._dispatchCloseEvent();
     }
   }
 
@@ -131,23 +126,11 @@ class ProductOverlay extends HTMLElement {
    * @private
    */
   _onKeyDown(event) {
-    if (event.key === 'Escape' && this.hasAttribute('visible')) {
+    if (event.key === 'Escape' && this._isVisible) {
       this.hide();
-      this._dispatchCloseEvent();
     }
   }
 
-  /**
-   * Dispatch a custom event when the overlay is closed
-   * @private
-   * @fires close-overlay
-   */
-  _dispatchCloseEvent() {
-    this.dispatchEvent(new CustomEvent('close-overlay', {
-      bubbles: true,
-      composed: true,
-    }));
-  }
 }
 
 customElements.define('product-overlay', ProductOverlay);

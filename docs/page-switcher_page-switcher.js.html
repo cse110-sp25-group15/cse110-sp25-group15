@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>page-switcher/page-switcher.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BottomNav.html">BottomNav</a></li><li><a href="HeroBanner.html">HeroBanner</a><ul class='methods'><li data-type='method'><a href="HeroBanner.html#connectedCallback">connectedCallback</a></li></ul></li><li><a href="PageSwitcher.html">PageSwitcher</a></li><li><a href="ProductOverlay.html">ProductOverlay</a><ul class='methods'><li data-type='method'><a href="ProductOverlay.html#hide">hide</a></li><li data-type='method'><a href="ProductOverlay.html#show">show</a></li></ul></li><li><a href="ProductViewer.html">ProductViewer</a></li><li><a href="SearchBox.html">SearchBox</a><ul class='methods'><li data-type='method'><a href="SearchBox.html#connectedCallback">connectedCallback</a></li><li data-type='method'><a href="SearchBox.html#setupEventListeners">setupEventListeners</a></li><li data-type='method'><a href="SearchBox.html#toggleSearch">toggleSearch</a></li></ul></li><li><a href="SearchHero.html">SearchHero</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ApplicationOverview.html">ApplicationOverview</a></li><li><a href="tutorial-database.html">database</a></li><li><a href="tutorial-OnBoarding.html">OnBoarding</a></li><li><a href="tutorial-SupabaseIntegration.html">SupabaseIntegration</a></li><li><a href="tutorial-WebComponentGuide.html">WebComponentGuide</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">page-switcher/page-switcher.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import html from './page-switcher.html?raw';
+import css from './page-switcher.css?raw';
+
+/**
+ * Page Switcher Component - Visual interactions only
+ * Functional arrow navigation without backend
+ */
+class PageSwitcher extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    const template = document.createElement('template');
+    template.innerHTML = `
+      &lt;style>${css}&lt;/style>
+      ${html}
+    `;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    
+    this.currentPage = 2; // Start on page 2 as shown
+    this.totalPages = 12;
+  }
+
+  connectedCallback() {
+    this.setupEventListeners();
+    this.updateButtonStates();
+  }
+
+  setupEventListeners() {
+    // Previous button
+    const prevBtn = this.shadowRoot.getElementById('prev-btn');
+    prevBtn?.addEventListener('click', () => {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.updateActiveButton();
+        this.updateButtonStates();
+      }
+    });
+
+    // Next button
+    const nextBtn = this.shadowRoot.getElementById('next-btn');
+    nextBtn?.addEventListener('click', () => {
+      if (this.currentPage &lt; this.totalPages) {
+        this.currentPage++;
+        this.updateActiveButton();
+        this.updateButtonStates();
+      }
+    });
+
+    // Page number buttons
+    const pageButtons = this.shadowRoot.querySelectorAll('.page-btn[data-page]');
+    pageButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const page = parseInt(button.getAttribute('data-page'));
+        this.currentPage = page;
+        this.updateActiveButton();
+        this.updateButtonStates();
+      });
+    });
+  }
+
+  updateActiveButton() {
+    // Remove active class from all page buttons
+    const pageButtons = this.shadowRoot.querySelectorAll('.page-btn[data-page]');
+    pageButtons.forEach((button) => {
+      button.classList.remove('active');
+    });
+
+    // Add active class to current page button (if visible)
+    const currentButton = this.shadowRoot.querySelector(`[data-page="${this.currentPage}"]`);
+    if (currentButton) {
+      currentButton.classList.add('active');
+    }
+
+    console.log(`Switched to page ${this.currentPage} (visual only)`);
+  }
+
+  updateButtonStates() {
+    const prevBtn = this.shadowRoot.getElementById('prev-btn');
+    const nextBtn = this.shadowRoot.getElementById('next-btn');
+    
+    // Disable/enable prev button
+    if (prevBtn) {
+      prevBtn.disabled = this.currentPage &lt;= 1;
+    }
+    
+    // Disable/enable next button
+    if (nextBtn) {
+      nextBtn.disabled = this.currentPage >= this.totalPages;
+    }
+  }
+}
+
+customElements.define('page-switcher', PageSwitcher);
+export default PageSwitcher;</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Thu May 22 2025 00:50:14 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

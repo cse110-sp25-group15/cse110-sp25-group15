@@ -1,22 +1,22 @@
 .label {
-    font-family: Arial;
-    padding: 6px 0px;
-    font-weight: bold;
-    color: rgb(170, 170, 170);
-    /* background-color: rgb(238, 239, 240); */
-    background-color: #131612;
-    /* border: 1px solid rgb(179, 179, 179); */
-    border: 0px;
-    font-size: 1.1em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 6px 12px;
+    font-weight: 500;
+    color: #666666;
+    background-color: transparent;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    white-space: nowrap;
 }
 
 .label:hover {
-    cursor: pointer;
     color: white;
 }
 
 .label.selected {
     color: white;
-    transition: ease 250ms;
+    font-weight: 600;
     border-bottom: 2px solid white;
 }

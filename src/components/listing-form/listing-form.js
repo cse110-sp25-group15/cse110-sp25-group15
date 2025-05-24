@@ -14,11 +14,15 @@ class ListingForm extends HTMLElement {
     this.wordCounter = this.shadowRoot.querySelector('#word-count');
     this.descriptionField = this.shadowRoot.querySelector('#description');
     this.mediaInput = this.shadowRoot.querySelector('#media-upload');
-    this.previewContainer = this.shadowRoot.querySelector('#preview-container');
+    this.previewModal = this.shadowRoot.querySelector('#preview-modal');
+    this.closePreviewButton = this.shadowRoot.querySelector('.close-preview');
+    this.previewButton = this.shadowRoot.querySelector('#preview-button');
 
     this.form.addEventListener('submit', this._handleSubmit.bind(this));
     this.descriptionField.addEventListener('input', this._updateWordCount.bind(this));
     this.mediaInput.addEventListener('change', this._previewMedia.bind(this));
+    this.previewButton.addEventListener('click', this._showPreview.bind(this));
+    this.closePreviewButton.addEventListener('click', this._hidePreview.bind(this));
   }
 
   _updateWordCount() {
@@ -29,6 +33,11 @@ class ListingForm extends HTMLElement {
   _previewMedia() {
     const files = this.mediaInput.files;
     this.previewContainer.innerHTML = '';
+    
+    if (files.length === 0) {
+      return; // Show the upload prompt again
+    }
+
     Array.from(files).forEach((file) => {
       const element = file.type.startsWith('image/')
         ? document.createElement('img')
@@ -37,15 +46,35 @@ class ListingForm extends HTMLElement {
           : null;
 
       if (element) {
+        const container = document.createElement('div');
+     
+        container.className = 'thumbnail-container';
+            
         element.className = 'thumbnail';
         element.src = URL.createObjectURL(file);
+            
         if (element.tagName === 'VIDEO') {
+     
           element.controls = true;
           element.muted = true;
           element.loop = true;
         }
+            
+        // Add remove button
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'remove-thumbnail';
+        removeBtn.innerHTML = '&times;';
+        removeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          container.remove();
+          this._updateFileList();
+        });
+            
+        container.appendChild(element);
+        container.appendChild(removeBtn);
+        this.previewContainer.appendChild(container);
+            
         element.onload = element.onloadeddata = () => URL.revokeObjectURL(element.src);
-        this.previewContainer.appendChild(element);
       }
     });
   }
@@ -69,21 +98,76 @@ class ListingForm extends HTMLElement {
     };
   }
 
-  _handlePreview(event) {
-    event.preventDefault();
-    const data = this._gatherFormData();
-    const errors = this._validateForm(data);
-    if (errors.length === 0) {
-      this.dispatchEvent(new CustomEvent('listing-preview', {
-        bubbles: true,
-        composed: true,
-        detail: data,
-      }));
-    } else {
-      alert(errors.join('\n'));
+  _showPreview() {
+    const formData = this._gatherFormData();
+    this._updatePreviewContent(formData);
+    this.previewModal.classList.add('visible');
+  }
+
+  _hidePreview() {
+    this.previewModal.classList.remove('visible');
+  }
+
+  _updatePreviewContent(data) {
+    const previewContent = this.shadowRoot.querySelector('.preview-content');
+    
+    // Update title (add this section)
+    const previewTitle = previewContent.querySelector('.preview-title');
+    if (previewTitle) {
+      previewTitle.textContent = data.title || 'Untitled';
+    }
+    
+    // Update price
+    previewContent.querySelector('.preview-price').textContent = 
+        data.price ? `$${parseFloat(data.price).toFixed(2)}` : '$00.00';
+    
+    // Update meta info
+    const metaElements = previewContent.querySelectorAll('.preview-meta span');
+    metaElements[0].textContent = 'Just Now';
+    metaElements[2].textContent = data.category || 'Category';
+    metaElements[4].textContent = data.condition || 'Condition';
+    
+    // Update description
+    previewContent.querySelector('.preview-description').textContent = 
+        data.description || 'No description provided';
+    
+    // Update seller info
+    const sellerInfo = previewContent.querySelector('.preview-seller-info');
+    sellerInfo.querySelector('p:nth-child(2)').textContent = 
+        `Phone Number: ${data.phone || 'Not provided'}`;
+    sellerInfo.querySelector('p:nth-child(3)').textContent = 
+        `Instagram: ${data.instagram || 'Not provided'}`;
+    
+    // Update media preview (add this section)
+    const mediaPreview = previewContent.querySelector('.preview-media');
+    if (mediaPreview) {
+      mediaPreview.innerHTML = '';
+      if (data.files && data.files.length > 0) {
+    
+        data.files.forEach((file) => {
+          const url = URL.createObjectURL(file);
+          const mediaElement = file.type.startsWith('image/') 
+            ? document.createElement('img')
+            : document.createElement('video');
+                
+          mediaElement.src = url;
+          mediaElement.className = 'preview-thumbnail';
+                
+          if (mediaElement.tagName === 'VIDEO') {
+            mediaElement.controls = true;
+            mediaElement.muted = true;
+          }
+    
+          mediaElement.onload = () => URL.revokeObjectURL(url);
+    
+          mediaPreview.appendChild(mediaElement);
+        });
+      } else {
+        mediaPreview.innerHTML = '<div class="no-media">No media uploaded</div>';
+      }
     }
   }
-  
+
   _handleSubmit(event) {
     console.log('Form submitted');
     event.preventDefault();

@@ -1,84 +1,153 @@
+
+<header>
+    <div class="site-header">
+        <div class="logo" style="cursor: pointer;">
+            <img src="../../assets/triton.png" alt="Triton trident">
+            <span>MARKETPLACE</span>
+        </div>
+        <nav class="main-nav">
+            <a href="#marketplace" id="browse-link">BROWSE</a>
+            <a href="/list">LIST AN ITEM</a>
+        </nav>
+        <div class="user-icons">
+            <search-box></search-box>
+            <auth-pill></auth-pill>
+        </div>
+    </div>
+</header>
+
 <form class="listing-form">
-    <div class="media-upload">
-        <label
-            for="media-upload"
-            class="media-label"
-            title="Upload Media"
-        >
-            <span class="folder-icon"></span> Upload Files
-            <input
-                type="file"
-                id="media-upload"
-                name="media"
-                accept="image/*,video/*"
-                multiple
-                hidden
-            >
-        </label>
-        <div id="preview-container" class="preview-container"></div>
-    </div>
+    <div class="form-columns">
+        <div class="left-column">
+            <div class="media-upload">
+                <h2>Media Upload</h2>
+                <div class="upload-container">
+                    <label
+                        for="media-upload"
+                        class="media-label"
+                        title="Upload Media"
+                    >
+                        <span class="folder-icon">Choose or Drag a File Here</span> 
+                        <input
+                            type="file"
+                            id="media-upload"
+                            name="media"
+                            accept="image/*,video/*"
+                            multiple
+                            hidden
+                            required
+                        >
+                        <div id="preview-container"></div>
+                    </label>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="right-column">
+            <div class="field-cluster">
+                <label>
+                    Title
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Untitled"
+                        required
+                    >
+                </label>
+                <label>
+                    Price
+                    <input
+                        type="text"
+                        name="price"
+                        placeholder="$00.00"
+                        required
+                    >
+                </label>
+                <label>
+                    Category
+                    <select name="category" required>
+                        <option value="">Select category</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Books">Books</option>
+                        <option value="Supplies">Supplies</option>
+                        <option value="Tech">Tech</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Apparel">Apparel</option>
+                        <option value="Dorm_life">Dorm Life</option>
+                        <option value="Furniture">Furniture</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </label>
+                <label>
+                    Condition
+                    <select name="condition" required>
+                        <option value="">Select condition</option>
+                        <option value="New">New</option>
+                        <option value="Like New">Like New</option>
+                        <option value="Lightly Used">Lightly Used</option>
+                        <option value="Used">Used</option>
+                    </select>
+                </label>
+            </div>
 
-    <div class="field-cluster">
-        <label>
-            Title
-            <input
-                type="text"
-                name="title"
-                required
-            >
-        </label>
-        <label>
-            Price
-            <input
-                type="text"
-                name="price"
-                required
-            >
-        </label>
-        <label>
-            Category
-            <select name="category" required>
-                <option value="">Select category</option>
-                <option value="Sports">Sports</option>
-                <option value="Books">Books</option>
-                <option value="Supplies">Supplies</option>
-                <option value="Tech">Tech</option>
-                <option value="Transportation">Transportation</option>
-                <option value="Apparel">Apparel</option>
-                <option value="Dorm_life">Dorm Life</option>
-                <option value="Furniture">Furniture</option>
-                <option value="Other">Other</option>
-            </select>
-        </label>
-        <label>
-            Condition
-            <select name="condition" required>
-                <option value="">Select condition</option>
-                <option value="New">New</option>
-                <option value="Like New">Like New</option>
-                <option value="Lightly Used">Lightly Used</option>
-                <option value="Used">Used</option>
-            </select>
-        </label>
-    </div>
+            <div class="description">
+                <label for="description">Description</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="5"
+                    placeholder="Describe your item..."
+                ></textarea>
+                <div id="word-count">0/250</div>
+            </div>
 
-    <div class="description">
-        <label for="description">Description</label>
-        <textarea
-            id="description"
-            name="description"
-            rows="5"
-            placeholder="Describe your item..."
-        ></textarea>
-        <div id="word-count">0/250</div>
-    </div>
-
-    <div class="actions">
-        <button
-            type="button"
-            id="preview-button"
-            class="pre-button"
-        >See Preview</button>
-        <button type="submit" class="comp-button">Complete</button>
+            <div class="actions">
+                
+                <button
+                    type="button"
+                    id="preview-button"
+                    class="pre-button"
+                >See Preview</button>
+                
+                <button type="submit" class="comp-button">Complete</button>
+            </div>
+        </div>
     </div>
 </form>
+<div class="preview-modal" id="preview-modal">
+    <div class="preview-content">
+        <div class="preview-header">
+            <h1>UCSD MARKETPLACE</h1>
+            <div class="draft-label">DRAFT PREVIEW</div>
+        </div>
+        <div class="preview-title">Untitled</div>
+        <div class="preview-media">
+            
+        </div>
+        <div class="preview-body">
+            <div class="preview-price">$00.00</div>
+            <div class="preview-meta">
+                <span>Just Now</span>
+                <span>•</span>
+                <span>Location</span>
+                <span>•</span>
+                <span>Condition</span>
+            </div>
+            
+            <div class="preview-description">
+                Item description will appear here...
+            </div>
+            
+            <div class="preview-seller-info">
+                <h3>Seller's Info</h3>
+                <p>Phone Number: Not provided</p>
+                <p>Instagram: Not provided</p>
+            </div>
+        </div>
+        
+        <div class="preview-actions">
+            <button class="close-preview">Close Preview</button>
+        </div>
+    </div>
+</div>
+

@@ -29,6 +29,13 @@ class BrowsePage extends HTMLElement {
 
       this.setAttribute(selected);
     });
+    // Auto-select "All" category on load
+    setTimeout(() => {
+      const allButton = this.shadowRoot.querySelector('category-button');
+      if (allButton) {
+        allButton.setAttribute('selected', '');
+      }
+    }, 100);
   }
 
   attributeChangedCallback(name, _oldValue, _newValue) {

@@ -29,7 +29,7 @@
 <nav >
     
     
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BottomNav.html">BottomNav</a></li><li><a href="HeroBanner.html">HeroBanner</a><ul class='methods'><li data-type='method'><a href="HeroBanner.html#connectedCallback">connectedCallback</a></li></ul></li><li><a href="ProductViewer.html">ProductViewer</a><ul class='methods'><li data-type='method'><a href="ProductViewer.html#hide">hide</a></li><li data-type='method'><a href="ProductViewer.html#show">show</a></li></ul></li><li><a href="SearchBox.html">SearchBox</a><ul class='methods'><li data-type='method'><a href="SearchBox.html#connectedCallback">connectedCallback</a></li><li data-type='method'><a href="SearchBox.html#setupEventListeners">setupEventListeners</a></li><li data-type='method'><a href="SearchBox.html#toggleSearch">toggleSearch</a></li></ul></li><li><a href="SearchHero.html">SearchHero</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ApplicationOverview.html">ApplicationOverview</a></li><li><a href="tutorial-database.html">database</a></li><li><a href="tutorial-OnBoarding.html">OnBoarding</a></li><li><a href="tutorial-SupabaseIntegration.html">SupabaseIntegration</a></li><li><a href="tutorial-WebComponentGuide.html">WebComponentGuide</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BottomNav.html">BottomNav</a></li><li><a href="HeroBanner.html">HeroBanner</a><ul class='methods'><li data-type='method'><a href="HeroBanner.html#connectedCallback">connectedCallback</a></li></ul></li><li><a href="ProductViewer.html">ProductViewer</a><ul class='methods'><li data-type='method'><a href="ProductViewer.html#disconnectedCallback">disconnectedCallback</a></li><li data-type='method'><a href="ProductViewer.html#hide">hide</a></li><li data-type='method'><a href="ProductViewer.html#show">show</a></li></ul></li><li><a href="SearchBox.html">SearchBox</a><ul class='methods'><li data-type='method'><a href="SearchBox.html#connectedCallback">connectedCallback</a></li><li data-type='method'><a href="SearchBox.html#setupEventListeners">setupEventListeners</a></li><li data-type='method'><a href="SearchBox.html#toggleSearch">toggleSearch</a></li></ul></li><li><a href="SearchHero.html">SearchHero</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ApplicationOverview.html">ApplicationOverview</a></li><li><a href="tutorial-database.html">database</a></li><li><a href="tutorial-OnBoarding.html">OnBoarding</a></li><li><a href="tutorial-SupabaseIntegration.html">SupabaseIntegration</a></li><li><a href="tutorial-WebComponentGuide.html">WebComponentGuide</a></li></ul>
     
 </nav>
 
@@ -110,6 +110,39 @@ class ProductViewer extends HTMLElement {
   }
 
   /**
+   * Lock body scroll by adding overflow hidden
+   * @private
+   */
+  _lockBodyScroll() {
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = this._getScrollbarWidth() + 'px';
+  }
+
+  /**
+   * Unlock body scroll by removing overflow hidden
+   * @private
+   */
+  _unlockBodyScroll() {
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  }
+
+  /**
+   * Get scrollbar width to prevent layout shift
+   * @private
+   */
+  _getScrollbarWidth() {
+    const scrollDiv = document.createElement('div');
+    scrollDiv.style.cssText = 'width: 100px; height: 100px; overflow: scroll; position: absolute; top: -9999px;';
+    document.body.appendChild(scrollDiv);
+    
+    const scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+    document.body.removeChild(scrollDiv);
+    
+    return scrollbarWidth;
+  }
+
+  /**
    * Show the overlay
    */
   show() {
@@ -117,6 +150,7 @@ class ProductViewer extends HTMLElement {
     if (overlay) {
       overlay.style.display = 'block';
       this._isVisible = true;
+      this._lockBodyScroll();
       console.log('Overlay shown');
     }
   }
@@ -129,6 +163,7 @@ class ProductViewer extends HTMLElement {
     if (overlay) {
       overlay.style.display = 'none';
       this._isVisible = false;
+      this._unlockBodyScroll();
       console.log('Overlay hidden');
     }
   }
@@ -211,8 +246,8 @@ class ProductViewer extends HTMLElement {
     });
 
     // Prevent clicks on overlay content from bubbling to overlay
-    const overlayContent = this.shadowRoot.querySelector('.overlay-content');
-    overlayContent?.addEventListener('click', (e) => {
+    const productDetail = this.shadowRoot.querySelector('.product-detail');
+    productDetail?.addEventListener('click', (e) => {
       e.stopPropagation();
     });
 
@@ -237,6 +272,16 @@ class ProductViewer extends HTMLElement {
     this._currentIndex = (this._currentIndex + dir + images.length) % images.length;
     this._updateContent();
   }
+
+  /**
+   * Clean up when component is removed
+   */
+  disconnectedCallback() {
+    // Ensure body scroll is unlocked if component is removed while overlay is open
+    if (this._isVisible) {
+      this._unlockBodyScroll();
+    }
+  }
 }
 
 customElements.define('product-detail', ProductViewer);</code></pre>
@@ -253,7 +298,7 @@ customElements.define('product-detail', ProductViewer);</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Sat May 24 2025 22:05:05 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Sat May 24 2025 22:24:48 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

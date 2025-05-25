@@ -63,6 +63,39 @@ class ProductViewer extends HTMLElement {
   }
 
   /**
+   * Lock body scroll by adding overflow hidden
+   * @private
+   */
+  _lockBodyScroll() {
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = this._getScrollbarWidth() + 'px';
+  }
+
+  /**
+   * Unlock body scroll by removing overflow hidden
+   * @private
+   */
+  _unlockBodyScroll() {
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  }
+
+  /**
+   * Get scrollbar width to prevent layout shift
+   * @private
+   */
+  _getScrollbarWidth() {
+    const scrollDiv = document.createElement('div');
+    scrollDiv.style.cssText = 'width: 100px; height: 100px; overflow: scroll; position: absolute; top: -9999px;';
+    document.body.appendChild(scrollDiv);
+    
+    const scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+    document.body.removeChild(scrollDiv);
+    
+    return scrollbarWidth;
+  }
+
+  /**
    * Show the overlay
    */
   show() {
@@ -70,6 +103,7 @@ class ProductViewer extends HTMLElement {
     if (overlay) {
       overlay.style.display = 'block';
       this._isVisible = true;
+      this._lockBodyScroll();
       console.log('Overlay shown');
     }
   }
@@ -82,6 +116,7 @@ class ProductViewer extends HTMLElement {
     if (overlay) {
       overlay.style.display = 'none';
       this._isVisible = false;
+      this._unlockBodyScroll();
       console.log('Overlay hidden');
     }
   }
@@ -164,8 +199,8 @@ class ProductViewer extends HTMLElement {
     });
 
     // Prevent clicks on overlay content from bubbling to overlay
-    const overlayContent = this.shadowRoot.querySelector('.overlay-content');
-    overlayContent?.addEventListener('click', (e) => {
+    const productDetail = this.shadowRoot.querySelector('.product-detail');
+    productDetail?.addEventListener('click', (e) => {
       e.stopPropagation();
     });
 
@@ -189,6 +224,16 @@ class ProductViewer extends HTMLElement {
     if(images.length === 0) {return;}
     this._currentIndex = (this._currentIndex + dir + images.length) % images.length;
     this._updateContent();
+  }
+
+  /**
+   * Clean up when component is removed
+   */
+  disconnectedCallback() {
+    // Ensure body scroll is unlocked if component is removed while overlay is open
+    if (this._isVisible) {
+      this._unlockBodyScroll();
+    }
   }
 }
 

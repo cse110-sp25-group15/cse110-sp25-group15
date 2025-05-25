@@ -2,156 +2,282 @@
   --gap: 16px;
   --max-columns: 6;
   --max-container-width: 1800px;
+  --blue: #04133B;
+  --gold: #F3C114;
+  --white: #FFFFFF;
+  --text-dark: #1a1a1a;
+  --text-gray: #666666;
+  --border-light: #e5e5e5;
 }
 
 .browse-area {
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: var(--white);
   align-items: center;
   width: 100%;
+  padding: 0 200px; /* Added 200px padding on left and right */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
+}
+
+/* Header Section - Tenrevel Style */
+.browse-header {
+  background: var(--white);
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
   padding: 2rem 0;
+  border-bottom: 1px solid var(--border-light);
 }
 
-.categories {
-    position: sticky;
-    top: 70px;
-    z-index: 1;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    background-color: #131612; /* Adding background color so content doesn't show through */
-    width: 100%; /* 80 % */
-    padding: 20px 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional: adds a subtle shadow when sticky */
-    max-width: 1500px;
-    margin: 0 auto;
-    border-radius: 8px;
-}
-
-.browse-area {
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    align-items: center;
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
 }
 
 .browse-title {
-    font-size: 2.5em;
-    font-weight: bold;
-    font-family: Arial;
-    padding: 10px 20px;
-    justify-self: flex-start;
-    color: white;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.browse-tagline {
+  color: var(--text-dark);
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0;
+  max-width: 400px;
+  text-align: right;
+  line-height: 1.4;
+}
+
+/* Categories Section - Keep Original Structure */
+.categories {
+  position: sticky;
+  top: 76px;
+  z-index: 10;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--white);
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 1.5rem 0;
+  /* Remove both box-shadow and border-bottom */
+}
+
+/* Hide the old browse title inside categories */
+.categories .browse-title {
+  display: none;
 }
 
 .category-list {
-    flex: 1;
-    gap: 16px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center; 
-    margin: 0 1rem;
-}
-
-.sort-option > p {
-    font-family: Arial;
-    font-weight: 600;
-    color: rgb(233, 233, 233);
-
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  flex: 1;
+  margin: 0;
 }
 
 .sort-option {
   display: flex;
   align-items: center;
-  gap: 6px;
-  position: relative;
-  margin-right: 10px;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.sort-option > p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 500;
+  color: var(--text-dark);
+  margin: 0;
+  font-size: 0.9rem;
 }
 
 #dropdown {
-  padding: 6px;
-  background-color: #131612;
-  color: white;
-  font-family: Arial, sans-serif;
-  font-weight: bold;
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  background-color: var(--white);
+  color: var(--text-dark);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 500;
   border-radius: 4px;
-  border: 1px solid #777777;
+  border: 1px solid var(--border-light);
   cursor: pointer;
-}
-#dropdown option {
-  font-family: sans-serif;
-  font-weight: bold;
+  font-size: 0.9rem;
+  min-width: 140px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+#dropdown:hover {
+  border-color: var(--text-gray);
+}
+
+#dropdown:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(243, 193, 20, 0.1);
+}
+
+#dropdown option {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 500;
+  padding: 0.5rem;
+}
 
 .products-container {
-
   display: flex;
-
   flex-wrap: wrap;
-
   justify-content: flex-start;
-
   align-content: flex-start;
-
   height: auto;
-
   overflow: visible;
-
   gap: var(--gap);
-
-  background: var(--background-color);
-
-  max-width: var(--max-container-width) !important;
-
-  min-width: min(var(--max-container-width), 100%);
-
+  background: var(--white);
+  width: 100%; /* Changed from 80% to 100% to match categories width */
+  max-width: 1500px; /* Maximum 1500px for 5 cards */
+  margin: 1rem auto 0 auto;
   padding: var(--gap);
-
   box-sizing: border-box;
-
-  scrollbar-width: none;               /* Firefox */
-
-  
-
+  scrollbar-width: none;
 }
 
 .products-container::-webkit-scrollbar { 
   display: none; 
 }
 
-/* host element for the card */
+/* Product Cards - Responsive with fixed column counts */
 .card {
   aspect-ratio: 3 / 4;
   box-sizing: border-box;
-  border: 1px solid #ccc;
-  background: white;
+  background: var(--white);
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,.1);
   flex-grow: 0;
   flex-shrink: 0;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  transition: box-shadow 0.3s ease;
 }
 
-/* 2 columns */
-@media (max-width: 950px) {
-  .card { width: calc(50% - (var(--gap) / 2)); }
+.card:hover {
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
-/* 3 columns */
-@media (min-width: 951px) and (max-width: 1250px) {
-  .card { width: calc(33.3333% - (var(--gap) * 2 / 3)); }
+
+/* 5 cards maximum on large screens (1500px max container) */
+@media (min-width: 1200px) {
+  .card { 
+    width: calc(20% - (var(--gap) * 4 / 5)); /* 5 cards per row */
+  }
 }
-/* 4 columns */
-@media (min-width: 1251px) and (max-width: 1550px) {
-  .card { width: calc(25% - (var(--gap) * 3 / 4)); }
+
+/* 4 cards on medium screens */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .card { 
+    width: calc(25% - (var(--gap) * 3 / 4)); /* 4 cards per row */
+  }
 }
-/* 5 columns */
-@media (min-width: 1551px) and (max-width: 1950px) {
-  .card { width: calc(20% - (var(--gap) * 4 / 5)); }
+
+/* 2 cards minimum on small screens */
+@media (max-width: 767px) {
+  .card { 
+    width: calc(50% - (var(--gap) / 2)); /* 2 cards per row */
+  }
 }
-/* 6 columns (maximum) */
-@media (min-width: 1951px) {
-  .card { width: calc(16.6667% - (var(--gap) * 5 / 6)); }
-  .products-container { max-width: var(--max-container-width); }
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 1400px) {
+  .browse-area {
+    padding: 0 100px; /* Reduce padding on smaller screens */
+  }
+}
+
+@media (max-width: 800px) {
+  .browse-area {
+    padding: 0 50px; /* Further reduce padding on mobile */
+  }
+  
+  .browse-header {
+    padding: 1.5rem 1rem;
+  }
+  
+  .header-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .browse-title {
+    font-size: 1.75rem;
+  }
+  
+  .browse-tagline {
+    text-align: left;
+    max-width: none;
+  }
+  
+  .categories {
+    width: 90%;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+  
+  .category-list {
+    order: 2;
+    margin: 0;
+    gap: 6px;
+  }
+  
+  .sort-option {
+    order: 3;
+    align-self: flex-end;
+  }
+  
+  .products-container {
+    width: 100%; /* Changed from 90% to 100% to maintain alignment with categories */
+  }
+}
+
+@media (max-width: 500px) {
+  .browse-area {
+    padding: 0 20px; /* Minimal padding on very small screens */
+  }
+  
+  .browse-header {
+    padding: 1rem;
+  }
+  
+  .browse-title {
+    font-size: 1.5rem;
+  }
+  
+  .categories {
+    width: 95%;
+  }
+  
+  .category-list {
+    gap: 4px;
+  }
+  
+  .products-container {
+    width: 100%; /* Changed from 95% to 100% to maintain alignment with categories */
+  }
 }

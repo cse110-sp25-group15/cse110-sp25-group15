@@ -15,19 +15,19 @@
 
 body {
     background-color: #f7f7f7;
-    padding: 2rem;
+    padding: 0; /* Removed padding to prevent interference with alignment */
 }
 
 .search-banner {
-    width: 100%;
-    max-width: 1500px;
+    width: calc(100% - 400px); /* Subtract left + right margins (200px + 200px) */
+    max-width: none; /* Remove max-width constraint */
     height: 400px;
-    margin: 0 auto;
+    margin: 4rem 200px 0 200px; /* Use margin instead of padding for proper alignment */
     position: relative;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: var(--shadow);
-    margin-top: 4rem;
+    box-sizing: border-box;
 }
 
 .video-background {
@@ -139,9 +139,19 @@ body {
     fill: var(--white);
 }
 
-@media (max-width: 900px) {
+/* Responsive adjustments matching browse-page exactly */
+@media (max-width: 1400px) {
     .search-banner {
+        width: calc(100% - 200px); /* Subtract left + right margins (100px + 100px) */
+        margin: 4rem 100px 0 100px; /* Reduce margin on smaller screens */
+    }
+}
+
+@media (max-width: 800px) {
+    .search-banner {
+        width: calc(100% - 100px); /* Subtract left + right margins (50px + 50px) */
         height: 350px;
+        margin: 4rem 50px 0 50px; /* Further reduce margin on mobile */
     }
     
     .headline {
@@ -155,20 +165,18 @@ body {
     }
 }
 
-@media (max-width: 480px) {
-    body {
-        padding: 1rem;
-    }
-    
+@media (max-width: 500px) {
     .search-banner {
+        width: calc(100% - 40px); /* Subtract left + right margins (20px + 20px) */
         height: 300px;
         border-radius: 12px;
+        margin: 4rem 20px 0 20px; /* Minimal margin on very small screens */
     }
     
     .headline {
         font-size: 1.6rem;
         margin-bottom: 1.25rem;
-         text-wrap: wrap;
+        text-wrap: wrap;
     }
     
     .search-bar {

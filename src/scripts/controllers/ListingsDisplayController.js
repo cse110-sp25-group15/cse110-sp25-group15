@@ -179,4 +179,39 @@ export class ListingDisplayController {
   notifySuccess(message) {
     alert(message);
   }
+
+  /**
+   * Searches for listings matching the query string using the model
+   * @param {string} query - The search string
+   * @returns {Promise<Array>} Array of matching listing objects
+   */
+  async searchListings(query) {
+    return await this.model.searchListings(query);
+  }
+
+  /**
+   * Renders search results in the products container
+   * @param {string} query - The search string
+   */
+  async renderSearchResults(query) {
+    if (!this.productsContainer) {
+      console.error('Products container not found');
+      return;
+    }
+    this.productsContainer.innerHTML = '';
+    try {
+      const results = await this.searchListings(query);
+      if (!results || results.length === 0) {
+        this.productsContainer.innerHTML = '<div class="no-results">No results found.</div>';
+        return;
+      }
+      results.forEach((listing) => {
+        this.renderListingCard(listing);
+      });
+      console.log(`Rendered ${results.length} search results for query: "${query}"`);
+    } catch (err) {
+      this.productsContainer.innerHTML = '<div class="no-results">Error searching listings.</div>';
+      console.error('Error rendering search results:', err);
+    }
+  }
 }

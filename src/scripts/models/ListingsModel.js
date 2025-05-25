@@ -159,4 +159,30 @@ export class ListingModel {
       date_posted: listing.date_posted,
     };
   }
+
+  /**
+   * Searches listings by a query string in title or description (case-insensitive)
+   * @param {string} query - The search string
+   * @returns {Promise<Array>} Array of matching listing objects
+   */
+  async searchListings(query) {
+    if (!query || typeof query !== 'string') {
+      throw new Error('Query must be a non-empty string');
+    }
+    try {
+      // Use ilike for case-insensitive partial match on title or description
+      const { data: listings, error } = await supabase
+        .from('listings')
+        .select()
+        .or(`title.ilike.%${query}%,description.ilike.%${query}%`);
+      if (error) {
+        console.error('Error searching listings:', error);
+        throw error;
+      }
+      return listings;
+    } catch (err) {
+      console.error('Failed to search listings:', err);
+      throw err;
+    }
+  }
 }

@@ -9,6 +9,7 @@ class MarketplaceCard extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+    this.imageLoaded = false;
   }
 
   connectedCallback() {
@@ -21,6 +22,7 @@ class MarketplaceCard extends HTMLElement {
         
     // Set initial data if attributes are present
     this._updateContent();
+    this._setupImageLoading();
     
     // Add click event listener that emits a custom event
     this.shadowRoot.querySelector('.card-container')?.addEventListener('click', () => {
@@ -30,6 +32,60 @@ class MarketplaceCard extends HTMLElement {
         detail: { listingId: this.getAttribute('listing-id') },
       }));
     });
+  }
+
+  _setupImageLoading() {
+    const imageElement = this.shadowRoot.querySelector('.card-image');
+    const imageContainer = this.shadowRoot.querySelector('.image-container');
+    const placeholderSvg = this.shadowRoot.querySelector('.placeholder-image');
+
+    if (!imageElement || !imageContainer) {return;}
+
+    // Handle successful image load
+    imageElement.addEventListener('load', () => {
+      this.imageLoaded = true;
+      imageElement.classList.add('loaded');
+      imageContainer.classList.add('image-loaded');
+    });
+
+    // Handle image load error
+    imageElement.addEventListener('error', () => {
+      this.imageLoaded = false;
+      imageContainer.classList.add('image-loaded'); // Hide skeleton and triton
+      imageElement.style.display = 'none';
+      if (placeholderSvg) {
+        placeholderSvg.style.display = 'block';
+      }
+    });
+
+    // Start loading if image URL is already set
+    const imageUrl = this.getAttribute('image-url');
+    if (imageUrl && imageUrl !== 'https://via.placeholder.com/300x400') {
+      this._loadImage(imageUrl);
+    } else {
+      // No valid image URL, show placeholder immediately
+      imageContainer.classList.add('image-loaded');
+      imageElement.style.display = 'none';
+      if (placeholderSvg) {
+        placeholderSvg.style.display = 'block';
+      }
+    }
+  }
+
+  _loadImage(url) {
+    const imageElement = this.shadowRoot.querySelector('.card-image');
+    const imageContainer = this.shadowRoot.querySelector('.image-container');
+    
+    if (!imageElement || !imageContainer) {return;}
+
+    // Reset states
+    this.imageLoaded = false;
+    imageElement.classList.remove('loaded');
+    imageContainer.classList.remove('image-loaded');
+    imageElement.style.display = 'block';
+    
+    // Start loading
+    imageElement.src = url;
   }
 
   _getRelativeDate(dateString) {
@@ -63,6 +119,11 @@ class MarketplaceCard extends HTMLElement {
     // Only update if the value actually changed
     if (oldValue !== newValue && this.shadowRoot) {
       this._updateContent();
+      
+      // Handle image URL changes
+      if (name === 'image-url' && newValue) {
+        this._loadImage(newValue);
+      }
     }
   }
 
@@ -85,10 +146,8 @@ class MarketplaceCard extends HTMLElement {
       priceElement.textContent = price ? `$${price}` : '';
     }
         
-    // Set image
-    const imageUrl = this.getAttribute('image-url');
+    // Set image alt text
     if (imageElement) {
-      imageElement.src = imageUrl || 'https://via.placeholder.com/300x400';
       imageElement.alt = title || 'Product image';
     }
 
@@ -97,7 +156,6 @@ class MarketplaceCard extends HTMLElement {
       dateElement.textContent = listingDate ? this._getRelativeDate(listingDate) : '';
     }
   }
-
 }
 
 customElements.define('product-card', MarketplaceCard);

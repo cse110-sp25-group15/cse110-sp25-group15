@@ -7,7 +7,6 @@
         >&times;</button>
         <div class="gallery" tabindex="0">
             <div class="gallery-main">
-                <div class="thumb-strip"></div>
                 <img
                     class="main-image"
                     src=""
@@ -18,6 +17,7 @@
                     decoding="async"
                 >
             </div>
+            <div class="thumb-strip"></div>
         </div>
         <div class="meta-panel">
             <h1 class="product-name"></h1>
@@ -29,12 +29,28 @@
             <b class="description-title">Description:</b>
             <p class="description-block"></p>
             <div class="contact-box">
-                <textarea class="contact-message" rows="1">Hi, is this still available?</textarea>
+                <textarea
+                    class="contact-message"
+                    rows="2"
+                    placeholder="Hi, is this still available?"
+                ></textarea>
                 <button class="send-btn" type="button">
-                    <span class="chat-icon" aria-hidden="true">💬</span>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="m3 3 3 9-3 9 19-9Z"/>
+                        <path d="m6 12 13 0"/>
+                    </svg>
                     Send Message
                 </button>
             </div>
             <slot></slot>
         </div>
-    </section></div>
+    </section>
+</div>

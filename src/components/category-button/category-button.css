@@ -12,11 +12,11 @@
 }
 
 .label:hover {
-    color: white;
+    color: #1a1a1a;
 }
 
 .label.selected {
-    color: white;
+    color: #04133B;
     font-weight: 600;
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid #04133B;
 }

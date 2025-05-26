@@ -58,7 +58,7 @@ Build Documentation
 
 ### Stage Details
 
-#### 1–6. \[Unchanged from Phase 1]
+#### 1–6. 
 
 Stages 1 through 6 remain the same (see Phase 1), covering code checkout, setup, linting, testing, and documentation generation.
 

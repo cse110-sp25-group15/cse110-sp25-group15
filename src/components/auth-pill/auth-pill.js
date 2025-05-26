@@ -33,11 +33,21 @@ class AuthPill extends HTMLElement {
   }
 
   setupListeners() {
+    let link = window.location.href;
+    // if link is not localhost add /cse110-sp25-group15/list
+    if (!link.includes('localhost')) {
+      const basePath = '/cse110-sp25-group15';
+      if (!link.endsWith(basePath)) {
+        link += basePath;
+      }
+    }
+
+    console.log('AuthPill connected at:', link);
     // Login button
     this.loginBtn?.addEventListener('click', () => {
       supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: window.location.origin },
+        options: { redirectTo: link },
       });
     });
     
@@ -70,7 +80,7 @@ class AuthPill extends HTMLElement {
   handleNavigation(path) {
   // Direct navigation instead of dispatching event
     if (path === '/profile') {
-      window.location.href = '/profile.html';
+      window.location.href = '/cse110-sp25-group15/profile.html';
     } else {
       window.location.href = path;
     }

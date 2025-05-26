@@ -34,13 +34,13 @@ class ProfileInfo extends HTMLElement {
   setupEventListeners() {
     this.signOutBtn?.addEventListener('click', async () => {
       await supabase.auth.signOut();
-      window.location.href = '/';
+      window.location.href = '/cse110-sp25-group15/';
     });
 
     // Listen for auth state changes
     supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT') {
-        window.location.href = '/';
+        window.location.href = '/cse110-sp25-group15/';
       }
     });
   }
@@ -56,7 +56,7 @@ class ProfileInfo extends HTMLElement {
       if (!user || authError) {
         this.showError('Please sign in to view your profile');
         setTimeout(() => {
-          window.location.href = '/';
+          window.location.href = '/cse110-sp25-group15/';
         }, 2000);
         return;
       }

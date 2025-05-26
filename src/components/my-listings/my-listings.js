@@ -39,7 +39,7 @@ class MyListings extends HTMLElement {
     const createBtns = this.shadowRoot.querySelectorAll('.create-listing-btn');
     createBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
-        window.location.href = '/list';
+        window.location.href = '/cse110-sp25-group15/list';
       });
     });
   }

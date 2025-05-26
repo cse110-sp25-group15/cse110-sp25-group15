@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   if (!user) {
     // Redirect to home if not authenticated
-    window.location.href = '/';
+    window.location.href = '/cse110-sp25-group15/';
     return;
   }
 
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const logo = document.querySelector('.logo');
   if (logo) {
     logo.addEventListener('click', () => {
-      window.location.href = '/';
+      window.location.href = '/cse110-sp25-group15/';
     });
   }
 
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const query = e.detail.query;
       if (query) {
         // Redirect to home page with search query
-        window.location.href = `/?search=${encodeURIComponent(query)}`;
+        window.location.href = `/cse110-sp25-group15/?search=${encodeURIComponent(query)}`;
       }
     });
   }

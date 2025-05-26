@@ -13,6 +13,7 @@ export default defineConfig({
       input: {
         main: 'src/index.html',
         listings: 'src/list.html',
+        profile: 'src/profile.html',
       },
       output: {
         entryFileNames: '[name].js',

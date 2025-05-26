@@ -138,6 +138,62 @@ export class ListingModel {
   }
 
   /**
+ * Fetches listings created by a specific user
+ * @param {string} userId - UUID of the user
+ * @returns {Promise<Array>} Array of user's listing objects
+ */
+  async fetchListingsByUser(userId) {
+    try {
+      const { data: listings, error } = await supabase
+        .from('listings')
+        .select('*')
+        .eq('user_id', userId);
+
+      if (error) {
+        console.error('Error fetching user listings:', error);
+        throw error;
+      }
+
+      return listings;
+    } catch (err) {
+      console.error('Failed to fetch user listings:', err);
+      throw err;
+    }
+  }
+
+  /**
+ * Deletes a listing by its ID
+ * @param {string} listingId - UUID of the listing to delete
+ * @returns {Promise<void>}
+ */
+  async deleteListingById(listingId) {
+    try {
+      const { error: imageError } = await supabase
+        .from('images')
+        .delete()
+        .eq('listing_id', listingId);
+
+      if (imageError) {
+        console.warn('Warning: failed to delete images for listing:', imageError);
+      }
+
+      const { error } = await supabase
+        .from('listings')
+        .delete()
+        .eq('listing_id', listingId);
+
+      if (error) {
+        console.error('Error deleting listing:', error);
+        throw error;
+      }
+
+      console.log(`Listing ${listingId} deleted successfully.`);
+    } catch (err) {
+      console.error('Failed to delete listing:', err);
+      throw err;
+    }
+  }
+  /**
    * Formats a listing object for presentation
    * 
    * formatted listing is an object with the following properties:

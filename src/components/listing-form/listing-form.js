@@ -16,6 +16,8 @@ class ListingForm extends HTMLElement {
     this.mediaInput = this.shadowRoot.querySelector('#media-upload');
     this.previewModal = this.shadowRoot.querySelector('#preview-modal');
     this.closePreviewButton = this.shadowRoot.querySelector('.close-preview');
+    this.previewContainer = this.shadowRoot.querySelector('.preview-media');
+
     this.previewButton = this.shadowRoot.querySelector('#preview-button');
 
     this.form.addEventListener('submit', this._handleSubmit.bind(this));
@@ -179,6 +181,8 @@ class ListingForm extends HTMLElement {
         composed: true,
         detail: data,
       }));
+      console.log('SUBMIT TRIGGERED');
+
     } else {
       alert(errors.join('\n'));
     }

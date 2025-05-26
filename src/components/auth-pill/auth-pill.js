@@ -33,14 +33,7 @@ class AuthPill extends HTMLElement {
   }
 
   setupListeners() {
-    let link = window.location.href;
-    // if link is not localhost add /cse110-sp25-group15/list
-    if (!link.includes('localhost')) {
-      const basePath = '/cse110-sp25-group15';
-      if (!link.endsWith(basePath)) {
-        link += basePath;
-      }
-    }
+    const link = window.location.href;
 
     console.log('AuthPill connected at:', link);
     // Login button

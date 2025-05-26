@@ -27,7 +27,7 @@ class BrowsePage extends HTMLElement {
       console.log(e.target.value);
       ['new' , 'low', 'high'].forEach((attr) => this.removeAttribute(attr));
 
-      this.setAttribute(selected);
+      this.setAttribute(selected, '');
     });
     // Auto-select "All" category on load
     setTimeout(() => {
@@ -40,13 +40,17 @@ class BrowsePage extends HTMLElement {
 
   attributeChangedCallback(name, _oldValue, _newValue) {
     if (name === null) {return;}
-
-    this.dispatchEvent(new CustomEvent('sort-change', {
-      bubbles: true,
-      composed: true,
-    },
-    ));
     
+    if (name === 'new' || name === 'low' || name === 'high') {
+      this.dispatchEvent(new CustomEvent('sort-change', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          sortBy: name, 
+        },
+      },
+      ));
+    }
   }
 }
 

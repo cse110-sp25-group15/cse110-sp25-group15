@@ -6,7 +6,10 @@
         <title>List an Item - UCSD Marketplace</title>
         <link rel="stylesheet" href="./styles/header.css">
         <link rel="stylesheet" href="./styles/listing-page.css">
-        <script type="module" src="./listing-form/listing-form.js"></script>
+        <script type="module" src="./components/listing-form/listing-form.js"></script>
+        <script type="module" src="./components/bottom-nav/bottom-nav.js"></script>
+        <script type="module" src="./components/search-box/search-box.js"></script>
+        <script type="module" src="./components/auth-pill/auth-pill.js"></script>
     </head>
     <body>
         <!-- Use the same header as index.html -->
@@ -41,13 +44,5 @@
 
         <!-- Use the same bottom nav -->
         <bottom-nav></bottom-nav>
-
-        <!-- Import web components -->
-        <script type="module">
-        import './components/search-box/search-box.js';
-        import './components/auth-pill/auth-pill.js';
-        import './components/listing-form/listing-form.js';
-        import './components/bottom-nav/bottom-nav.js';
-        </script>
     </body>
 </html>

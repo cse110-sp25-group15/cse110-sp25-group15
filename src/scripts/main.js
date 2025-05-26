@@ -2,7 +2,6 @@ import { ListingDisplayController } from './controllers/ListingsDisplayControlle
 import { ListingSubmissionController } from './controllers/ListingsSubmissionController.js';
 import supabase from './utils/supabase.js';
 
-
 document.addEventListener('DOMContentLoaded', async () => {
   const listingDisplayController = new ListingDisplayController();
   listingDisplayController.init();

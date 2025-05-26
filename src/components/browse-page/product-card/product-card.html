@@ -1,11 +1,20 @@
 <div class="card-container">
     <div class="image-container">
+        <!-- Skeleton loader - shows while image is loading -->
+        <div class="skeleton-loader"></div>
+        
+        <!-- Triton placeholder - shows during loading -->
+        <div class="triton-placeholder"></div>
+        
+        <!-- Main product image -->
         <img
             class="card-image"
             src=""
             alt="Product image"
-            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+            loading="lazy"
         >
+        
+        <!-- Fallback SVG placeholder for broken images -->
         <svg
             class="placeholder-image"
             style="display: none;"

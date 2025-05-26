@@ -14,14 +14,14 @@ class ProductViewer extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._currentIndex = 0;
-    if (!this.shadowRoot.hasChildNodes()) {
-      const template = document.createElement('template');
-      template.innerHTML = `
+    this._isVisible = false; // Local visibility state
+    
+    const template = document.createElement('template');
+    template.innerHTML = `
       <style>${templateCSS}</style>
       ${templateHTML}
     `;
-      this.shadowRoot.appendChild(template.content.cloneNode(true));
-    }
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
   static get observedAttributes() {
@@ -29,7 +29,9 @@ class ProductViewer extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
-    if (oldVal !== newVal && this.shadowRoot) {
+    console.log(`Attribute changed: ${name}, Old Value: ${oldVal}, New Value: ${newVal}`);
+    if (oldVal !== newVal) {
+      console.log('Updating content due to attribute change');
       this._updateContent();
     }
   }
@@ -37,14 +39,86 @@ class ProductViewer extends HTMLElement {
   connectedCallback() {
     this._updateContent();
     this._addEventListeners();
+    this._initializeOverlay();
   }
 
   get images() {
-  // Split on commas and/or line breaks, trim, and filter out empty strings
+    // Split on commas and/or line breaks, trim, and filter out empty strings
     return (this.getAttribute('images') || '')
       .split(/[\s,]+/) // split on comma, space, or line break
       .map((s) => s.trim())
       .filter(Boolean);
+  }
+
+  /**
+   * Initialize overlay as hidden
+   * @private
+   */
+  _initializeOverlay() {
+    const overlay = this.shadowRoot.querySelector('.overlay');
+    if (overlay) {
+      overlay.style.display = 'none';
+      this._isVisible = false;
+    }
+  }
+
+  /**
+   * Lock body scroll by adding overflow hidden
+   * @private
+   */
+  _lockBodyScroll() {
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = this._getScrollbarWidth() + 'px';
+  }
+
+  /**
+   * Unlock body scroll by removing overflow hidden
+   * @private
+   */
+  _unlockBodyScroll() {
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  }
+
+  /**
+   * Get scrollbar width to prevent layout shift
+   * @private
+   */
+  _getScrollbarWidth() {
+    const scrollDiv = document.createElement('div');
+    scrollDiv.style.cssText = 'width: 100px; height: 100px; overflow: scroll; position: absolute; top: -9999px;';
+    document.body.appendChild(scrollDiv);
+    
+    const scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+    document.body.removeChild(scrollDiv);
+    
+    return scrollbarWidth;
+  }
+
+  /**
+   * Show the overlay
+   */
+  show() {
+    const overlay = this.shadowRoot.querySelector('.overlay');
+    if (overlay) {
+      overlay.style.display = 'block';
+      this._isVisible = true;
+      this._lockBodyScroll();
+      console.log('Overlay shown');
+    }
+  }
+
+  /**
+   * Hide the overlay
+   */
+  hide() {
+    const overlay = this.shadowRoot.querySelector('.overlay');
+    if (overlay) {
+      overlay.style.display = 'none';
+      this._isVisible = false;
+      this._unlockBodyScroll();
+      console.log('Overlay hidden');
+    }
   }
 
   /**
@@ -53,6 +127,7 @@ class ProductViewer extends HTMLElement {
    * @private
    */
   _updateContent() {
+    console.log('Updating content with images:', this.images);
     // Example: update main image
     const images = this.images;
     const mainImg = this.shadowRoot.querySelector('.main-image');
@@ -99,18 +174,41 @@ class ProductViewer extends HTMLElement {
    * @fires contact-seller
    */
   _addEventListeners() {
-    const left = this.shadowRoot.querySelector('.arrow.left');
-    const right = this.shadowRoot.querySelector('.arrow.right');
-    left?.addEventListener('click', () => this._cycleImage(-1));
-    right?.addEventListener('click', () => this._cycleImage(1));
     // Keyboard navigation
     this.shadowRoot.querySelector('.gallery')?.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {this._cycleImage(-1);};
       if (e.key === 'ArrowRight') {this._cycleImage(1);};
     });
 
-    this.shadowRoot.querySelector('.contact-btn')?.addEventListener('click', () => {
+    this.shadowRoot.querySelector('.send-btn')?.addEventListener('click', () => {
       this.dispatchEvent(new CustomEvent('contact-seller', { bubbles: true, composed: true }));
+    });
+
+    // Close button click
+    this.shadowRoot.querySelector('.close-btn')?.addEventListener('click', () => {
+      this.hide();
+    });
+
+    // Background click to close overlay
+    const overlay = this.shadowRoot.querySelector('.overlay');
+    overlay?.addEventListener('click', (e) => {
+      // Only close if clicking the overlay background (not the content)
+      if (e.target === overlay) {
+        this.hide();
+      }
+    });
+
+    // Prevent clicks on overlay content from bubbling to overlay
+    const productDetail = this.shadowRoot.querySelector('.product-detail');
+    productDetail?.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+
+    // ESC key to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this._isVisible) {
+        this.hide();
+      }
     });
   }
 
@@ -127,7 +225,16 @@ class ProductViewer extends HTMLElement {
     this._currentIndex = (this._currentIndex + dir + images.length) % images.length;
     this._updateContent();
   }
+
+  /**
+   * Clean up when component is removed
+   */
+  disconnectedCallback() {
+    // Ensure body scroll is unlocked if component is removed while overlay is open
+    if (this._isVisible) {
+      this._unlockBodyScroll();
+    }
+  }
 }
 
 customElements.define('product-detail', ProductViewer);
-

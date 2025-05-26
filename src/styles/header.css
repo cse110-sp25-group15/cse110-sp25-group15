@@ -50,6 +50,16 @@
   white-space: nowrap;
 }
 
+.main-nav a.current-page {
+    background-color: rgba(243, 193, 20, 0.2);
+    border-radius: 3px;
+    font-weight: 600;
+}
+
+.main-nav a.current-page:hover {
+    background-color: rgba(243, 193, 20, 0.3);
+}
+
 .main-nav a:hover {
   background-color: rgba(243, 193, 20, 0.15);
   border-radius: 3px;

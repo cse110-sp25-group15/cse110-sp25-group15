@@ -66,7 +66,7 @@
   height: 80px;
   opacity: 0.3;
   z-index: 2;
-  background-image: url('../../assets/triton.png');
+  background-image: url('triton.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

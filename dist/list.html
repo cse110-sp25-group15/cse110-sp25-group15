@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>List an Item - UCSD Marketplace</title>
+      <script type="module" crossorigin src="/cse110-sp25-group15/listings.js"></script>
+      <link rel="modulepreload" crossorigin href="/cse110-sp25-group15/bottom-nav.js">
+      <link rel="stylesheet" crossorigin href="/cse110-sp25-group15/bottom-nav.css">
+      <link rel="stylesheet" crossorigin href="/cse110-sp25-group15/listings.css">
+    </head>
+    <body>
+        <!-- Use the same header as index.html -->
+        <header>
+            <div class="site-header">
+                <div class="logo" style="cursor: pointer;">
+                    <img src="triton.png" alt="Triton trident">
+                    <span>MARKETPLACE</span>
+                </div>
+                <nav class="main-nav">
+                    <a href="/" id="browse-link">BROWSE</a>
+                    <a href="/list" class="active">LIST AN ITEM</a>
+                </nav>
+                <div class="user-icons">
+                    <search-box></search-box>
+                    <auth-pill></auth-pill>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="listing-page-container">
+                <div class="listing-header">
+                    <h1>List Your Item</h1>
+                    <p>Share what you don't need with the UCSD community</p>
+                </div>
+            
+                <!-- The listing form component without its own header -->
+                <listing-form></listing-form>
+            </div>
+        </main>
+
+        <!-- Use the same bottom nav -->
+        <bottom-nav></bottom-nav>
+    </body>
+</html>

@@ -3,11 +3,11 @@ import globals from 'globals';
 import markdown from '@eslint/markdown';
 import css from '@eslint/css';
 //import jsonPlugin from '@eslint/json';
-import { defineConfig } from 'eslint/config';
+import { defineConfig, globalIgnores } from 'eslint/config';
 import html from '@html-eslint/eslint-plugin';
 
 export default defineConfig([
-  
+  globalIgnores(['node_modules/**', 'src/dist/**', 'coverage/**', 'build/**', 'out/**', 'temp/**', 'dist/**', 'public/**', 'docs/**']),
   {
     ignores: ['docs/**, src/dist/**'], // Ignore docs and dist directories
     files: ['**/*.{js,mjs,cjs}'],

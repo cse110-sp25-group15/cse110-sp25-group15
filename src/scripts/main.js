@@ -2,6 +2,14 @@ import { ListingDisplayController } from './controllers/ListingsDisplayControlle
 import { ListingSubmissionController } from './controllers/ListingsSubmissionController.js';
 import supabase from './utils/supabase.js';
 
+// Handles navigation from auth-pill
+document.addEventListener('navigate', (e) => {
+  const path = e.detail.path;
+  if (path === '/profile') {
+    window.location.href = '/profile.html';
+  }
+});
+
 document.addEventListener('DOMContentLoaded', async () => {
   const listingDisplayController = new ListingDisplayController();
   listingDisplayController.init();

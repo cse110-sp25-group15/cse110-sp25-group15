@@ -29,7 +29,7 @@ class AuthPill extends HTMLElement {
     this.initials = this.shadowRoot.querySelector('.initials');
     this.signoutBtn = this.menu?.querySelector('#signout-button');
     this.profileLink = this.menu?.querySelector('#profile-link');
-    this.settingsLink = this.menu?.querySelector('#settings-link');
+
   }
 
   setupListeners() {
@@ -50,7 +50,6 @@ class AuthPill extends HTMLElement {
     // Menu actions
     this.signoutBtn?.addEventListener('click', this.handleSignout.bind(this));
     this.profileLink?.addEventListener('click', () => this.handleNavigation('/profile'));
-    this.settingsLink?.addEventListener('click', () => this.handleNavigation('/settings'));
     
     // Auth change listener
     supabase.auth.onAuthStateChange(this.handleAuthChange.bind(this));
@@ -69,9 +68,13 @@ class AuthPill extends HTMLElement {
   }
 
   handleNavigation(path) {
-    this.dispatchEvent(new CustomEvent('navigate', { 
-      bubbles: true, composed: true, detail: { path }, 
-    }));
+  // Direct navigation instead of dispatching event
+    if (path === '/profile') {
+      window.location.href = '/profile.html';
+    } else {
+      window.location.href = path;
+    }
+  
     this.menu.style.display = 'none';
     this.pill?.classList.remove('expanded');
   }

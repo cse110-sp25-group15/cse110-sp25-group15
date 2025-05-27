@@ -1,101 +1,95 @@
 <form class="listing-form">
-    <div class="form-columns">
-        <div class="left-column">
-            <div class="media-upload">
-                <h2>Media Upload</h2>
-                <div class="upload-container">
-                    <label
-                        for="media-upload"
-                        class="media-label"
-                        title="Upload Media"
-                    >
-                        <span class="folder-icon">Choose or Drag a File Here</span> 
-                        <input
-                            type="file"
-                            id="media-upload"
-                            name="media"
-                            accept="image/*,video/*"
-                            multiple
-                            hidden
-                            required
-                        >
+    <div class="media-upload">
+        <h2>Media Upload</h2>
+        <label
+            for="media-upload"
+            class="media-label"
+            title="Upload Media"
+        >
+            <span class="folder-icon">Choose or Drag a File Here</span> 
+            <input
+                type="file"
+                id="media-upload"
+                name="media"
+                accept="image/*,video/*"
+                multiple
+                hidden
+                required
+            >
 
-                    </label>
-                    
-                </div>
-            </div>
+        </label>     
+    </div>
+    <div class="right-column">
+        <div class="field-cluster">
+            <label>
+                Title
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="Untitled"
+                    required
+                >
+            </label>
+            <label>
+                Price
+                <input
+                    type="text"
+                    name="price"
+                    placeholder="$00.00"
+                    required
+                >
+            </label>
+            <label>
+                Category
+                <select name="category" required>
+                    <option value="">Select category</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Books">Books</option>
+                    <option value="Supplies">Supplies</option>
+                    <option value="Tech">Tech</option>
+                    <option value="Transportation">Transportation</option>
+                    <option value="Apparel">Apparel</option>
+                    <option value="Dorm_life">Dorm Life</option>
+                    <option value="Furniture">Furniture</option>
+                    <option value="Other">Other</option>
+                </select>
+            </label>
+            <label>
+                Condition
+                <select name="condition" required>
+                    <option value="">Select condition</option>
+                    <option value="New">New</option>
+                    <option value="Like New">Like New</option>
+                    <option value="Lightly Used">Lightly Used</option>
+                    <option value="Used">Used</option>
+                </select>
+            </label>
         </div>
-        <div class="right-column">
-            <div class="field-cluster">
-                <label>
-                    Title
-                    <input
-                        type="text"
-                        name="title"
-                        placeholder="Untitled"
-                        required
-                    >
-                </label>
-                <label>
-                    Price
-                    <input
-                        type="text"
-                        name="price"
-                        placeholder="$00.00"
-                        required
-                    >
-                </label>
-                <label>
-                    Category
-                    <select name="category" required>
-                        <option value="">Select category</option>
-                        <option value="Sports">Sports</option>
-                        <option value="Books">Books</option>
-                        <option value="Supplies">Supplies</option>
-                        <option value="Tech">Tech</option>
-                        <option value="Transportation">Transportation</option>
-                        <option value="Apparel">Apparel</option>
-                        <option value="Dorm_life">Dorm Life</option>
-                        <option value="Furniture">Furniture</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </label>
-                <label>
-                    Condition
-                    <select name="condition" required>
-                        <option value="">Select condition</option>
-                        <option value="New">New</option>
-                        <option value="Like New">Like New</option>
-                        <option value="Lightly Used">Lightly Used</option>
-                        <option value="Used">Used</option>
-                    </select>
-                </label>
-            </div>
 
-            <div class="description">
-                <label for="description">Description</label>
-                <textarea
-                    id="description"
-                    name="description"
-                    rows="5"
-                    placeholder="Describe your item..."
-                ></textarea>
-                <div id="word-count">0/250</div>
-            </div>
+        <div class="description">
+            <label for="description">Description</label>
+            <textarea
+                id="description"
+                name="description"
+                rows="6"
+                placeholder="Describe your item..."
+            ></textarea>
+            <div id="word-count">0/250</div>
+        </div>
 
-            <div class="actions">
+        <div class="actions">
                 
-                <button
-                    type="button"
-                    id="preview-button"
-                    class="pre-button"
-                >See Preview</button>
+            <button
+                type="button"
+                id="preview-button"
+                class="pre-button"
+            >See Preview</button>
                 
-                <button type="submit" class="comp-button">Complete</button>
-            </div>
+            <button type="submit" class="comp-button">Complete</button>
         </div>
     </div>
 </form>
+
 <div class="preview-modal" id="preview-modal">
     <div class="preview-content">
         <div class="preview-header">

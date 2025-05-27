@@ -5,9 +5,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>UCSD Marketplace</title>
-
         <!-- Styles -->
-        <link rel="stylesheet" href="./styles/body.css">
+        <link rel="stylesheet" href="./styles/base.css">
+        <link rel="stylesheet" href="./styles/listing-page.css">
         <title>UCSD Marketplace</title>
 
         <script type="module" src="/scripts/main.js"></script>
@@ -39,7 +39,7 @@
     <body>
         <header>
             <div class="site-header">
-                <div class="logo">
+                <div class="logo" style="cursor: pointer;">
                     <img src="triton.png" alt="Triton trident">
                     <span>MARKETPLACE</span>
                 </div>
@@ -56,11 +56,18 @@
         
         <main>
             <hero-banner></hero-banner>
+            <!-- 1st: Landing section -->
             <search-banner></search-banner>
+            <!-- 2nd: Browsing section -->
+
             <browse-page id="marketplace"></browse-page>
         </main>
+        <!-- Bottom Navigation -->
         <bottom-nav></bottom-nav>
+        <!-- Chat Widget Component -->
         <chat-widget></chat-widget>
+        
+        <!-- Product Overlay Component -->
         <product-detail id="product-detail-overlay"></product-detail>
         
     </body>

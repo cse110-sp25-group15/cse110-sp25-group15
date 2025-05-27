@@ -1,13 +1,50 @@
+/* Base styles and variables */
+:root {
+  --blue: #04133b;
+  --gold: #f3c114;
+  --white: #ffffff;
+  --font: "Segoe UI", Arial, sans-serif;
+  --nav-h: 76px;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: var(--font);
+}
+
+/* Main content area */
+main {
+  padding-top: var(--nav-h); /* Height of the header */
+  display: flex;
+  flex-direction: column;
+}
+
+hero-banner {
+  display: block;
+  height: calc(100vh - var(--nav-h));
+}
+
+/* Header positioning */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+}
 
 .site-header {
   min-height: var(--nav-h);
   background: var(--blue);
-  display: flex; 
+  display: flex;
   align-items: center;
   padding: 0 1rem;
   z-index: 100;
-  flex-wrap: wrap; 
-  justify-content: space-between; 
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .site-header .logo {
@@ -17,6 +54,7 @@
   font-weight: bold;
   transition: transform 0.2s ease;
   min-width: max-content;
+  cursor: pointer;
 }
 
 .site-header .logo img {
@@ -51,13 +89,13 @@
 }
 
 .main-nav a.current-page {
-    background-color: rgba(243, 193, 20, 0.2);
-    border-radius: 3px;
-    font-weight: 600;
+  background-color: rgba(243, 193, 20, 0.2);
+  border-radius: 3px;
+  font-weight: 600;
 }
 
 .main-nav a.current-page:hover {
-    background-color: rgba(243, 193, 20, 0.3);
+  background-color: rgba(243, 193, 20, 0.3);
 }
 
 .main-nav a:hover {
@@ -69,50 +107,48 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-left: auto; 
-  min-width: max-content; 
+  margin-left: auto;
+  min-width: max-content;
 }
-
 
 @media (max-width: 800px) {
   .site-header {
-flex-wrap: wrap;
+    flex-wrap: wrap;
     flex-direction: row;
     align-items: center;
   }
-  
+
   .site-header .logo {
     flex: 1 1 auto;
- margin-right: 1rem;
+    margin-right: 1rem;
   }
-  
+
   .main-nav {
     width: 100%;
     order: 3;
     margin-left: 0;
     padding: 0;
-    flex-direction: row; 
-    flex-wrap: wrap; 
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 0.5rem;
   }
-  
+
   .main-nav a {
     padding: 10px;
-    flex: 0 0 auto; 
+    flex: 0 0 auto;
   }
-  
+
   .user-icons {
-  margin-left: 1rem;
+    margin-left: 1rem;
   }
 }
-
 
 @media (max-width: 500px) {
   .main-nav {
     display: flex;
     flex-wrap: wrap;
   }
-  
+
   .main-nav a {
     padding: 8px;
     margin: 2px;

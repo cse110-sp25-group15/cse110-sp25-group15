@@ -54,7 +54,7 @@
 }
 
 .user-name {
-  color: var(--white);
+  color: white;
   font-size: 14px;
   font-weight: 500;
   max-width: 120px;
@@ -93,7 +93,7 @@
   top: 40px;
   right: 0;
   width: 240px;
-  background-color: var(--white);
+  background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   z-index: 100;

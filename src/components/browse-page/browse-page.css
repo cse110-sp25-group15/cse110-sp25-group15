@@ -2,17 +2,11 @@
   --gap: 16px;
   --max-columns: 6;
   --max-container-width: 1800px;
-  --blue: #04133B;
-  --gold: #F3C114;
-  --white: #FFFFFF;
-  --text-dark: #1a1a1a;
-  --text-gray: #666666;
-  --border-light: #e5e5e5;
 }
 
 .browse-area {
   display: block;
-  background-color: var(--white);
+  background-color: white;
   width: 100%;
   padding: 0 5%;
   box-sizing: border-box; 
@@ -20,7 +14,7 @@
 
 /* Header Section - Tenrevel Style */
 .browse-header {
-  background: var(--white);
+  background: white;
   width: 100%;
   max-width: var(--max-container-width);
   padding: 2rem 0;
@@ -59,7 +53,7 @@
   gap: 1rem;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--white);
+  background-color: white;
   width: 100%;
   max-width: var(--max-container-width);
   margin: 0 auto;
@@ -79,7 +73,7 @@
 
 #dropdown {
   padding: 0.5rem 2rem 0.5rem 0.75rem;
-  background-color: var(--white);
+  background-color: white;
   color: var(--text-dark);
   font-weight: 600;
   border-radius: 4px;
@@ -109,7 +103,7 @@
 .card {
   aspect-ratio: 3 / 4;
   box-sizing: border-box;
-  background: var(--white);
+  background: white;
   border-radius: 8px;
 }
 

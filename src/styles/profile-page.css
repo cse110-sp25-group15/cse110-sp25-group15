@@ -1,14 +1,4 @@
 /* Profile Page Styles */
-:root {
-    --blue: #04133B;
-    --gold: #F3C114;
-    --white: #FFFFFF;
-    --font: "Segoe UI", Arial, sans-serif;
-    --nav-h: 76px;
-    --navy-text: #04133B;
-    --light-gray: #f5f5f5;
-    --border-light: #e5e5e5;
-}
 
 body, html {
     margin: 0;

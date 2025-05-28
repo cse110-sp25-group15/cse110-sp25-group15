@@ -1,47 +1,81 @@
 <form class="listing-form">
-    <div class="media-upload">
-        <h2>Media Upload</h2>
-        <label
-            for="media-upload"
-            class="media-label"
-            title="Upload Media"
-        >
-            <span class="folder-icon">Choose or Drag a File Here</span> 
-            <input
-                type="file"
-                id="media-upload"
-                name="media"
-                accept="image/*,video/*"
-                multiple
-                hidden
-                required
-            >
+    <div class="form-grid">
+        <!-- Media Upload Section -->
+        <div class="upload-section">
+            <h3 class="section-title">Photos & Videos</h3>
+            <div class="upload-area">
+                <label for="media-upload" class="upload-label">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">
+                        <p class="upload-main">Drag & Drop your files here</p>
+                        <p class="upload-sub">or click to browse</p>
+                    </div>
+                    <input
+                        type="file"
+                        id="media-upload"
+                        name="media"
+                        accept="image/*,video/*"
+                        multiple
+                        hidden
+                    >
+                </label>
+                <div class="preview-container"></div>
+            </div>
+        </div>
 
-        </label>     
-    </div>
-    <div class="right-column">
-        <div class="field-cluster">
-            <label>
-                Title
+        <!-- Form Fields Section -->
+        <div class="form-section">
+            <h3 class="section-title">Item Details</h3>
+            
+            <div class="form-group">
+                <label for="title">Title</label>
                 <input
                     type="text"
+                    id="title"
                     name="title"
-                    placeholder="Untitled"
+                    placeholder="What are you selling?"
                     required
                 >
-            </label>
-            <label>
-                Price
-                <input
-                    type="text"
-                    name="price"
-                    placeholder="$00.00"
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <div class="price-input-wrapper">
+                        <span class="price-symbol">$</span>
+                        <input
+                            type="text"
+                            id="price"
+                            name="price"
+                            placeholder="0.00"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="condition">Condition</label>
+                    <select
+                        id="condition"
+                        name="condition"
+                        required
+                    >
+                        <option value="">Select condition</option>
+                        <option value="New">New</option>
+                        <option value="Like New">Like New</option>
+                        <option value="Lightly Used">Lightly Used</option>
+                        <option value="Used">Used</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select
+                    id="category"
+                    name="category"
                     required
                 >
-            </label>
-            <label>
-                Category
-                <select name="category" required>
                     <option value="">Select category</option>
                     <option value="Sports">Sports</option>
                     <option value="Books">Books</option>
@@ -53,43 +87,38 @@
                     <option value="Furniture">Furniture</option>
                     <option value="Other">Other</option>
                 </select>
-            </label>
-            <label>
-                Condition
-                <select name="condition" required>
-                    <option value="">Select condition</option>
-                    <option value="New">New</option>
-                    <option value="Like New">Like New</option>
-                    <option value="Lightly Used">Lightly Used</option>
-                    <option value="Used">Used</option>
-                </select>
-            </label>
-        </div>
+            </div>
 
-        <div class="description">
-            <label for="description">Description</label>
-            <textarea
-                id="description"
-                name="description"
-                rows="6"
-                placeholder="Describe your item..."
-            ></textarea>
-            <div id="word-count">0/250</div>
-        </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="6"
+                    placeholder="Describe your item in detail..."
+                ></textarea>
+                <div id="word-count" class="word-count">0/250</div>
+            </div>
 
-        <div class="actions">
-                
-            <button
-                type="button"
-                id="preview-button"
-                class="pre-button"
-            >See Preview</button>
-                
-            <button type="submit" class="comp-button">Complete</button>
+            <div class="actions">
+                <button
+                    type="button"
+                    id="preview-button"
+                    class="btn btn-secondary"
+                >
+                    <span class="btn-icon">👁</span>
+                    Preview
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <span class="btn-icon">✓</span>
+                    Create Listing
+                </button>
+            </div>
         </div>
     </div>
 </form>
 
+<!-- Preview Modal -->
 <div class="preview-modal" id="preview-modal">
     <div class="preview-content">
         <div class="preview-header">
@@ -97,30 +126,24 @@
             <div class="draft-label">DRAFT PREVIEW</div>
         </div>
         <div class="preview-title">Untitled</div>
-        <div class="preview-media">
-            
-        </div>
+        <div class="preview-media"></div>
         <div class="preview-body">
-            <div class="preview-price">$00.00</div>
+            <div class="preview-price">$0.00</div>
             <div class="preview-meta">
                 <span>Just Now</span>
                 <span>•</span>
-                <span>Location</span>
+                <span>No category</span>
                 <span>•</span>
-                <span>Condition</span>
+                <span>No condition</span>
             </div>
-            
             <div class="preview-description">
                 Item description will appear here...
             </div>
-            
             <div class="preview-seller-info">
                 <h3>Seller's Info</h3>
-                <p>Phone Number: Not provided</p>
-                <p>Instagram: Not provided</p>
+                <p>Contact information will be displayed here</p>
             </div>
         </div>
-        
         <div class="preview-actions">
             <button class="close-preview">Close Preview</button>
         </div>

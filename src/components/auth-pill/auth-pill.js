@@ -29,15 +29,18 @@ class AuthPill extends HTMLElement {
     this.initials = this.shadowRoot.querySelector('.initials');
     this.signoutBtn = this.menu?.querySelector('#signout-button');
     this.profileLink = this.menu?.querySelector('#profile-link');
-    this.settingsLink = this.menu?.querySelector('#settings-link');
+
   }
 
   setupListeners() {
+    const link = window.location.href;
+
+    console.log('AuthPill connected at:', link);
     // Login button
     this.loginBtn?.addEventListener('click', () => {
       supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: window.location.origin },
+        options: { redirectTo: link },
       });
     });
     
@@ -50,7 +53,6 @@ class AuthPill extends HTMLElement {
     // Menu actions
     this.signoutBtn?.addEventListener('click', this.handleSignout.bind(this));
     this.profileLink?.addEventListener('click', () => this.handleNavigation('/profile'));
-    this.settingsLink?.addEventListener('click', () => this.handleNavigation('/settings'));
     
     // Auth change listener
     supabase.auth.onAuthStateChange(this.handleAuthChange.bind(this));
@@ -69,9 +71,13 @@ class AuthPill extends HTMLElement {
   }
 
   handleNavigation(path) {
-    this.dispatchEvent(new CustomEvent('navigate', { 
-      bubbles: true, composed: true, detail: { path }, 
-    }));
+  // Direct navigation instead of dispatching event
+    if (path === '/profile') {
+      window.location.href = '/cse110-sp25-group15/profile.html';
+    } else {
+      window.location.href = path;
+    }
+  
     this.menu.style.display = 'none';
     this.pill?.classList.remove('expanded');
   }

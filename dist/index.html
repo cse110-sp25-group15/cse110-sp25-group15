@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>UCSD Marketplace</title>
+        <!-- Styles -->
+        <title>UCSD Marketplace</title>
+
+        
+        <!-- browser -->
+
+        <!-- hero -->
+
+        <!-- header -->
+
+        <!-- search banner -->
+        
+        <!-- chat widget -->
+
+        <!-- bottom nav -->
+        
+
+      <script type="module" crossorigin src="/cse110-sp25-group15/main.js"></script>
+      <link rel="modulepreload" crossorigin href="/cse110-sp25-group15/bottom-nav.js">
+      <link rel="modulepreload" crossorigin href="/cse110-sp25-group15/main2.js">
+      <link rel="modulepreload" crossorigin href="/cse110-sp25-group15/product-card.js">
+      <link rel="stylesheet" crossorigin href="/cse110-sp25-group15/bottom-nav.css">
+      <link rel="stylesheet" crossorigin href="/cse110-sp25-group15/main.css">
+    </head>
+
+    <body>
+        <header>
+            <div class="site-header">
+                <div class="logo" style="cursor: pointer;">
+                    <img src="triton.png" alt="Triton trident">
+                    <span>MARKETPLACE</span>
+                </div>
+                <nav class="main-nav">
+                    <a href="/cse110-sp25-group15/#marketplace" id="browse-link">BROWSE</a>
+                    <a href="/cse110-sp25-group15/list">LIST AN ITEM</a>
+                </nav>
+                <div class="user-icons">
+                    <search-box></search-box>
+                    <auth-pill></auth-pill>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <hero-banner></hero-banner>
+            <!-- 1st: Landing section -->
+            <search-banner></search-banner>
+            <!-- 2nd: Browsing section -->
+
+            <browse-page id="marketplace"></browse-page>
+        </main>
+        <!-- Bottom Navigation -->
+        <bottom-nav></bottom-nav>
+        <!-- Chat Widget Component -->
+        <chat-widget></chat-widget>
+        
+        <!-- Product Overlay Component -->
+        <product-detail id="product-detail-overlay"></product-detail>
+        
+    </body>
+
+</html>

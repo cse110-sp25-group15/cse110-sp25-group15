@@ -2,44 +2,31 @@
   --gap: 16px;
   --max-columns: 6;
   --max-container-width: 1800px;
-  --blue: #04133B;
-  --gold: #F3C114;
-  --white: #FFFFFF;
-  --text-dark: #1a1a1a;
-  --text-gray: #666666;
-  --border-light: #e5e5e5;
 }
 
 .browse-area {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--white);
-  align-items: center;
+  display: block;
+  background-color: white;
   width: 100%;
-  padding: 0 100px; /* Added 200px padding on left and right */
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  box-sizing: border-box; /* Ensure padding is included in width calculation */
+  padding: 0 5%;
+  box-sizing: border-box; 
 }
 
 /* Header Section - Tenrevel Style */
 .browse-header {
-  background: var(--white);
+  background: white;
   width: 100%;
-  max-width: 1500px;
-  margin: 0 auto;
+  max-width: var(--max-container-width);
   padding: 2rem 0;
   border-bottom: 1px solid var(--border-light);
+  justify-self: center;
 }
 
 .header-top {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 2rem;
-  max-width: 1500px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0;
+  align-items: center;
+  width: 100%;
 }
 
 .browse-title {
@@ -47,7 +34,6 @@
   font-weight: 600;
   color: var(--text-dark);
   margin: 0;
-  letter-spacing: -0.02em;
 }
 
 .browse-tagline {
@@ -56,8 +42,6 @@
   font-weight: 400;
   margin: 0;
   max-width: 400px;
-  text-align: right;
-  line-height: 1.4;
 }
 
 /* Categories Section - Keep Original Structure */
@@ -69,18 +53,14 @@
   gap: 1rem;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--white);
+  background-color: white;
   width: 100%;
-  max-width: 1500px;
+  max-width: var(--max-container-width);
   margin: 0 auto;
   padding: 1.5rem 0;
   /* Remove both box-shadow and border-bottom */
 }
 
-/* Hide the old browse title inside categories */
-.categories .browse-title {
-  display: none;
-}
 
 .category-list {
   display: flex;
@@ -88,58 +68,23 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
-  flex: 1;
-  margin: 0;
 }
 
-.sort-option {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  white-space: nowrap;
-}
-
-.sort-option > p {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-weight: 500;
-  color: var(--text-dark);
-  margin: 0;
-  font-size: 0.9rem;
-}
 
 #dropdown {
   padding: 0.5rem 2rem 0.5rem 0.75rem;
-  background-color: var(--white);
+  background-color: white;
   color: var(--text-dark);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-weight: 500;
+  font-weight: 600;
   border-radius: 4px;
-  border: 1px solid var(--border-light);
   cursor: pointer;
   font-size: 0.9rem;
-  min-width: 140px;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-  background-position: right 0.5rem center;
-  background-repeat: no-repeat;
-  background-size: 1rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-#dropdown:hover {
-  border-color: var(--text-gray);
-}
-
-#dropdown:focus {
-  outline: none;
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(243, 193, 20, 0.1);
+  min-width: 140px; 
 }
 
 #dropdown option {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-weight: 500;
-  padding: 0.5rem;
+  font-weight: 550;
 }
 
 .products-container {
@@ -147,39 +92,24 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   align-content: flex-start;
-  height: auto;
-  overflow: visible;
   gap: var(--gap);
-  background: var(--white);
-  width: 100%; /* Changed from 80% to 100% to match categories width */
-  max-width: 1500px; /* Maximum 1500px for 5 cards */
+  background: white;
+  width: 100%; 
   margin: 1rem auto 0 auto;
   padding: var(--gap);
   box-sizing: border-box;
-  scrollbar-width: none;
 }
-
-.products-container::-webkit-scrollbar { 
-  display: none; 
-}
-
 /* Product Cards - Responsive with fixed column counts */
 .card {
   aspect-ratio: 3 / 4;
   box-sizing: border-box;
-  background: var(--white);
+  background: white;
   border-radius: 8px;
-  flex-grow: 0;
-  flex-shrink: 0;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  transition: box-shadow 0.3s ease;
 }
 
 .card:hover {
-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
-
 
 /* 2 columns */
 @media (max-width: 950px) {
@@ -201,86 +131,4 @@ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 @media (min-width: 1951px) {
   .card { width: calc(16.6667% - (var(--gap) * 5 / 6)); }
   .products-container { max-width: var(--max-container-width); }
-}
-
-
-/* Responsive adjustments for smaller screens */
-@media (max-width: 1400px) {
-  .browse-area {
-    padding: 0 100px; /* Reduce padding on smaller screens */
-  }
-}
-
-@media (max-width: 800px) {
-  .browse-area {
-    padding: 0 50px; /* Further reduce padding on mobile */
-  }
-  
-  .browse-header {
-    padding: 1.5rem 1rem;
-  }
-  
-  .header-top {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .browse-title {
-    font-size: 1.75rem;
-  }
-  
-  .browse-tagline {
-    text-align: left;
-    max-width: none;
-  }
-  
-  .categories {
-    width: 90%;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 0;
-  }
-  
-  .category-list {
-    order: 2;
-    margin: 0;
-    gap: 6px;
-  }
-  
-  .sort-option {
-    order: 3;
-    align-self: flex-end;
-  }
-  
-  .products-container {
-    width: 100%; /* Changed from 90% to 100% to maintain alignment with categories */
-  }
-}
-
-@media (max-width: 500px) {
-  .browse-area {
-    padding: 0 20px; /* Minimal padding on very small screens */
-  }
-  
-  .browse-header {
-    padding: 1rem;
-  }
-  
-  .browse-title {
-    font-size: 1.5rem;
-  }
-  
-  .categories {
-    width: 95%;
-  }
-  
-  .category-list {
-    gap: 4px;
-  }
-  
-  .products-container {
-    width: 100%; /* Changed from 95% to 100% to maintain alignment with categories */
-  }
 }

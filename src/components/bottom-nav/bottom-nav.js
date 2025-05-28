@@ -83,7 +83,7 @@ class BottomNav extends HTMLElement {
     if (logo) {
       logo.style.cursor = 'pointer';
       logo.addEventListener('click', () => {
-        window.location.href = '/';
+        window.location.href = '/cse110-sp25-group15/';
       });
     }
   }

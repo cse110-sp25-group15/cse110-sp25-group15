@@ -1,8 +1,4 @@
 :host {
-    --blue: #04133B;
-    --gold: #F3C114;
-    --white: #FFFFFF;
-    --navy-text: #04133B;
     display: block;
     position: fixed;
     bottom: 20px;

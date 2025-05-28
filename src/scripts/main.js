@@ -13,29 +13,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const logo = document.querySelector('.logo');
   if (logo) {
     logo.addEventListener('click', () => {
-      window.location.href = '/';
+      window.location.href = '/cse110-sp25-group15/';
     });
   }
   
   // Get the hero banner element
   const heroBanner = document.querySelector('hero-banner');
-  
-  // Handle browse link click to scroll to marketplace section
-  const browseLink = document.getElementById('browse-link');
-  if (browseLink) {
-    browseLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      const marketplaceSection = document.getElementById('marketplace');
-      if (marketplaceSection) {
-        marketplaceSection.scrollIntoView({ behavior: 'instant' });
-        
-        // Remove hero banner immediately when browse is clicked
-        if (heroBanner) {
-          heroBanner.remove();
-        }
-      }
-    });
-  }
   
   // Function to check if hero banner is scrolled out of view
   const checkHeroBannerVisibility = () => {

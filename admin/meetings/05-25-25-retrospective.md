@@ -1,4 +1,4 @@
-# 25 May – Weekly Retro & Review Meeting
+# 25 May – Weekly Retro Meeting
 
 ## Time: 6 - 6:30 PM 
 ## Platform: Zoom  

@@ -1,0 +1,56 @@
+<div class="my-listings-container">
+    <div class="section-header">
+        <h2>My Listings</h2>
+        <button class="create-listing-btn">+ Create New Listing</button>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading your listings...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state">
+        <svg
+            width="80"
+            height="80"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#ccc"
+            stroke-width="2"
+        >
+            <rect
+                x="3"
+                y="3"
+                width="18"
+                height="18"
+                rx="2"
+                ry="2"
+            ></rect>
+            <line
+                x1="12"
+                y1="8"
+                x2="12"
+                y2="16"
+            ></line>
+            <line
+                x1="8"
+                y1="12"
+                x2="16"
+                y2="12"
+            ></line>
+        </svg>
+        <h3>No listings yet</h3>
+        <p>Create your first listing to start selling on UCSD Marketplace</p>
+        <button class="create-listing-btn">Create Your First Listing</button>
+    </div>
+
+    <!-- Error State -->
+    <div class="error-state">
+        <p class="error-message">Failed to load listings</p>
+    </div>
+
+    <!-- Listings Grid -->
+    <div class="listings-grid"></div>
+</div>

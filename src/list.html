@@ -4,21 +4,25 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>List an Item - UCSD Marketplace</title>
-        <link rel="stylesheet" href="./styles/header.css">
+        <link rel="stylesheet" href="./styles/body.css">
         <link rel="stylesheet" href="./styles/listing-page.css">
-        <script type="module" src="./listing-form/listing-form.js"></script>
+        <script type="module" src="./components/listing-form/listing-form.js"></script>
+        <script type="module" src="./components/bottom-nav/bottom-nav.js"></script>
+        <script type="module" src="./components/search-box/search-box.js"></script>
+        <script type="module" src="./components/auth-pill/auth-pill.js"></script>
+        <script type="module" src="./scripts/main.js"></script>
     </head>
     <body>
         <!-- Use the same header as index.html -->
         <header>
             <div class="site-header">
                 <div class="logo" style="cursor: pointer;">
-                    <img src="./assets/triton.png" alt="Triton trident">
+                    <img src="triton.png" alt="Triton trident">
                     <span>MARKETPLACE</span>
                 </div>
                 <nav class="main-nav">
-                    <a href="/" id="browse-link">BROWSE</a>
-                    <a href="/list" class="active">LIST AN ITEM</a>
+                    <a href="/cse110-sp25-group15/#marketplace">BROWSE</a>
+                    <a href="/cse110-sp25-group15/list" class="active">LIST AN ITEM</a>
                 </nav>
                 <div class="user-icons">
                     <search-box></search-box>
@@ -41,13 +45,5 @@
 
         <!-- Use the same bottom nav -->
         <bottom-nav></bottom-nav>
-
-        <!-- Import web components -->
-        <script type="module">
-        import './components/search-box/search-box.js';
-        import './components/auth-pill/auth-pill.js';
-        import './components/listing-form/listing-form.js';
-        import './components/bottom-nav/bottom-nav.js';
-        </script>
     </body>
 </html>

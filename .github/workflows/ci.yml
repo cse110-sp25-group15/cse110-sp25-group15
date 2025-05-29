@@ -3,8 +3,6 @@ name: CI Pipeline Check
 on:
   push:
     branches: ['**']
-  pull_request:
-    branches: ['**']
 
 jobs:
   ci_pipeline_check:

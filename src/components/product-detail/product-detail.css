@@ -1,8 +1,8 @@
 /* UCSD Palette */
 :host {
-  --ucsd-blue: #04133B;
-  --ucsd-gold: #F3C114;
-  --ucsd-white: #FFFFFF;
+  --ucsd-blue: var(--blue);
+  --ucsd-gold: var(--gold);
+  --ucsd-white: var(--white);
   --ucsd-gold-dark: #B89B0E;
   font-family: system-ui, sans-serif;
   display: block;

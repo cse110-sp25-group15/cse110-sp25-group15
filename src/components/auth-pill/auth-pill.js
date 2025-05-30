@@ -104,10 +104,19 @@ class AuthPill extends HTMLElement {
 
   async checkAuthState() {
     const { data } = await supabase.auth.getSession();
+    console.log(data);
     if (data.session?.user) {
+      // user is logged in
       this.updateUser(data.session.user);
+      this.dispatchEvent(new CustomEvent('user-signed-in', { 
+        bubbles: true, composed: true, 
+      }));
     } else {
+      // user not logged in
       this.showLoginUI();
+      this.dispatchEvent(new CustomEvent('user-signed-out', { 
+        bubbles: true, composed: true, 
+      }));
     }
   }
 

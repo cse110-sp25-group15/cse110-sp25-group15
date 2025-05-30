@@ -110,35 +110,64 @@
   gap: 1.5rem;
 }
 
+/* Updated Card Wrapper - No overlap solution */
 .listing-card-wrapper {
   position: relative;
-  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.listing-card-wrapper:hover {
-  transform: translateY(-4px);
+/* Product card should not be affected by wrapper hover */
+.listing-card-wrapper product-card {
+  width: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.listing-card-wrapper:hover product-card {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Actions - Now positioned below the card */
+.card-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.2s ease;
 }
 
 .listing-card-wrapper:hover .card-actions {
   opacity: 1;
   visibility: visible;
+  transform: translateY(0);
 }
 
-/* Card Actions Overlay */
-.card-actions {
+/* Alternative overlay design (if you prefer overlay) */
+.listing-card-wrapper.overlay-style {
+  position: relative;
+}
+
+.listing-card-wrapper.overlay-style .card-actions {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
-  border-radius: 0 0 8px 8px;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 0.5rem;
+}
+
+.listing-card-wrapper.overlay-style:hover .card-actions {
+  transform: translateX(-50%) translateY(0);
 }
 
 .edit-btn,
@@ -152,7 +181,7 @@
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .edit-btn {
@@ -162,6 +191,7 @@
 
 .edit-btn:hover {
   background: #d4a90f;
+  transform: scale(1.05);
 }
 
 .delete-btn {
@@ -171,6 +201,13 @@
 
 .delete-btn:hover {
   background: #b71c1c;
+  transform: scale(1.05);
+}
+
+/* Edit Modal */
+edit-listing-modal {
+  position: relative;
+  z-index: 1100;
 }
 
 @media (max-width: 768px) {
@@ -192,5 +229,11 @@
   .listings-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
+  }
+  
+  .card-actions {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
   }
 }

@@ -123,11 +123,9 @@ const l=`<div class="card-container">\r
 \r
 .card-image {\r
   width: 100%;\r
-  height: 100%;\r
   object-fit: cover;\r
   border-radius: 20px;\r
   opacity: 0;\r
-  transition: opacity 0.4s ease-in;\r
   z-index: 3;\r
   position: relative;\r
 }\r

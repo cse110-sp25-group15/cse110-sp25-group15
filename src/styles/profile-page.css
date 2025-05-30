@@ -10,6 +10,16 @@ body, html {
     background-color: var(--light-gray);
 }
 
+noscript {
+    position: fixed;
+    background: var(--white);
+    width: 100vw;
+    height: 100vh;
+    padding: 1em;
+    font-size: 1.2em;
+    z-index: 1000;
+}
+
 a{
     text-decoration: none;
 }

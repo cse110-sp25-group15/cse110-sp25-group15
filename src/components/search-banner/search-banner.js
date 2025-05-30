@@ -30,18 +30,15 @@ class SearchHero extends HTMLElement {
     const searchButton = this.shadowRoot.querySelector('.search-button');
     
     const handleSearch = () => {
-      const searchTerm = searchInput?.value.trim();
-      if (searchTerm) {
-        this.dispatchEvent(new CustomEvent('search-submitted', {
+      const query = searchInput.value.trim();
+      if (query) {
+        this.dispatchEvent(new CustomEvent('search-submit', {
           bubbles: true,
           composed: true,
-          detail: { 
-            searchTerm,
-            category: this.activeCategory,
-          },
+          detail: { query },
         }));
-        console.log(`Search: "${searchTerm}" in category: ${this.activeCategory}`);
       }
+      console.log(`Search submitted: ${query}`);
     };
 
     searchButton?.addEventListener('click', handleSearch);

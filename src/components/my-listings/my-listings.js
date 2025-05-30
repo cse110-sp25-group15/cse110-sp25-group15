@@ -2,6 +2,7 @@ import html from './my-listings.html?raw';
 import css from './my-listings.css?raw';
 import supabase from '../../scripts/utils/supabase.js';
 import '../browse-page/product-card/product-card.js';
+import '../edit-listing/edit-listing.js';
 
 class MyListings extends HTMLElement {
   constructor() {
@@ -156,9 +157,51 @@ class MyListings extends HTMLElement {
   }
 
   editListing(listingId) {
-    // In a real app, this would navigate to an edit page or open a modal
-    console.log('Edit listing:', listingId);
-    alert('Edit functionality coming soon!');
+    try {
+      // Get the listing data
+      const listing = this.listings.find((l) => l.listing_id === listingId);
+      if (!listing) {
+        console.error('Listing not found');
+        return;
+      }
+
+      // Get or create the edit modal
+      let editModal = this.shadowRoot.querySelector('edit-listing-modal');
+      if (!editModal) {
+        editModal = document.createElement('edit-listing-modal');
+        this.shadowRoot.appendChild(editModal);
+      }
+
+      // Show the modal with listing data
+      editModal.show(listing);
+
+      // Listen for the update event
+      editModal.addEventListener('listing-update', async (e) => {
+        const { listingId, updates } = e.detail;
+      
+        try {
+          // Update the listing in the database
+          const { error } = await supabase
+            .from('listings')
+            .update(updates)
+            .eq('listing_id', listingId)
+            .eq('user_id', this.user.id);
+
+          if (error) {throw error;}
+
+          // Reload the listings
+          await this.loadUserListings();
+        
+        } catch (error) {
+          console.error('Error updating listing:', error);
+          alert('Failed to update listing. Please try again.');
+        }
+      }, { once: true });
+
+    } catch (error) {
+      console.error('Error editing listing:', error);
+      alert('Failed to load listing for editing.');
+    }
   }
 
   async confirmDelete(listingId) {

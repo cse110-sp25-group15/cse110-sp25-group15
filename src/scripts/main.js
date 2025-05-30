@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Connect search box to search functionality
   const searchBox = document.querySelector('search-box');
   if (searchBox) {
-    searchBox.addEventListener('search-submit', async (e) => {
+    document.addEventListener('search-submit', async (e) => {
       const query = e.detail.query;
       if (query) {
         await listingDisplayController.renderSearchResults(query);

@@ -24,6 +24,15 @@ class ChatWidget extends HTMLElement {
         this.hideWidget();
       }
     };
+    // listen to user-signed-out
+    const chat_widget = document.querySelector('chat-widget');
+    document.addEventListener('user-signed-out', () => { 
+      chat_widget.style.display = 'none'; 
+      console.log('receive event logout');});
+    // listen to user-signed-in
+    document.addEventListener('user-signed-in', ()=> { 
+      chat_widget.style.display = 'block'; 
+      console.log('receive event login');});
     // Add event listener to chat bubble
     this.shadowRoot.querySelector('.chat-bubble').addEventListener('click', () => {
       this.toggleWidget();

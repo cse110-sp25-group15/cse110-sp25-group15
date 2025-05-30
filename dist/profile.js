@@ -32,17 +32,7 @@ import{s as o}from"./bottom-nav.js";import"./product-card.js";const d=`<div clas
             <button class="sign-out-btn">Sign Out</button>\r
         </div>\r
     </div>\r
-</div>`,c=`:host {\r
-  --blue: #04133B;\r
-  --gold: #F3C114;\r
-  --white: #FFFFFF;\r
-  --navy-text: #04133B;\r
-  --light-gray: #f5f5f5;\r
-  --border-light: #e5e5e5;\r
-  display: block;\r
-  font-family: system-ui, sans-serif;\r
-}\r
-\r
+</div>`,c=`\r
 .profile-container {\r
   background: var(--white);\r
   border-radius: 12px;\r
@@ -280,13 +270,6 @@ import{s as o}from"./bottom-nav.js";import"./product-card.js";const d=`<div clas
     <!-- Listings Grid -->\r
     <div class="listings-grid"></div>\r
 </div>`,g=`:host {\r
-  --blue: #04133B;\r
-  --gold: #F3C114;\r
-  --white: #FFFFFF;\r
-  --navy-text: #04133B;\r
-  --light-gray: #f5f5f5;\r
-  --border-light: #e5e5e5;\r
-  --danger: #d32f2f;\r
   display: block;\r
   font-family: system-ui, sans-serif;\r
 }\r

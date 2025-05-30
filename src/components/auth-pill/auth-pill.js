@@ -56,6 +56,7 @@ class AuthPill extends HTMLElement {
     
     // Auth change listener
     supabase.auth.onAuthStateChange(this.handleAuthChange.bind(this));
+    
   }
 
   handleOutsideClick(e) {
@@ -120,6 +121,11 @@ class AuthPill extends HTMLElement {
   }
 
   async updateUser(userData) {
+    //checks to see if the url ends with #
+    console.log('Current URL:', window.location.href);
+    if (window.location.href.endsWith('#')) {
+      window.location.href = window.location.href.slice(0, -1);
+    }
     if (!userData || this.hasSavedUser) {return;}
     
     // Save to database
@@ -145,6 +151,7 @@ class AuthPill extends HTMLElement {
     this.dispatchEvent(new CustomEvent('user-signed-in', { 
       bubbles: true, composed: true, detail: { userData: this.user }, 
     }));
+
   }
 
   async saveUserToDatabase(user) {

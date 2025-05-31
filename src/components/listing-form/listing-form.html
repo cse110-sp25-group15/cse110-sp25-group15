@@ -118,34 +118,63 @@
     </div>
 </form>
 
-<!-- Preview Modal -->
 <div class="preview-modal" id="preview-modal">
     <div class="preview-content">
-        <div class="preview-header">
-            <h1>UCSD MARKETPLACE</h1>
-            <div class="draft-label">DRAFT PREVIEW</div>
+        <button
+            class="close-preview"
+            type="button"
+            aria-label="Close"
+        >&times;</button>
+        
+        <div class="preview-gallery">
+            <div class="preview-gallery-main">
+                <img
+                    class="preview-main-image"
+                    src=""
+                    alt="Product preview"
+                >
+            </div>
+            <div class="preview-thumb-strip"></div>
         </div>
-        <div class="preview-title">Untitled</div>
-        <div class="preview-media"></div>
-        <div class="preview-body">
+        
+        <div class="preview-meta-panel">
+            <h1 class="preview-title">Untitled</h1>
             <div class="preview-price">$0.00</div>
-            <div class="preview-meta">
-                <span>Just Now</span>
-                <span>•</span>
-                <span>No category</span>
-                <span>•</span>
-                <span>No condition</span>
+            <div class="preview-meta-table">
+                <div class="preview-date">Just Now</div>
+                <div class="preview-condition">No condition selected</div>
             </div>
-            <div class="preview-description">
-                Item description will appear here...
+            <b class="preview-description-title">Description:</b>
+            <p class="preview-description">Item description will appear here...</p>
+            <div class="preview-contact-box">
+                <textarea
+                    class="preview-contact-message"
+                    rows="2"
+                    placeholder="Hi, is this still available?"
+                    disabled
+                ></textarea>
+                <button
+                    class="preview-send-btn"
+                    type="button"
+                    disabled
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        width="14"
+                        height="14"
+                    >
+                        <path d="m3 3 3 9-3 9 19-9Z"/>
+                        <path d="m6 12 13 0"/>
+                    </svg>
+                    Send Message
+                </button>
             </div>
-            <div class="preview-seller-info">
-                <h3>Seller's Info</h3>
-                <p>Contact information will be displayed here</p>
-            </div>
-        </div>
-        <div class="preview-actions">
-            <button class="close-preview">Close Preview</button>
         </div>
     </div>
 </div>

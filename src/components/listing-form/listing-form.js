@@ -7,6 +7,7 @@ class ListingForm extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.innerHTML = `<style>${css}</style>${html}`;
     this.uploadedFiles = [];
+    this._currentPreviewIndex = 0;
     this._setupForm();
   }
 
@@ -28,6 +29,13 @@ class ListingForm extends HTMLElement {
     this.mediaInput.addEventListener('change', this._handleFileSelect.bind(this));
     this.previewButton.addEventListener('click', this._showPreview.bind(this));
     this.closePreviewButton.addEventListener('click', this._hidePreview.bind(this));
+    
+    // Add ESC key handler for preview modal
+    this.shadowRoot.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.previewModal.classList.contains('visible')) {
+        this._hidePreview();
+      }
+    });
 
     // Setup drag and drop
     this._setupDragAndDrop();
@@ -233,62 +241,147 @@ class ListingForm extends HTMLElement {
     const formData = this._gatherFormData();
     this._updatePreviewContent(formData);
     this.previewModal.classList.add('visible');
+    this._lockBodyScroll();
   }
 
   _hidePreview() {
     this.previewModal.classList.remove('visible');
+    this._unlockBodyScroll();
+    this._currentPreviewIndex = 0;
+  }
+
+  _lockBodyScroll() {
+    document.body.style.overflow = 'hidden';
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+  }
+
+  _unlockBodyScroll() {
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
   }
 
   _updatePreviewContent(data) {
-    const previewContent = this.shadowRoot.querySelector('.preview-content');
-    
     // Update title
-    const previewTitle = previewContent.querySelector('.preview-title');
+    const previewTitle = this.shadowRoot.querySelector('.preview-title');
     if (previewTitle) {
       previewTitle.textContent = data.title || 'Untitled';
     }
     
     // Update price
-    previewContent.querySelector('.preview-price').textContent = 
-        data.price ? `$${parseFloat(data.price).toFixed(2)}` : '$0.00';
+    const priceEl = this.shadowRoot.querySelector('.preview-price');
+    if (priceEl) {
+      priceEl.textContent = data.price ? `$${parseFloat(data.price).toFixed(2)}` : '$0.00';
+    }
     
-    // Update meta info
-    const metaElements = previewContent.querySelectorAll('.preview-meta span');
-    metaElements[0].textContent = 'Just Now';
-    metaElements[2].textContent = data.category || 'No category';
-    metaElements[4].textContent = data.condition || 'No condition';
+    // Update condition
+    const conditionEl = this.shadowRoot.querySelector('.preview-condition');
+    if (conditionEl) {
+      conditionEl.textContent = data.condition || 'No condition selected';
+    }
+    
+    // Update category
+    const categoryEl = this.shadowRoot.querySelector('.preview-category');
+    if (categoryEl) {
+      categoryEl.textContent = data.category || 'No category selected';
+    }
     
     // Update description
-    previewContent.querySelector('.preview-description').textContent = 
-        data.description || 'No description provided';
-    
-    // Update media preview
-    const mediaPreview = previewContent.querySelector('.preview-media');
-    if (mediaPreview) {
-      mediaPreview.innerHTML = '';
-      if (data.files && data.files.length > 0) {
-        data.files.forEach((file) => {
-          const url = URL.createObjectURL(file);
-          const mediaElement = file.type.startsWith('image/') 
-            ? document.createElement('img')
-            : document.createElement('video');
-                
-          mediaElement.src = url;
-          mediaElement.className = 'preview-thumbnail';
-                
-          if (mediaElement.tagName === 'VIDEO') {
-            mediaElement.controls = true;
-            mediaElement.muted = true;
-          }
-    
-          mediaElement.onload = () => URL.revokeObjectURL(url);
-    
-          mediaPreview.appendChild(mediaElement);
-        });
-      } else {
-        mediaPreview.innerHTML = '<div class="no-media">No media uploaded</div>';
-      }
+    const descEl = this.shadowRoot.querySelector('.preview-description');
+    if (descEl) {
+      descEl.textContent = data.description || 'No description provided';
     }
+    
+    // Update media preview with gallery functionality
+    this._updatePreviewGallery(data.files);
+  }
+
+  _updatePreviewGallery(files) {
+    const mainImageContainer = this.shadowRoot.querySelector('.preview-gallery-main');
+    const thumbStrip = this.shadowRoot.querySelector('.preview-thumb-strip');
+    
+    if (!mainImageContainer || !thumbStrip) {return;}
+    
+    // Clear existing content
+    mainImageContainer.innerHTML = '';
+    thumbStrip.innerHTML = '';
+    
+    if (!files || files.length === 0) {
+      mainImageContainer.innerHTML = '<div class="no-media">No media uploaded</div>';
+      return;
+    }
+    
+    // Create main image/video element
+    const firstFile = files[0];
+    let mainElement;
+    
+    if (firstFile.type.startsWith('image/')) {
+      mainElement = document.createElement('img');
+      mainElement.className = 'preview-main-image';
+      mainElement.src = URL.createObjectURL(firstFile);
+      mainElement.alt = 'Product preview';
+    } else if (firstFile.type.startsWith('video/')) {
+      mainElement = document.createElement('video');
+      mainElement.className = 'preview-main-video';
+      mainElement.src = URL.createObjectURL(firstFile);
+      mainElement.controls = true;
+      mainElement.muted = true;
+    }
+    
+    if (mainElement) {
+      mainImageContainer.appendChild(mainElement);
+    }
+    
+    // Create thumbnails
+    files.forEach((file, index) => {
+      let thumbElement;
+      
+      if (file.type.startsWith('image/')) {
+        thumbElement = document.createElement('img');
+        thumbElement.src = URL.createObjectURL(file);
+        thumbElement.alt = `Thumbnail ${index + 1}`;
+      } else if (file.type.startsWith('video/')) {
+        thumbElement = document.createElement('video');
+        thumbElement.src = URL.createObjectURL(file);
+        thumbElement.muted = true;
+      }
+      
+      if (thumbElement) {
+        thumbElement.className = index === this._currentPreviewIndex ? 'active' : '';
+        
+        thumbElement.addEventListener('click', () => {
+          this._currentPreviewIndex = index;
+          
+          // Update main display
+          mainImageContainer.innerHTML = '';
+          let newMainElement;
+          
+          if (file.type.startsWith('image/')) {
+            newMainElement = document.createElement('img');
+            newMainElement.className = 'preview-main-image';
+            newMainElement.src = URL.createObjectURL(file);
+            newMainElement.alt = 'Product preview';
+          } else if (file.type.startsWith('video/')) {
+            newMainElement = document.createElement('video');
+            newMainElement.className = 'preview-main-video';
+            newMainElement.src = URL.createObjectURL(file);
+            newMainElement.controls = true;
+            newMainElement.muted = true;
+          }
+          
+          if (newMainElement) {
+            mainImageContainer.appendChild(newMainElement);
+          }
+          
+          // Update active state
+          thumbStrip.querySelectorAll('img, video').forEach((el, i) => {
+            el.className = i === index ? 'active' : '';
+          });
+        });
+        
+        thumbStrip.appendChild(thumbElement);
+      }
+    });
   }
 
   _handleSubmit(event) {
@@ -305,6 +398,11 @@ class ListingForm extends HTMLElement {
     } else {
       alert(errors.join('\n'));
     }
+  }
+
+  // Clean up when component is removed
+  disconnectedCallback() {
+    this._unlockBodyScroll();
   }
 }
 

@@ -322,19 +322,20 @@ textarea {
   color: white;
 }
 
-/* Preview Modal */
 .preview-modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.7);
   z-index: 1000;
   display: none;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .preview-modal.visible {
@@ -342,57 +343,202 @@ textarea {
 }
 
 .preview-content {
-  background: white;
-  width: 100%;
-  max-width: 700px;
-  max-height: 90vh;
-  overflow-y: auto;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-}
-
-.preview-header {
-  text-align: center;
+  border-top: 40px solid var(--blue);
   padding: 2rem;
-  border-bottom: 1px solid #e9ecef;
+  background: var(--white);
+  display: flex;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-height: 90vh;
+  max-width: 900px;
+  position: relative;
+  margin: auto;
+  gap: 2rem;
+  overflow: hidden;
 }
 
-.preview-header h1 {
-  color: var(--blue);
-  margin: 0 0 0.5rem 0;
-  font-size: 1.5rem;
+.preview-gallery {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: var(--white);
+  border-radius: 8px;
+  max-height: 600px;
+  overflow: hidden;
 }
 
-.draft-label {
-  background: var(--gold);
-  color: var(--navy-text);
-  padding: 0.25rem 1rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  display: inline-block;
+.preview-gallery-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.preview-gallery-main img,
+.preview-gallery-main video {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 8px;
+  display: block;
+  object-fit: cover;
+}
+
+.preview-thumb-strip {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.preview-thumb-strip img,
+.preview-thumb-strip video {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background: var(--white);
+  transition: border 0.2s;
+}
+
+.preview-thumb-strip img.active,
+.preview-thumb-strip video.active {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px #B89B0E;
+}
+
+.preview-meta-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  padding-left: 1rem;
 }
 
 .preview-title {
-  font-size: 1.75rem;
+  color: var(--blue);
+  font-size: 2rem;
+  margin: 0 0 1rem 0;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.preview-price {
+  color: var(--gold);
+  font-size: 1.8rem;
   font-weight: 600;
-  color: var(--navy-text);
-  padding: 1.5rem 2rem 0;
+  margin: 0 0 1rem 0;
 }
 
-.preview-media {
+.preview-meta-table {
+  margin-bottom: 1.5rem;
+}
+
+.preview-date,
+.preview-condition {
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  padding: 1rem 2rem;
+  align-items: center;
+  gap: 0.5em;
+  color: var(--blue);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
 }
 
-.preview-thumbnail {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
+.preview-description-title {
+  color: var(--blue);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.preview-description {
+  min-height: 120px;
+  max-height: 180px;
+  font-size: 0.9rem;
+  margin: 0 0 1.5rem 0;
+  overflow-y: auto;
+  background: var(--white);
   border-radius: 8px;
+  color: var(--blue);
+  line-height: 1.5;
+}
+
+.preview-contact-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.preview-contact-message {
+  resize: none;
+  min-height: 2.5em;
+  max-height: 6em;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  padding: 0.75em;
+  color: var(--blue);
+  background: var(--white);
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.preview-send-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  background: var(--gold);
+  color: var(--blue);
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.6em 1.2em;
+  cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+  align-self: flex-start;
+  min-width: 140px;
+}
+
+.preview-send-btn:hover {
+  background: #B89B0E;
+  transform: translateY(-1px);
+}
+
+.close-preview {
+  position: absolute;
+  top: 1rem;            
+  right: 1rem;             
+  z-index: 10;
+  background: transparent;
+  color: var(--ucsd-blue); 
+  font-size: 1.5rem;     
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.2em 0.5em;
+  border-radius: 50%;
+  transition: color 0.2s;
+  border:none
+}
+
+.close-preview:hover {
+  color: var(--gold);
 }
 
 .no-media {
@@ -404,73 +550,6 @@ textarea {
   border-radius: 8px;
   width: 100%;
 }
-
-.preview-body {
-  padding: 0 2rem 2rem;
-}
-
-.preview-price {
-  font-size: 2rem;
-  color: var(--gold);
-  font-weight: 600;
-  margin: 1rem 0;
-}
-
-.preview-meta {
-  color: #6c757d;
-  margin-bottom: 1.5rem;
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  font-size: 0.9rem;
-}
-
-.preview-description {
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  white-space: pre-wrap;
-  color: #495057;
-}
-
-.preview-seller-info {
-  background: #f8f9fa;
-  padding: 1.5rem;
-  border-radius: 8px;
-}
-
-.preview-seller-info h3 {
-  margin: 0 0 0.5rem 0;
-  color: var(--blue);
-  font-size: 1.1rem;
-}
-
-.preview-seller-info p {
-  margin: 0;
-  color: #6c757d;
-}
-
-.preview-actions {
-  padding: 1.5rem 2rem;
-  border-top: 1px solid #e9ecef;
-}
-
-.close-preview {
-  background: var(--blue);
-  color: white;
-  border: none;
-  padding: 0.875rem 1.75rem;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  width: 100%;
-  font-size: 1rem;
-  transition: background 0.2s ease;
-}
-
-.close-preview:hover {
-  background: #030d2b;
-}
-
 
 @media (max-width: 1024px) {
   .form-grid {

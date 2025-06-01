@@ -322,6 +322,76 @@ textarea {
     100% { transform: rotate(360deg); }
 }
 
+
+.image-gallery {
+    width: 100%;
+    margin-top: 1rem;
+    position: relative;
+}
+
+.thumbnail-strip {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.thumbnail:hover {
+    border-color: var(--ucsd-gold);
+    transform: scale(1.05);
+}
+
+.thumbnail.active {
+    border-color: var(--ucsd-gold);
+    box-shadow: 0 0 0 1px var(--ucsd-gold-dark);
+}
+
+.nav-btn {
+    position: absolute;
+    top: -200px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 5;
+}
+
+.nav-btn:hover {
+    background: var(--ucsd-gold);
+    color: var(--ucsd-blue);
+    transform: scale(1.1);
+}
+
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+    right: 10px;
+}
+
+.current-media {
+    position: relative;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .form-grid {
@@ -347,5 +417,17 @@ textarea {
     .btn-save {
         width: 100%;
         justify-content: center;
+    }
+    
+    .nav-btn {
+        top: -150px;
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+    }
+    
+    .thumbnail {
+        width: 50px;
+        height: 50px;
     }
 }

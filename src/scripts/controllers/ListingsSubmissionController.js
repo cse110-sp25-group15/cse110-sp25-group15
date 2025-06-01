@@ -183,7 +183,7 @@ export class ListingSubmissionController {
       if (event.target && typeof event.target.resetForm === 'function') {
         event.target.resetForm();
       }
-      window.location.href = 'https://cse110-sp25-group15.github.io/cse110-sp25-group15/#marketplace';
+      window.location.replace('https://cse110-sp25-group15.github.io/cse110-sp25-group15/');
 
     } catch (error) {
       console.error('Error handling listing submission:', error);

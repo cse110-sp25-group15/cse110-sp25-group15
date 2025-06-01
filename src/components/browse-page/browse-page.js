@@ -25,7 +25,7 @@ class BrowsePage extends HTMLElement {
     dropdown.addEventListener('change', (e) => {
       const selected = e.target.value;
       console.log(e.target.value);
-      if (selected === 'new' || selected === 'low' || selected === 'high') {
+      if (selected === 'new' || selected === 'low' || selected === 'high' || selected === 'featured') {
         this.dispatchEvent(new CustomEvent('sort-change', {
           bubbles: true,
           composed: true,

@@ -237,6 +237,7 @@ textarea:focus {
 .price-symbol {
   position: absolute;
   left: 1rem;
+  padding-bottom: 4.5px;
   color: #6c757d;
   font-weight: 500;
 }

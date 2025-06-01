@@ -5,13 +5,10 @@
     font-family: "Segoe UI", Arial, sans-serif;
 }
 
-body {
-    background-color: #f7f7f7;
-    padding: 0; /* Removed padding to prevent interference with alignment */
-}
 
 .search-banner {
     width: 90%;
+    left: 5%;
     margin-top: 2rem;
     max-width: 1800px;
     height: 400px;
@@ -20,7 +17,6 @@ body {
     overflow: hidden;
     box-shadow: var(--shadow);
     box-sizing: border-box;
-    justify-self: center;
 }
 
 .video-background {

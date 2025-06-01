@@ -32,6 +32,11 @@ export class ListingSubmissionController {
       throw new Error('No file provided');
     }
 
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/heic', 'application/pdf', 'image/webp'];
+    if(!allowedTypes.includes(file.type)){
+      this.notifyError('Only PNG, JPEG, HEIC, PDF, and WebP formats are allowed');
+      throw new Error('File type is not allowed');
+    }
     const fileType = file.type;
     let convertedBlob;
 

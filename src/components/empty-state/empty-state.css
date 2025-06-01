@@ -1,14 +1,13 @@
 .empty-state-box {
-    background-color: #04133B;
+    background-color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 80%;
+    width: 100%;
     max-width: 1460px;
     margin: 0 auto;
     padding: 50px 20px;
-    gap: 20px;
     font-family: Arial;
 }
 
@@ -22,22 +21,6 @@ img {
     color: #F3C114;
 }
 
-button {
-    padding: 20px;
-    background-color:#F3C114;
-    color:#04133B;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 20px;
-    font-size: 1.3em;
-    border: none;
-}
-button:hover {
-    text-decoration: underline #04133B;
-}
-button:active {
-    background-color: #faf0cc;
-}
 
 @media (max-width: 1000px) {
     button {

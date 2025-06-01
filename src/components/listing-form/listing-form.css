@@ -281,6 +281,81 @@ textarea {
   margin-top: 2rem;
 }
 
+.file-card.is-thumbnail {
+  border: 2px solid var(--gold);
+  box-shadow: 0 4px 12px rgba(243, 193, 20, 0.3);
+}
+
+.thumbnail-badge {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gold);
+  color: var(--navy-text);
+  font-size: .75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+  z-index: 5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+.reorder-buttons {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 4;
+}
+
+.file-card:hover .reorder-buttons {
+  opacity: 1;
+}
+
+.move-btn {
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.move-btn:hover {
+  background: var(--gold);
+  color: var(--navy-text);
+  transform: scale(1.1);
+}
+
+
+.upload-text .upload-sub {
+  color: var(--gold);
+  font-weight: 500;
+}
+
+
+.preview-thumb-strip img:first-child,
+.preview-thumb-strip video:first-child {
+  border: 3px solid var(--gold) !important;
+  box-shadow: 0 0 0 1px rgba(243, 193, 20, 0.5);
+}
+
+
+.file-card {
+  position: relative;
+}
 .btn {
   display: inline-flex;
   align-items: center;

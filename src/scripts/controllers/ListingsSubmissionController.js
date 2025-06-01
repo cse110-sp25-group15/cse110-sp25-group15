@@ -75,8 +75,10 @@ export class ListingSubmissionController {
     }
   }
 
-  async _uploadFile(file, userId, listingId) {
-    const filePath = `${userId}/${listingId}/${file.name}`;
+  async _uploadFile(file, userId, listingId, fileIndex = 0) {
+    const fileName = `image_${fileIndex}_${Date.now()}.webp`;
+    const filePath = `${userId}/${listingId}/${fileName}`;
+    
     const { data, error } = await supabase
       .storage
       .from('listimages')
@@ -126,16 +128,30 @@ export class ListingSubmissionController {
 
       // Handle file upload if files exist
       let thumbnailUrl = null;
+      const allImageUrls = [];
+
       if (listingData.files && listingData.files.length > 0) {
         try {
-          const convertedFile = await this.convertImageToWebP(listingData.files[0]);
-          // rename the converted file 
-          const newFileName = listingData.files[0].name.replace(/\.\w+$/, '.webp');
-          const webpFile = new File([convertedFile], newFileName, { type: 'image/webp' });
+          // Process all files
+          for (let i = 0; i < listingData.files.length; i++) {
+            const file = listingData.files[i];
+            
+            // Convert and compress each file
+            const convertedFile = await this.convertImageToWebP(file);
+            const newFileName = file.name.replace(/\.\w+$/, '.webp');
+            const webpFile = new File([convertedFile], newFileName, { type: 'image/webp' });
 
-          thumbnailUrl = await this._uploadFile(webpFile, user.id, listingId);
-          //thumbnailUrl = await this._uploadFile(listingData.files[0], user.id, listingId);
-          //remove the file field from the listing data
+            // Upload file
+            const imageUrl = await this._uploadFile(webpFile, user.id, listingId, i);
+            allImageUrls.push(imageUrl);
+            
+            // Use first image as thumbnail
+            if (i === 0) {
+              thumbnailUrl = imageUrl;
+            }
+          }
+          
+          // Remove the files field from listing data
           delete listingData.files;
         } catch (uploadError) {
           console.error('File upload error:', uploadError);
@@ -149,6 +165,7 @@ export class ListingSubmissionController {
         listing_id: listingId,
         user_id: user.id,
         thumbnail: thumbnailUrl,  // Add the uploaded image URL
+        images: allImageUrls,
       };
 
       const { data, error } = await supabase

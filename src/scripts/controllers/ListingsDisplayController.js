@@ -9,6 +9,7 @@ export class ListingDisplayController {
     this.categoryButtons = [];
     this.currentCategory = 'All';
     this.currentSort = null;
+    this.defaultListings = null;
   }
 
   init() {
@@ -53,6 +54,14 @@ export class ListingDisplayController {
       console.log('Sort change event received:', event.detail);
       this.currentSort = event.detail.sortBy;
       this.fetchListings(this.currentCategory, this.currentSort);
+      // If reset to "featured" (default)
+      if (this.currentSort === 'featured' && this.defaultListings) {
+        this.productsContainer.innerHTML = '';
+        this.defaultListings.forEach((listing) => this.renderListingCard(listing));
+        console.log(`Reset to default "Featured" listings (${this.defaultListings.length})`);
+      } else {
+        this.fetchListings(this.currentCategory, this.currentSort);
+      }
     });
   }
 
@@ -82,6 +91,10 @@ export class ListingDisplayController {
         listings = await this.model.fetchListingsByCategory(category);
       } else {
         listings = await this.model.fetchAllListings();
+
+        if (!this.defaultListings) {
+          this.defaultListings = [...listings];
+        }
       }
 
       // Apply category filter if sorting is applied but category is not 'All'

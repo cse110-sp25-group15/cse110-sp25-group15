@@ -58,6 +58,39 @@ class ChatWidget extends HTMLElement {
         this.shadowRoot.querySelector('input').style.display = 'block';
       });
     }
+    this._setupBottomNavDetection();
+  }
+  _setupBottomNavDetection() {
+    if (this._isScrollListenerActive) {return;}
+    
+    this._handleScroll = () => {
+      const bottomNav = document.querySelector('bottom-nav');
+      if (!bottomNav) {return;}
+
+      const bottomNavRect = bottomNav.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      
+      const isBottomNavVisible = bottomNavRect.top < viewportHeight && bottomNavRect.bottom > 0;
+      
+      if (isBottomNavVisible) {
+        
+        const visibleHeight = Math.min(bottomNavRect.height, viewportHeight - bottomNavRect.top);
+        
+        document.documentElement.style.setProperty('--bottom-nav-height', `${visibleHeight}px`);
+       
+        this.classList.add('above-bottom-nav');
+      } else {
+        
+        this.classList.remove('above-bottom-nav');
+        document.documentElement.style.removeProperty('--bottom-nav-height');
+      }
+    };
+    
+    window.addEventListener('scroll', this._handleScroll, { passive: true });
+    window.addEventListener('resize', this._handleScroll, { passive: true });
+    
+    this._handleScroll();
+    this._isScrollListenerActive = true;
   }
   toggleWidget() {
     if (this._isVisible) {

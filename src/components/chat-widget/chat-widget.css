@@ -6,6 +6,11 @@
     /*border: 1px solid var(--blue);*/
     font-family: sans-serif;
     z-index: 999;
+    transition: bottom 0.01s ease;
+}
+
+:host(.above-bottom-nav) {
+    bottom: calc(20px + var(--bottom-nav-height, 200px));
 }
 /* Chat Bubble Styles */
 .chat-bubble {

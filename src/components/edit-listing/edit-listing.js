@@ -1,4 +1,4 @@
-// src/components/edit-listing/edit-listing.js
+
 import html from './edit-listing.html?raw';
 import css from './edit-listing.css?raw';
 import supabase from '../../scripts/utils/supabase.js';
@@ -15,6 +15,8 @@ class EditListingModal extends HTMLElement {
     this.currentListing = null;
     this.newImageFile = null;
     this._isVisible = false;
+    this.currentImageIndex = 0;
+    this.allImages = [];
   }
 
   connectedCallback() {
@@ -35,6 +37,8 @@ class EditListingModal extends HTMLElement {
     this.previewContainer = this.shadowRoot.querySelector('.preview-new-media');
     this.wordCounter = this.shadowRoot.querySelector('.word-count');
     this.loadingOverlay = this.shadowRoot.querySelector('.loading-overlay');
+    this.currentImageIndex = 0;
+    this.allImages = [];
   }
 
   setupEventListeners() {
@@ -114,13 +118,99 @@ class EditListingModal extends HTMLElement {
     this.categorySelect.value = listing.category || '';
     this.descriptionTextarea.value = listing.description || '';
    
-    if (listing.thumbnail) {
-      this.currentThumbnail.src = listing.thumbnail;
+    // Handle multiple images
+    const allImages = listing.allImages || (listing.images && Array.isArray(listing.images) ? listing.images : [listing.thumbnail].filter(Boolean));
+    
+    if (allImages && allImages.length > 0) {
+      this.currentThumbnail.src = allImages[0]; // Show first image as main
+      this.setupImageGallery(allImages);
     } else {
       this.currentThumbnail.src = 'https://via.placeholder.com/300x300?text=No+Image';
     }
    
     this.updateWordCount();
+  }
+
+  setupImageGallery(images) {
+    this.allImages = images;
+    this.currentImageIndex = 0;
+    
+    // Remove existing gallery if any
+    const existingGallery = this.shadowRoot.querySelector('.image-gallery');
+    if (existingGallery) {
+      existingGallery.remove();
+    }
+    
+    // Only create gallery if there are multiple images
+    if (images.length <= 1) {
+      return;
+    }
+    
+    const currentMediaContainer = this.currentThumbnail.parentNode;
+    
+    // Create gallery container
+    const galleryContainer = document.createElement('div');
+    galleryContainer.className = 'image-gallery';
+    
+    // Create navigation arrows positioned over the main image
+    if (images.length > 1) {
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'nav-btn prev-btn';
+      prevBtn.innerHTML = '‹';
+      prevBtn.type = 'button';
+      prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.navigateImage(-1);
+      });
+      
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'nav-btn next-btn';
+      nextBtn.innerHTML = '›';
+      nextBtn.type = 'button';
+      nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.navigateImage(1);
+      });
+      
+      // Add navigation to the current media container (over the main image)
+      currentMediaContainer.style.position = 'relative';
+      currentMediaContainer.appendChild(prevBtn);
+      currentMediaContainer.appendChild(nextBtn);
+    }
+    
+    // Create thumbnails strip
+    const thumbnailStrip = document.createElement('div');
+    thumbnailStrip.className = 'thumbnail-strip';
+    
+    images.forEach((imageUrl, index) => {
+      const thumb = document.createElement('img');
+      thumb.src = imageUrl;
+      thumb.className = `thumbnail ${index === 0 ? 'active' : ''}`;
+      thumb.addEventListener('click', () => {
+        this.currentImageIndex = index;
+        this.currentThumbnail.src = imageUrl;
+        this.updateThumbnailsActive(index);
+      });
+      thumbnailStrip.appendChild(thumb);
+    });
+    
+    galleryContainer.appendChild(thumbnailStrip);
+    
+    // Insert gallery after the current media container
+    currentMediaContainer.parentNode.insertBefore(galleryContainer, currentMediaContainer.nextSibling);
+  }
+  
+  navigateImage(direction) {
+    this.currentImageIndex = (this.currentImageIndex + direction + this.allImages.length) % this.allImages.length;
+    this.currentThumbnail.src = this.allImages[this.currentImageIndex];
+    this.updateThumbnailsActive(this.currentImageIndex);
+  }
+  
+  updateThumbnailsActive(activeIndex) {
+    const thumbnails = this.shadowRoot.querySelectorAll('.thumbnail');
+    thumbnails.forEach((thumb, index) => {
+      thumb.classList.toggle('active', index === activeIndex);
+    });
   }
 
   handleMediaChange(e) {
@@ -304,6 +394,24 @@ class EditListingModal extends HTMLElement {
     this.currentListing = null;
     this.wordCounter.textContent = '0/250';
     this.wordCounter.classList.remove('exceeded');
+    this.allImages = [];
+    this.currentImageIndex = 0;
+    
+    // Remove any existing image gallery
+    const existingGallery = this.shadowRoot.querySelector('.image-gallery');
+    if (existingGallery) {
+      existingGallery.remove();
+    }
+    
+    // Remove navigation buttons from current media container
+    const navButtons = this.shadowRoot.querySelectorAll('.nav-btn');
+    navButtons.forEach((btn) => btn.remove());
+    
+    // Reset current media container positioning
+    const currentMediaContainer = this.shadowRoot.querySelector('.current-media');
+    if (currentMediaContainer) {
+      currentMediaContainer.style.position = '';
+    }
   }
 
   disconnectedCallback() {

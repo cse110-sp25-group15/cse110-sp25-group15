@@ -93,18 +93,22 @@ class ProductViewer extends HTMLElement {
     const thumbStrip = this.shadowRoot.querySelector('.thumb-strip');
     if (thumbStrip) {
       thumbStrip.innerHTML = '';
-      images.forEach((src, idx) => {
-        const thumb = document.createElement('img');
-        thumb.src = src;
-        thumb.alt = `Thumbnail ${idx + 1}`;
-        thumb.className = idx === this._currentIndex ? 'active' : '';
-        thumb.tabIndex = 0;
-        thumb.addEventListener('click', () => {
-          this._currentIndex = idx;
-          this._updateContent();
+      
+      // Only show thumbnails if there are multiple images
+      if (images.length > 1) {
+        images.forEach((src, idx) => {
+          const thumb = document.createElement('img');
+          thumb.src = src;
+          thumb.alt = `Thumbnail ${idx + 1}`;
+          thumb.className = idx === this._currentIndex ? 'active' : '';
+          thumb.tabIndex = 0;
+          thumb.addEventListener('click', () => {
+            this._currentIndex = idx;
+            this._updateContent();
+          });
+          thumbStrip.appendChild(thumb);
         });
-        thumbStrip.appendChild(thumb);
-      });
+      }
     }
 
     // Update text fields
@@ -148,11 +152,24 @@ class ProductViewer extends HTMLElement {
   }
 
   get images() {
-    // Split on commas and/or line breaks, trim, and filter out empty strings
-    return (this.getAttribute('images') || '')
-      .split(/[\s,]+/) // split on comma, space, or line break
-      .map((s) => s.trim())
-      .filter(Boolean);
+    const imagesAttr = this.getAttribute('images') || '';
+    
+    // Handle both array format (from database) and comma-separated format
+    if (imagesAttr.startsWith('[') && imagesAttr.endsWith(']')) {
+      try {
+        // Parse JSON array format
+        return JSON.parse(imagesAttr).filter(Boolean);
+      } catch (e) {
+        console.warn('Failed to parse images JSON:', e);
+        return [];
+      }
+    } else {
+      // Handle comma-separated format or single image
+      return imagesAttr
+        .split(/[\s,]+/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+    }
   }
 
   /**

@@ -107,6 +107,11 @@ class ListingForm extends HTMLElement {
       const fileCard = document.createElement('div');
       fileCard.className = 'file-card';
       
+      // Add thumbnail indicator for first image
+      if (index === 0) {
+        fileCard.classList.add('is-thumbnail');
+      }
+      
       const thumbnail = document.createElement('div');
       thumbnail.className = 'thumbnail';
       
@@ -131,10 +136,50 @@ class ListingForm extends HTMLElement {
       fileName.textContent = file.name.length > 20 ? 
         file.name.substring(0, 17) + '...' : file.name;
       
+      // Add thumbnail badge for first image
+      if (index === 0) {
+        const thumbnailBadge = document.createElement('div');
+        thumbnailBadge.className = 'thumbnail-badge';
+        thumbnailBadge.innerHTML = 'Main Photo';
+        fileCard.appendChild(thumbnailBadge);
+      }
+      
       const removeBtn = document.createElement('button');
       removeBtn.className = 'remove-btn';
       removeBtn.innerHTML = '×';
       removeBtn.addEventListener('click', () => this._removeFile(index));
+      
+      // Add reorder buttons (except for single file)
+      if (this.uploadedFiles.length > 1) {
+        const reorderContainer = document.createElement('div');
+        reorderContainer.className = 'reorder-buttons';
+        
+        if (index > 0) {
+          const moveUpBtn = document.createElement('button');
+          moveUpBtn.className = 'move-btn move-up';
+          moveUpBtn.innerHTML = '↑';
+          moveUpBtn.title = 'Move up (make thumbnail)';
+          moveUpBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this._moveFile(index, index - 1);
+          });
+          reorderContainer.appendChild(moveUpBtn);
+        }
+        
+        if (index < this.uploadedFiles.length - 1) {
+          const moveDownBtn = document.createElement('button');
+          moveDownBtn.className = 'move-btn move-down';
+          moveDownBtn.innerHTML = '↓';
+          moveDownBtn.title = 'Move down';
+          moveDownBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this._moveFile(index, index + 1);
+          });
+          reorderContainer.appendChild(moveDownBtn);
+        }
+        
+        fileCard.appendChild(reorderContainer);
+      }
       
       fileCard.appendChild(thumbnail);
       fileCard.appendChild(fileName);
@@ -142,6 +187,17 @@ class ListingForm extends HTMLElement {
       
       this.previewContainer.appendChild(fileCard);
     });
+  }
+
+  _moveFile(fromIndex, toIndex) {
+    // Swap files in array
+    const temp = this.uploadedFiles[fromIndex];
+    this.uploadedFiles[fromIndex] = this.uploadedFiles[toIndex];
+    this.uploadedFiles[toIndex] = temp;
+    
+    // Refresh display
+    this._displayUploadedFiles();
+    this._updateUploadLabel();
   }
 
   _removeFile(index) {
@@ -156,25 +212,19 @@ class ListingForm extends HTMLElement {
   }
 
   _updateUploadLabel() {
-    const uploadLabel = this.uploadLabel;
+    const uploadIcon = this.uploadLabel.querySelector('.upload-icon');
+    const uploadMain = this.uploadLabel.querySelector('.upload-main');
+    const uploadSub = this.uploadLabel.querySelector('.upload-sub');
     const fileCount = this.uploadedFiles.length;
     
     if (fileCount === 0) {
-      uploadLabel.innerHTML = `
-        <div class="upload-icon">📁</div>
-        <div class="upload-text">
-          <p class="upload-main">Drag & Drop your files here</p>
-          <p class="upload-sub">or click to browse</p>
-        </div>
-      `;
+      uploadIcon.textContent = '📁';
+      uploadMain.textContent = 'Drag & Drop your files here';
+      uploadSub.textContent = 'or click to browse';
     } else {
-      uploadLabel.innerHTML = `
-        <div class="upload-icon">✓</div>
-        <div class="upload-text">
-          <p class="upload-main">${fileCount} file${fileCount > 1 ? 's' : ''} selected</p>
-          <p class="upload-sub">Drop more files or click to add</p>
-        </div>
-      `;
+      uploadIcon.textContent = '✓';
+      uploadMain.textContent = `${fileCount} file${fileCount > 1 ? 's' : ''} selected`;
+      uploadSub.innerHTML = 'Drop more files or <strong>click to add more</strong>';
     }
   }
 
@@ -332,56 +382,71 @@ class ListingForm extends HTMLElement {
       mainImageContainer.appendChild(mainElement);
     }
     
-    // Create thumbnails
-    files.forEach((file, index) => {
-      let thumbElement;
-      
-      if (file.type.startsWith('image/')) {
-        thumbElement = document.createElement('img');
-        thumbElement.src = URL.createObjectURL(file);
-        thumbElement.alt = `Thumbnail ${index + 1}`;
-      } else if (file.type.startsWith('video/')) {
-        thumbElement = document.createElement('video');
-        thumbElement.src = URL.createObjectURL(file);
-        thumbElement.muted = true;
-      }
-      
-      if (thumbElement) {
-        thumbElement.className = index === this._currentPreviewIndex ? 'active' : '';
+    // Create thumbnails only if multiple files
+    if (files.length > 1) {
+      files.forEach((file, index) => {
+        let thumbElement;
         
-        thumbElement.addEventListener('click', () => {
-          this._currentPreviewIndex = index;
+        if (file.type.startsWith('image/')) {
+          thumbElement = document.createElement('img');
+          thumbElement.src = URL.createObjectURL(file);
+          thumbElement.alt = `Thumbnail ${index + 1}`;
+        } else if (file.type.startsWith('video/')) {
+          thumbElement = document.createElement('video');
+          thumbElement.src = URL.createObjectURL(file);
+          thumbElement.muted = true;
+        }
+        
+        if (thumbElement) {
+          thumbElement.className = index === this._currentPreviewIndex ? 'active' : '';
           
-          // Update main display
-          mainImageContainer.innerHTML = '';
-          let newMainElement;
-          
-          if (file.type.startsWith('image/')) {
-            newMainElement = document.createElement('img');
-            newMainElement.className = 'preview-main-image';
-            newMainElement.src = URL.createObjectURL(file);
-            newMainElement.alt = 'Product preview';
-          } else if (file.type.startsWith('video/')) {
-            newMainElement = document.createElement('video');
-            newMainElement.className = 'preview-main-video';
-            newMainElement.src = URL.createObjectURL(file);
-            newMainElement.controls = true;
-            newMainElement.muted = true;
+          // Add thumbnail indicator for first image
+          if (index === 0) {
+            thumbElement.style.border = '3px solid #f3c114';
+            thumbElement.title = 'Main Photo (Thumbnail)';
           }
           
-          if (newMainElement) {
-            mainImageContainer.appendChild(newMainElement);
-          }
-          
-          // Update active state
-          thumbStrip.querySelectorAll('img, video').forEach((el, i) => {
-            el.className = i === index ? 'active' : '';
+          thumbElement.addEventListener('click', () => {
+            this._currentPreviewIndex = index;
+            
+            // Update main display
+            mainImageContainer.innerHTML = '';
+            let newMainElement;
+            
+            if (file.type.startsWith('image/')) {
+              newMainElement = document.createElement('img');
+              newMainElement.className = 'preview-main-image';
+              newMainElement.src = URL.createObjectURL(file);
+              newMainElement.alt = 'Product preview';
+            } else if (file.type.startsWith('video/')) {
+              newMainElement = document.createElement('video');
+              newMainElement.className = 'preview-main-video';
+              newMainElement.src = URL.createObjectURL(file);
+              newMainElement.controls = true;
+              newMainElement.muted = true;
+            }
+            
+            if (newMainElement) {
+              mainImageContainer.appendChild(newMainElement);
+            }
+            
+            // Update active state
+            thumbStrip.querySelectorAll('img, video').forEach((el, i) => {
+              el.className = i === index ? 'active' : '';
+              if (i === 0) {
+                el.style.border = '3px solid #f3c114';
+                el.title = 'Main Photo (Thumbnail)';
+              } else {
+                el.style.border = '2px solid transparent';
+                el.title = '';
+              }
+            });
           });
-        });
-        
-        thumbStrip.appendChild(thumbElement);
-      }
-    });
+          
+          thumbStrip.appendChild(thumbElement);
+        }
+      });
+    }
   }
 
   _handleSubmit(event) {

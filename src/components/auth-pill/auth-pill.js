@@ -156,11 +156,17 @@ class AuthPill extends HTMLElement {
 
   async saveUserToDatabase(user) {
     try {
-      await supabase
+      const { error } = await supabase
         .from('users')
         .upsert([{ id: user.id, email: user.email }], { onConflict: ['id'] });
+      
+      if(error) {
+        throw error;
+      }
     } catch (err) {
       console.error('Failed to save user:', err);
+      await this.logout();
+      alert('Must have a UCSD account (@ucsd.edu) to login');
     }
   }
 

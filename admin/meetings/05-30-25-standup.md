@@ -1,58 +1,78 @@
-
 # 30 May - Weekly Standup Meeting
 
-## Time: 4:30 - 5 PM
+## Time: 4:30 - 4:45 PM
 
 ## People Present:
-- [x] Haoyan Wan 
-- [x] Dhruv Agarwal 
-- [x] Aniruddha Dasu 
-- [x] Adam Connor 
-- [x] Ahmed Abdullahi 
-- [ ] Anthony Nguyen 
-- [x] Damian Nieto 
-- [ ] Hetvi Gandhi 
-- [x] Kiichiro Wang 
-- [x] Nasser Al-Nasser
-- [x] Pantea Foroutan
+- [x] Haoyan Wan  
+- [x] Dhruv Agarwal  
+- [x] Aniruddha Dasu  
+- [x] Adam Connor  
+- [x] Ahmed Abdullahi  
+- [x] Anthony Nguyen  
+- [x] Damian Nieto  
+- [x] Hetvi Gandhi  
+- [x] Kiichiro Wang  
+- [x] Nasser Al-Nasser  
+- [x] Pantea Foroutan  
 
+---
+
+## General Notes:
+- Frontend and backend teams are focused on clearing technical debt.  
+- Team leads emphasized all major functionality must be implemented by Tuesday.  
+- Everyone is on track to complete their assigned work.
+
+---
 
 ## Progress Updates
 
 1. **Haoyan**  
-   -  Updated how we do product detail, no longer redundant 
-   -  Refactored some of the pushed code 
-   -  Merged some of the existing components
+   - Working on clearing backend tech debt.
 
 2. **Dhruv**  
-   - Explored potential approaches to the chat feature, came up with 2 approaches and both proposals will be pushed along with this 
-   - Working on being able to delete own listings from the profile page
+   - Found and documented backend bugs from testing.  
+   - Working on controller test cases and backend bug fixes.  
+   - Added 5 listings.  
+   - Will assign additional bugs via GitHub issues.
 
-3. **Adam**  
-   - Made visual improvements to the product cards as outlined in the GitHub issue
+3. **Aniruddha**  
+   - Working on test cases for the model.  
+   - Assisting with backend tech debt.
 
-4. **Ahmed**  
-   - Made product cars smaller, added day attribute, and the website it also not dynamic to screen size
-   - Bit of latency between clicking and updating, pill layout, and product detail UI need to worked on 
+4. **Adam**  
+   - Working on clearing frontend tech debt and other frontend bugs.  
 
-5. **Damian**  
-   - Fixed the issue that the website tried to sign you up as a new user even if you were added to the database so now it queries through the database to find you before signing you up. 
+5. **Ahmed**  
+   - Working on clearing frontend tech debt and other frontend bugs.  
 
-6. **Kiichiro**  
-   -  Redesigned product view, made listing creation, preview and profile settings
+6. **Anthony**  
+   - Working on clearing backend tech debt.
 
-7. **Nasser**  
-   - Revamped landing page, added bottom nav (not all of it works right now), browsing does not take entire screen now
-   - Need to work on setting priority for images, and making some visual cosmetic changes. 
+7. **Damian**  
+   - Demonstrated functional edit listings feature.  
+   - Working on clearing backend tech debt.
 
-8. **Pantea**  
-   - Added new function that converts all uploaded images to WebP format and compresses them
-   - Need to work on making sure that all images are the same size 
+8. **Hetvi**  
+   - Working on clearing frontend tech debt and other frontend bugs.  
 
-9. **Hetvi**
-    - Done with the chat widget UI 
-    - Working on the 404 error page 
+9. **Kiichiro**  
+   - Working on updating notifications for the chat feature.   
+
+10. **Nasser**  
+    - Completed login flow to restrict access to UCSD email addresses.  
+    - Will work on remaining frontend bugs over the weekend.  
+    - Will add 5 listings.
+
+11. **Pantea**  
+    - Working on clearing backend tech debt.  
+    - Will add 5 listings.
+    - Also currently working on API fallback behavior 
+
+---
 
 ## Miscellaneous Notes
+- Dhruv will handle most of the backend bugs he found, with a few left open for others to pick up.  
+- Damian’s edit listing feature is functional and was demonstrated to the team.  
 
-- Nav bar is very high priority both for frontend and backend and needs to completed before the next sprint cycle begins
+## Note-taker
+Dhruv Agarwal

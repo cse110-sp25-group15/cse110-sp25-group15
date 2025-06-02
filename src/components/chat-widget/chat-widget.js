@@ -15,6 +15,16 @@ class ChatWidget extends HTMLElement {
     template.innerHTML = `<style>${css}</style>${html}`;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     // Prevents body scroll when chat is open
+
+    const disclaimer = document.createElement('div');
+    disclaimer.textContent = 'Disclaimer: This chat is for demonstration purposes only.';
+    disclaimer.className = 'chat-disclaimer';
+
+    const widgetContainer = this.shadowRoot.querySelector('.widget-container');
+    if (widgetContainer) {
+      widgetContainer.insertBefore(disclaimer, widgetContainer.firstChild);
+    }
+
     //document.body.style.overflow = 'hidden';
     // Close on "X" icon
     this.shadowRoot.querySelector('.close-icon').addEventListener('click', () =>         this.hideWidget()  );
@@ -28,7 +38,7 @@ class ChatWidget extends HTMLElement {
     const chat_widget = document.querySelector('chat-widget');
     document.addEventListener('user-signed-out', () => { 
       chat_widget.style.display = 'none'; 
-      console.log('receive event logout');});
+    });
     // listen to user-signed-in
     document.addEventListener('user-signed-in', ()=> { 
       chat_widget.style.display = 'block'; 

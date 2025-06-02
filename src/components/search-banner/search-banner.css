@@ -5,22 +5,17 @@
     font-family: "Segoe UI", Arial, sans-serif;
 }
 
-body {
-    background-color: #f7f7f7;
-    padding: 0; /* Removed padding to prevent interference with alignment */
-}
 
 .search-banner {
     width: 90%;
-    margin-top: 2rem;
     max-width: 1800px;
+    margin: 2rem auto 0 auto; /*  centers the element */
     height: 400px;
     position: relative;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: var(--shadow);
     box-sizing: border-box;
-    justify-self: center;
 }
 
 .video-background {

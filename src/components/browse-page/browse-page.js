@@ -19,7 +19,6 @@ class BrowsePage extends HTMLElement {
   }
 
   connectedCallback() {
-    console.log('BrowsePage connected');
     const dropdown = this.shadowRoot.getElementById('dropdown');
 
     dropdown.addEventListener('change', (e) => {

@@ -38,7 +38,7 @@ class ChatWidget extends HTMLElement {
     const chat_widget = document.querySelector('chat-widget');
     document.addEventListener('user-signed-out', () => { 
       chat_widget.style.display = 'none'; 
-      console.log('receive event logout');});
+    });
     // listen to user-signed-in
     document.addEventListener('user-signed-in', ()=> { 
       chat_widget.style.display = 'block'; 

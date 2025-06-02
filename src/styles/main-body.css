@@ -37,11 +37,17 @@ main {
   padding-top: var(--nav-h); /* Height of the header */
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 hero-banner {
   display: block;
+  width: 100%;
   height: calc(100vh - var(--nav-h));
+}
+
+search-banner{
+  width: 100%;
 }
 
 /* Header positioning */

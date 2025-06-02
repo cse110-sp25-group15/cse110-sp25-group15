@@ -18,17 +18,6 @@ class EmptyState extends HTMLElement {
     return ['active'];
   }
 
-  connectedCallback() {
-    const resetFilterButton = this.shadowRoot.querySelector('button');
-    
-    resetFilterButton.addEventListener('click', () => {   
-      this.dispatchEvent(new CustomEvent('filter-reset', {
-        bubbles: true,
-        composed: true,
-      }));
-    });
-  }
-
 }
 
 customElements.define('empty-state', EmptyState);

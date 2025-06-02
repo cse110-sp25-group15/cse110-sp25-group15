@@ -15,6 +15,16 @@ class ChatWidget extends HTMLElement {
     template.innerHTML = `<style>${css}</style>${html}`;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     // Prevents body scroll when chat is open
+
+    const disclaimer = document.createElement('div');
+    disclaimer.textContent = 'Disclaimer: This chat is for demonstration purposes only.';
+    disclaimer.className = 'chat-disclaimer';
+
+    const widgetContainer = this.shadowRoot.querySelector('.widget-container');
+    if (widgetContainer) {
+      widgetContainer.insertBefore(disclaimer, widgetContainer.firstChild);
+    }
+
     //document.body.style.overflow = 'hidden';
     // Close on "X" icon
     this.shadowRoot.querySelector('.close-icon').addEventListener('click', () =>         this.hideWidget()  );

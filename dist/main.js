@@ -555,7 +555,7 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
             loop\r
             playsinline\r
         >\r
-            <source src="geiselV.mp4" type="video/mp4">\r
+            <source src="geiselnc.mp4" type="video/mp4">\r
         </video>\r
     </div>\r
 </div>`,k=`\r
@@ -737,14 +737,7 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
     <body>\r
         <section class="search-banner">\r
             <div class="video-background">\r
-                <video\r
-                    autoplay\r
-                    muted\r
-                    loop\r
-                    playsinline\r
-                >\r
-                    <source src="lajolla.mp4" type="video/mp4">\r
-                </video>\r
+                <img src="banner.jpg" alt="UCSD banner image">\r
             </div>\r
             <div class="video-overlay"></div>\r
             <div class="banner-content">\r
@@ -958,7 +951,7 @@ body {\r
 }`;class R extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"});const r=document.createElement("template");r.innerHTML=`
       <style>${C}</style>
       ${E}
-    `,this.shadowRoot.appendChild(r.content.cloneNode(!0)),this.activeCategory="all"}connectedCallback(){this.setupEventListeners(),console.log("SearchHero connected successfully")}setupEventListeners(){const r=this.shadowRoot.querySelector(".search-input"),n=this.shadowRoot.querySelector(".search-button"),e=()=>{const t=r==null?void 0:r.value.trim();t&&(this.dispatchEvent(new CustomEvent("search-submitted",{bubbles:!0,composed:!0,detail:{searchTerm:t,category:this.activeCategory}})),console.log(`Search: "${t}" in category: ${this.activeCategory}`))};n==null||n.addEventListener("click",e),r==null||r.addEventListener("keypress",t=>{t.key==="Enter"&&e()});const o=this.shadowRoot.querySelectorAll(".category-btn");o.forEach(t=>{t.addEventListener("click",()=>{o.forEach(i=>i.classList.remove("active")),t.classList.add("active"),this.activeCategory=t.getAttribute("data-category"),this.dispatchEvent(new CustomEvent("category-selected",{bubbles:!0,composed:!0,detail:{category:this.activeCategory}})),console.log(`Category selected: ${this.activeCategory}`)})})}}customElements.define("search-banner",R);const L=`<div class="chat-bubble">\r
+    `,this.shadowRoot.appendChild(r.content.cloneNode(!0)),this.activeCategory="all"}connectedCallback(){this.setupEventListeners(),console.log("SearchHero connected successfully")}setupEventListeners(){const r=this.shadowRoot.querySelector(".search-input"),n=this.shadowRoot.querySelector(".search-button"),e=()=>{const t=r.value.trim();t&&this.dispatchEvent(new CustomEvent("search-submit",{bubbles:!0,composed:!0,detail:{query:t}})),console.log(`Search submitted: ${t}`)};n==null||n.addEventListener("click",e),r==null||r.addEventListener("keypress",t=>{t.key==="Enter"&&e()});const o=this.shadowRoot.querySelectorAll(".category-btn");o.forEach(t=>{t.addEventListener("click",()=>{o.forEach(i=>i.classList.remove("active")),t.classList.add("active"),this.activeCategory=t.getAttribute("data-category"),this.dispatchEvent(new CustomEvent("category-selected",{bubbles:!0,composed:!0,detail:{category:this.activeCategory}})),console.log(`Category selected: ${this.activeCategory}`)})})}}customElements.define("search-banner",R);const L=`<div class="chat-bubble">\r
     <svg\r
         xmlns="http://www.w3.org/2000/svg"\r
         width="24"\r
@@ -996,8 +989,7 @@ body {\r
     position: fixed;\r
     bottom: 20px;\r
     right: 20px;\r
-    border: transparent;\r
-    border-radius: 8px;\r
+    /*border: 1px solid var(--blue);*/\r
     font-family: sans-serif;\r
     z-index: 999;\r
 }\r
@@ -1006,6 +998,8 @@ body {\r
     position: relative;\r
     width: 60px;\r
     height: 60px;\r
+    /*border-radius: 50%;*/\r
+    border: 1px solid var(--gold);\r
     border-radius: 50%;\r
     background-color: var(--blue);\r
     color: var(--white);\r
@@ -1017,6 +1011,7 @@ body {\r
     transition: transform 0.2s ease, box-shadow 0.2s ease;\r
 }\r
 .chat-bubble:hover {\r
+    /*border-color: 1px solid var(--white);*/\r
     transform: scale(1.05);\r
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);\r
 }\r
@@ -1160,11 +1155,12 @@ input[type = "search"] {\r
 }\r
 .widget-container{\r
     background-color: white;\r
+    border: 1px solid var(--blue);\r
     width: 300px;\r
 }\r
 .back-button {\r
     cursor: pointer;\r
-}`;class _ extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this._conversations=[{id:1,name:"Alice",preview:"Hey!",timestamp:"10:32 AM",unread:!0},{id:2,name:"Bob",preview:"See you soon.",timestamp:"9:14 AM",unread:!1},{id:3,name:"Carol",preview:"Got it.",timestamp:"Yesterday",unread:!0}]}connectedCallback(){const r=document.createElement("template");r.innerHTML=`<style>${z}</style>${L}`,this.shadowRoot.appendChild(r.content.cloneNode(!0)),this.shadowRoot.querySelector(".close-icon").addEventListener("click",()=>this.hideWidget()),this._handleEsc=e=>{e.key==="Escape"&&this.isConnected&&this.parentElement&&this.hideWidget()},this.shadowRoot.querySelector(".chat-bubble").addEventListener("click",()=>{this.toggleWidget()}),this.shadowRoot.querySelector(".widget-container").style.display="none",this._renderConversations(),this._isVisible=!1,document.addEventListener("keydown",this._handleEsc),this.shadowRoot.querySelector("input").addEventListener("input",e=>{const o=e.target.value.toLowerCase();this._renderConversations(o)}),this._renderConversations();const n=this.shadowRoot.querySelector(".back-button");n&&n.addEventListener("click",()=>{this.shadowRoot.querySelector(".chat-screen").classList.add("hidden"),this.shadowRoot.querySelector(".convo-list").style.display="block",this.shadowRoot.querySelector("header").style.display="flex",this.shadowRoot.querySelector("input").style.display="block"})}toggleWidget(){this._isVisible?this.hideWidget():this.showWidget()}showWidget(){this.shadowRoot.querySelector(".widget-container").style.display="block",this.shadowRoot.querySelector(".chat-bubble").style.display="none",this._isVisible=!0}hideWidget(){this.shadowRoot.querySelector(".widget-container").style.display="none",this.shadowRoot.querySelector(".chat-bubble").style.display="flex",this._isVisible=!1}disconnectedCallback(){document.removeEventListener("keydown",this._handleEsc),document.body.style.overflow=""}_renderConversations(r=""){const n=this.shadowRoot.querySelector(".convo-list");n.innerHTML="",this._conversations.filter(e=>e.name.toLowerCase().includes(r)).forEach(e=>{const o=document.createElement("div");o.classList.add("convo"),o.innerHTML=`
+}`;class _ extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this._conversations=[{id:1,name:"Alice",preview:"Hey!",timestamp:"10:32 AM",unread:!0},{id:2,name:"Bob",preview:"See you soon.",timestamp:"9:14 AM",unread:!1},{id:3,name:"Carol",preview:"Got it.",timestamp:"Yesterday",unread:!0}]}connectedCallback(){const r=document.createElement("template");r.innerHTML=`<style>${z}</style>${L}`,this.shadowRoot.appendChild(r.content.cloneNode(!0)),this.shadowRoot.querySelector(".close-icon").addEventListener("click",()=>this.hideWidget()),this._handleEsc=o=>{o.key==="Escape"&&this.isConnected&&this.parentElement&&this.hideWidget()};const n=document.querySelector("chat-widget");document.addEventListener("user-signed-out",()=>{n.style.display="none",console.log("receive event logout")}),document.addEventListener("user-signed-in",()=>{n.style.display="block",console.log("receive event login")}),this.shadowRoot.querySelector(".chat-bubble").addEventListener("click",()=>{this.toggleWidget()}),this.shadowRoot.querySelector(".widget-container").style.display="none",this._renderConversations(),this._isVisible=!1,document.addEventListener("keydown",this._handleEsc),this.shadowRoot.querySelector("input").addEventListener("input",o=>{const t=o.target.value.toLowerCase();this._renderConversations(t)}),this._renderConversations();const e=this.shadowRoot.querySelector(".back-button");e&&e.addEventListener("click",()=>{this.shadowRoot.querySelector(".chat-screen").classList.add("hidden"),this.shadowRoot.querySelector(".convo-list").style.display="block",this.shadowRoot.querySelector("header").style.display="flex",this.shadowRoot.querySelector("input").style.display="block"})}toggleWidget(){this._isVisible?this.hideWidget():this.showWidget()}showWidget(){this.shadowRoot.querySelector(".widget-container").style.display="block",this.shadowRoot.querySelector(".chat-bubble").style.display="none",this._isVisible=!0}hideWidget(){this.shadowRoot.querySelector(".widget-container").style.display="none",this.shadowRoot.querySelector(".chat-bubble").style.display="flex",this._isVisible=!1}disconnectedCallback(){document.removeEventListener("keydown",this._handleEsc),document.body.style.overflow=""}_renderConversations(r=""){const n=this.shadowRoot.querySelector(".convo-list");n.innerHTML="",this._conversations.filter(e=>e.name.toLowerCase().includes(r)).forEach(e=>{const o=document.createElement("div");o.classList.add("convo"),o.innerHTML=`
             <div class="avatar"></div>
             <div class="details">
             <div>

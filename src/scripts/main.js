@@ -47,3 +47,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 },
 );
+
+// Register service worker for image caching
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/cse110-sp25-group15/service-worker.js')
+      .then(function(reg) {
+        console.log('Service Worker registered:', reg.scope);
+      })
+      .catch(function(err) {
+        console.warn('Service Worker registration failed:', err);
+      });
+  });
+}

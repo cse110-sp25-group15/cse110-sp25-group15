@@ -1,4 +1,4 @@
-import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"https://cdn.skypack.dev/heic2any";import"https://cdn.skypack.dev/browser-image-compression";const p=`\r
+import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"https://cdn.skypack.dev/heic2any";import"https://cdn.skypack.dev/browser-image-compression";const s=`\r
 \r
 <section class="browse-area">\r
     <div class="browse-header">\r
@@ -26,6 +26,7 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
         <div class="sort-option">\r
             <label for="dropdown"></label>\r
             <select id="dropdown" name="options">\r
+                <option value="featured">Featured</option>\r
                 <option class="option-value" value="new">Newest</option>\r
                 <option value="low">Price: Low to High</option>\r
                 <option value="high">Price: High to Low</option>\r
@@ -37,7 +38,7 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
         <!-- JS will load the products -->\r
     </div>\r
     <page-switcher id="pagination"></page-switcher>\r
-</section>`,g=`:host {\r
+</section>`,d=`:host {\r
   --gap: 16px;\r
   --max-columns: 6;\r
   --max-container-width: 1800px;\r
@@ -171,14 +172,14 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
   .card { width: calc(16.6667% - (var(--gap) * 5 / 6)); }\r
   .products-container { max-width: var(--max-container-width); }\r
 }\r
-`;class u extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"});const r=document.createElement("template");r.innerHTML=`
-          <style>${g}</style>
-          ${p}
-      `,this.shadowRoot.appendChild(r.content.cloneNode(!0))}static get observedAttributes(){return["new","low","high"]}connectedCallback(){console.log("BrowsePage connected"),this.shadowRoot.getElementById("dropdown").addEventListener("change",n=>{const e=n.target.value;console.log(n.target.value),(e==="new"||e==="low"||e==="high")&&this.dispatchEvent(new CustomEvent("sort-change",{bubbles:!0,composed:!0,detail:{sortBy:e}}))}),setTimeout(()=>{const n=this.shadowRoot.querySelector("category-button");n&&n.setAttribute("selected","")},100)}attributeChangedCallback(r,n,e){}}customElements.define("browse-page",u);const m=`<div class="category-button">\r
+`;class l extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"});const r=document.createElement("template");r.innerHTML=`
+          <style>${d}</style>
+          ${s}
+      `,this.shadowRoot.appendChild(r.content.cloneNode(!0))}static get observedAttributes(){return["new","low","high"]}connectedCallback(){console.log("BrowsePage connected"),this.shadowRoot.getElementById("dropdown").addEventListener("change",n=>{const e=n.target.value;console.log(n.target.value),(e==="new"||e==="low"||e==="high"||e==="featured")&&this.dispatchEvent(new CustomEvent("sort-change",{bubbles:!0,composed:!0,detail:{sortBy:e}}))}),setTimeout(()=>{const n=this.shadowRoot.querySelector("category-button");n&&n.setAttribute("selected","")},100)}attributeChangedCallback(r,n,e){}}customElements.define("browse-page",l);const c=`<div class="category-button">\r
     <button class="label" type="button">\r
         <slot></slot>\r
     </button>\r
-</div>`,b=`.label {\r
+</div>`,h=`.label {\r
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;\r
     padding: 6px 12px;\r
     font-weight: 500;\r
@@ -199,10 +200,10 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
     color: #04133B;\r
     font-weight: 600;\r
     border-bottom: 2px solid #04133B;\r
-}`;class v extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"});const r=document.createElement("template");r.innerHTML=`
-            <style>${b}</style>
-            ${m}
-        `,this.shadowRoot.appendChild(r.content.cloneNode(!0))}static get observedAttributes(){return["selected"]}connectedCallback(){this.shadowRoot.querySelector(".label").addEventListener("click",()=>{const e=this.shadowRoot.querySelector("slot").assignedNodes().map(t=>t.textContent).join("").trim(),o=new CustomEvent("filter-changed",{bubbles:!0,composed:!0,detail:{category:e}});this.dispatchEvent(o)})}attributeChangedCallback(r,n,e){if(r==="selected"){const o=this.hasAttribute("selected");this.updateSelected(o)}}updateSelected(r){this.shadowRoot.querySelector(".label").classList.toggle("selected",r)}}customElements.define("category-button",v);const w=`<div class="overlay">\r
+}`;class p extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"});const r=document.createElement("template");r.innerHTML=`
+            <style>${h}</style>
+            ${c}
+        `,this.shadowRoot.appendChild(r.content.cloneNode(!0))}static get observedAttributes(){return["selected"]}connectedCallback(){this.shadowRoot.querySelector(".label").addEventListener("click",()=>{const e=this.shadowRoot.querySelector("slot").assignedNodes().map(t=>t.textContent).join("").trim(),o=new CustomEvent("filter-changed",{bubbles:!0,composed:!0,detail:{category:e}});this.dispatchEvent(o)})}attributeChangedCallback(r,n,e){if(r==="selected"){const o=this.hasAttribute("selected");this.updateSelected(o)}}updateSelected(r){this.shadowRoot.querySelector(".label").classList.toggle("selected",r)}}customElements.define("category-button",p);const m=`<div class="overlay">\r
     <section class="product-detail">\r
         <button\r
             class="close-btn"\r
@@ -257,7 +258,7 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
             <slot></slot>\r
         </div>\r
     </section>\r
-</div>`,x=`/* UCSD Palette */\r
+</div>`,g=`/* UCSD Palette */\r
 :host {\r
   --ucsd-blue: var(--blue);\r
   --ucsd-gold: var(--gold);\r
@@ -267,28 +268,63 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
   display: block;\r
 }\r
 \r
+.overlay {\r
+  position: fixed;\r
+  top: 0;\r
+  left: 0;\r
+  width: 100%;\r
+  height: 100%;\r
+  background-color: rgba(0, 0, 0, 0.7);\r
+  z-index: 1000;\r
+  display: none;\r
+  justify-content: center;\r
+  align-items: center;\r
+  padding: 20px;\r
+  box-sizing: border-box;\r
+  overflow-y: auto;\r
+}\r
+\r
+.close-btn {\r
+  position: absolute;\r
+  top: -50px;\r
+  right: -10px;\r
+  z-index: 10;\r
+  background: transparent;\r
+  border: none;\r
+  color: var(--ucsd-white);\r
+  font-size: 2rem;\r
+  font-weight: bold;\r
+  cursor: pointer;\r
+  padding: 0.2em 0.5em;\r
+  border-radius: 50%;\r
+}\r
+\r
+.close-btn:hover, .close-btn:focus {\r
+  color: var(--ucsd-gold);\r
+}\r
+\r
 /* Layout */\r
 .product-detail {\r
-  border-top: 40px solid var(--ucsd-blue);\r
-  padding: 2rem;\r
-  background: var(--ucsd-white);\r
   display: flex;\r
-  border-radius: 12px;\r
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);\r
   width: 80%;\r
   max-height: 90vh;\r
   max-width: 900px;\r
   position: relative;\r
+  padding: 2rem;\r
   margin: auto;\r
-  transform: translateY(10vh);\r
   gap: 2rem;\r
+  background: var(--ucsd-white);\r
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);\r
+  border-radius: 12px;\r
+  border-top: 40px solid var(--ucsd-blue);\r
+  transform: translateY(10vh);\r
 }\r
 \r
 /* Gallery */\r
 .gallery {\r
-  flex: 1;\r
   display: flex;\r
   flex-direction: column;\r
+  flex: 1;\r
   justify-content: flex-start;\r
   background: var(--ucsd-white);\r
   border-radius: 8px;\r
@@ -311,8 +347,6 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
 .gallery-main .main-image {\r
   width: 100%;\r
   height: 100%;\r
-  max-width: 100%;\r
-  max-height: 100%;\r
   border-radius: 8px;\r
   display: block;\r
   object-fit: cover;\r
@@ -441,17 +475,17 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
   display: inline-flex;\r
   align-items: center;\r
   justify-content: center;\r
-  gap: 0.5em;\r
-  background: var(--ucsd-gold);\r
-  color: var(--ucsd-blue);\r
+  cursor: pointer;\r
   border: none;\r
+  gap: 0.5em;\r
   border-radius: 6px;\r
   font-size: 0.85rem;\r
   font-weight: 600;\r
   padding: 0.6em 1.2em;\r
-  cursor: pointer;\r
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);\r
   transition: background 0.2s, color 0.2s, transform 0.1s;\r
+  background: var(--ucsd-gold);\r
+  color: var(--ucsd-blue);\r
   align-self: flex-start;\r
   min-width: 140px;\r
 }\r
@@ -459,7 +493,6 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
 .send-btn:hover, .send-btn:focus {\r
   background: var(--ucsd-gold-dark);\r
   transform: translateY(-1px);\r
-  outline: none;\r
 }\r
 \r
 .send-btn svg {\r
@@ -468,21 +501,6 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
   fill: currentColor;\r
 }\r
 \r
-.overlay {\r
-  position: fixed;\r
-  top: 0;\r
-  left: 0;\r
-  width: 100%;\r
-  height: 100%;\r
-  background-color: rgba(0, 0, 0, 0.7);\r
-  z-index: 1000;\r
-  display: none;\r
-  justify-content: center;\r
-  align-items: center;\r
-  padding: 20px;\r
-  box-sizing: border-box;\r
-  overflow-y: auto;\r
-}\r
 \r
 @media (max-width: 1024px) {\r
   .product-detail {\r
@@ -514,31 +532,10 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
   .price {\r
     font-size: 1.5rem;\r
   }\r
-}\r
-\r
-.close-btn {\r
-  position: absolute;\r
-  top: -50px;\r
-  right: -10px;\r
-  z-index: 10;\r
-  background: transparent;\r
-  border: none;\r
-  color: var(--ucsd-white);\r
-  font-size: 2rem;\r
-  font-weight: bold;\r
-  cursor: pointer;\r
-  padding: 0.2em 0.5em;\r
-  border-radius: 50%;\r
-  transition: background 0.2s;\r
-}\r
-\r
-.close-btn:hover, .close-btn:focus {\r
-  color: var(--ucsd-gold);\r
-  outline: none;\r
-}`;class y extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this._currentIndex=0,this._isVisible=!1;const r=document.createElement("template");r.innerHTML=`
-      <style>${x}</style>
-      ${w}
-    `,this.shadowRoot.appendChild(r.content.cloneNode(!0))}static get observedAttributes(){return["name","price","condition","date","description","images"]}attributeChangedCallback(r,n,e){console.log(`Attribute changed: ${r}, Old Value: ${n}, New Value: ${e}`),n!==e&&(console.log("Updating content due to attribute change"),this._updateContent())}connectedCallback(){this._updateContent(),this._addEventListeners(),this._initializeOverlay()}get images(){return(this.getAttribute("images")||"").split(/[\s,]+/).map(r=>r.trim()).filter(Boolean)}_initializeOverlay(){const r=this.shadowRoot.querySelector(".overlay");r&&(r.style.display="none",this._isVisible=!1)}_lockBodyScroll(){document.body.style.overflow="hidden",document.body.style.paddingRight=this._getScrollbarWidth()+"px"}_unlockBodyScroll(){document.body.style.overflow="",document.body.style.paddingRight=""}_getScrollbarWidth(){const r=document.createElement("div");r.style.cssText="width: 100px; height: 100px; overflow: scroll; position: absolute; top: -9999px;",document.body.appendChild(r);const n=r.offsetWidth-r.clientWidth;return document.body.removeChild(r),n}show(){const r=this.shadowRoot.querySelector(".overlay");r&&(r.style.display="block",this._isVisible=!0,this._lockBodyScroll(),console.log("Overlay shown"))}hide(){const r=this.shadowRoot.querySelector(".overlay");r&&(r.style.display="none",this._isVisible=!1,this._unlockBodyScroll(),console.log("Overlay hidden"))}_updateContent(){console.log("Updating content with images:",this.images);const r=this.images,n=this.shadowRoot.querySelector(".main-image");n&&(n.src=r[this._currentIndex]||"",n.alt=this.getAttribute("name")||"Product image");const e=this.shadowRoot.querySelector(".thumb-strip");e&&(e.innerHTML="",r.forEach((h,d)=>{const a=document.createElement("img");a.src=h,a.alt=`Thumbnail ${d+1}`,a.className=d===this._currentIndex?"active":"",a.tabIndex=0,a.addEventListener("click",()=>{this._currentIndex=d,this._updateContent()}),e.appendChild(a)}));const o=this.shadowRoot.querySelector(".product-name");o&&(o.textContent=this.getAttribute("name")||"");const t=this.shadowRoot.querySelector(".price");t&&(t.textContent=this.getAttribute("price")?`$${this.getAttribute("price")}`:"");const i=this.shadowRoot.querySelector(".condition");i&&(i.textContent=this.getAttribute("condition")||"");const l=this.shadowRoot.querySelector(".date");l&&(l.textContent=this.getAttribute("date")||"");const c=this.shadowRoot.querySelector(".description-block");c&&(c.textContent=this.getAttribute("description")||"")}_addEventListeners(){var e,o,t;(e=this.shadowRoot.querySelector(".gallery"))==null||e.addEventListener("keydown",i=>{i.key==="ArrowLeft"&&this._cycleImage(-1),i.key==="ArrowRight"&&this._cycleImage(1)}),(o=this.shadowRoot.querySelector(".send-btn"))==null||o.addEventListener("click",()=>{this.dispatchEvent(new CustomEvent("contact-seller",{bubbles:!0,composed:!0}))}),(t=this.shadowRoot.querySelector(".close-btn"))==null||t.addEventListener("click",()=>{this.hide()});const r=this.shadowRoot.querySelector(".overlay");r==null||r.addEventListener("click",i=>{i.target===r&&this.hide()});const n=this.shadowRoot.querySelector(".product-detail");n==null||n.addEventListener("click",i=>{i.stopPropagation()}),document.addEventListener("keydown",i=>{i.key==="Escape"&&this._isVisible&&this.hide()})}_cycleImage(r){const n=this.images;n.length!==0&&(this._currentIndex=(this._currentIndex+r+n.length)%n.length,this._updateContent())}disconnectedCallback(){this._isVisible&&this._unlockBodyScroll()}}customElements.define("product-detail",y);const f=`<div class="hero-content">\r
+}`;class u extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this._currentIndex=0,this._isVisible=!1;const r=document.createElement("template");r.innerHTML=`
+      <style>${g}</style>
+      ${m}
+    `,this.shadowRoot.appendChild(r.content.cloneNode(!0))}static get observedAttributes(){return["name","price","condition","date","description","images"]}attributeChangedCallback(r,n,e){n!==e&&this._updateContent()}connectedCallback(){var r,n,e,o,t;this.gallery=this.shadowRoot.querySelector(".gallery"),this.sendButton=this.shadowRoot.querySelector(".send-btn"),this.closeButton=this.shadowRoot.querySelector(".close-btn"),this.overlay=this.shadowRoot.querySelector(".overlay"),this.productDetail=this.shadowRoot.querySelector(".product-detail"),this._initializeOverlay(),this._updateContent(),this._handleKeyDown=this._handleKeyDown.bind(this),this._handleContactClick=this._handleContactClick.bind(this),this._handleCloseClick=this._handleCloseClick.bind(this),this._handleOverlayClick=this._handleOverlayClick.bind(this),this._stopPropagation=this._stopPropagation.bind(this),this._handleEscKey=this._handleEscKey.bind(this),(r=this.gallery)==null||r.addEventListener("keydown",this._handleKeyDown),(n=this.sendButton)==null||n.addEventListener("click",this._handleContactClick),(e=this.closeButton)==null||e.addEventListener("click",this._handleCloseClick),(o=this.overlay)==null||o.addEventListener("click",this._handleOverlayClick),(t=this.productDetail)==null||t.addEventListener("click",this._stopPropagation),document.addEventListener("keydown",this._handleEscKey)}disconnectedCallback(){var r,n,e,o,t;this._isVisible&&this._unlockBodyScroll(),(r=this.gallery)==null||r.removeEventListener("keydown",this._handleKeyDown),(n=this.sendButton)==null||n.removeEventListener("click",this._handleContactClick),(e=this.closeButton)==null||e.removeEventListener("click",this._handleCloseClick),(o=this.overlay)==null||o.removeEventListener("click",this._handleOverlayClick),(t=this.productDetail)==null||t.removeEventListener("click",this._stopPropagation),document.removeEventListener("keydown",this._handleEscKey)}_updateContent(){const r=this.images,n=this.shadowRoot.querySelector(".main-image");n&&(n.src=r[this._currentIndex]||"",n.alt=this.getAttribute("name")||"Product image");const e=this.shadowRoot.querySelector(".thumb-strip");e&&(e.innerHTML="",r.length>1&&r.forEach((o,t)=>{const i=document.createElement("img");i.src=o,i.alt=`Thumbnail ${t+1}`,i.className=t===this._currentIndex?"active":"",i.tabIndex=0,i.addEventListener("click",()=>{this._currentIndex=t,this._updateContent()}),e.appendChild(i)})),this._setText(".product-name",this.getAttribute("name")),this._setText(".price",this.getAttribute("price")?`$${this.getAttribute("price")}`:""),this._setText(".condition",this.getAttribute("condition")),this._setText(".date",this.getAttribute("date")),this._setText(".description-block",this.getAttribute("description"))}_setText(r,n){const e=this.shadowRoot.querySelector(r);e&&(e.textContent=n||"")}_handleKeyDown(r){r.key==="ArrowLeft"&&this._cycleImage(-1),r.key==="ArrowRight"&&this._cycleImage(1)}_handleContactClick(){this.dispatchEvent(new CustomEvent("contact-seller",{bubbles:!0,composed:!0}))}_handleCloseClick(){this.hide()}_handleOverlayClick(r){r.target===this.overlay&&this.hide()}_stopPropagation(r){r.stopPropagation()}_handleEscKey(r){r.key==="Escape"&&this._isVisible&&this.hide()}get images(){const r=this.getAttribute("images")||"";if(r.startsWith("[")&&r.endsWith("]"))try{return JSON.parse(r).filter(Boolean)}catch(n){return console.warn("Failed to parse images JSON:",n),[]}else return r.split(/[\s,]+/).map(n=>n.trim()).filter(Boolean)}_initializeOverlay(){this.overlay&&(this.overlay.style.display="none",this._isVisible=!1)}_lockBodyScroll(){document.body.style.overflow="hidden",document.body.style.paddingRight=this._getScrollbarWidth()+"px"}_unlockBodyScroll(){document.body.style.overflow="",document.body.style.paddingRight=""}_getScrollbarWidth(){const r=document.createElement("div");r.style.cssText="width: 100px; height: 100px; overflow: scroll; position: absolute; top: -9999px;",document.body.appendChild(r);const n=r.offsetWidth-r.clientWidth;return document.body.removeChild(r),n}show(){this.overlay&&(this.overlay.style.display="block",this._isVisible=!0,this._lockBodyScroll())}hide(){this.overlay&&(this.overlay.style.display="none",this._isVisible=!1,this._unlockBodyScroll())}_cycleImage(r){const n=this.images;n.length!==0&&(this._currentIndex=(this._currentIndex+r+n.length)%n.length,this._updateContent())}}customElements.define("product-detail",u);const b=`<div class="hero-content">\r
     <div class="hero-text">\r
         <h1>DISCOVER<br>BUY OR <span class="sell-color">SELL.</span></h1>\r
         <a\r
@@ -555,10 +552,10 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
             loop\r
             playsinline\r
         >\r
-            <source src="geiselV.mp4" type="video/mp4">\r
+            <source src="geiselnc.mp4" type="video/mp4">\r
         </video>\r
     </div>\r
-</div>`,k=`\r
+</div>`,v=`\r
 *,\r
 *::before,\r
 *::after {\r
@@ -581,7 +578,20 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
   align-items: center;\r
   height: 100%;\r
   min-height: calc(100vh - 76px); /* Consider the header height */\r
+  animation: hero-fade-in 1.2s cubic-bezier(.4,1.4,.6,1) both;\r
 }\r
+\r
+@keyframes hero-fade-in {\r
+  from {\r
+    opacity: 0;\r
+    transform: translateY(32px) scale(0.98);\r
+  }\r
+  to {\r
+    opacity: 1;\r
+    transform: translateY(0) scale(1);\r
+  }\r
+}\r
+\r
 \r
 .hero-text {\r
   flex: 0 0 1rem;\r
@@ -723,10 +733,10 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
     margin-top: 2rem;\r
     padding-left: 0;\r
   }\r
-}`;class S extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"});const r=document.createElement("template");r.innerHTML=`
-      <style>${k}</style>
-      ${f}
-    `,this.shadowRoot.appendChild(r.content.cloneNode(!0))}connectedCallback(){}}customElements.define("hero-banner",S);const E=`<!DOCTYPE html>\r
+}`;class w extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"});const r=document.createElement("template");r.innerHTML=`
+      <style>${v}</style>
+      ${b}
+    `,this.shadowRoot.appendChild(r.content.cloneNode(!0))}connectedCallback(){}}customElements.define("hero-banner",w);const x=`<!DOCTYPE html>\r
 <html lang="en">\r
     <head>\r
         <meta charset="UTF-8">\r
@@ -737,14 +747,7 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
     <body>\r
         <section class="search-banner">\r
             <div class="video-background">\r
-                <video\r
-                    autoplay\r
-                    muted\r
-                    loop\r
-                    playsinline\r
-                >\r
-                    <source src="lajolla.mp4" type="video/mp4">\r
-                </video>\r
+                <img src="banner.jpg" alt="UCSD banner image">\r
             </div>\r
             <div class="video-overlay"></div>\r
             <div class="banner-content">\r
@@ -784,7 +787,7 @@ import"./bottom-nav.js";import"./main2.js";import"./product-card.js";import"http
 \r
         <script src="script.js"><\/script>\r
     </body>\r
-</html>`,C=`* {\r
+</html>`,y=`* {\r
     margin: 0;\r
     padding: 0;\r
     box-sizing: border-box;\r
@@ -955,10 +958,10 @@ body {\r
         width: 36px;\r
         height: 36px;\r
     }\r
-}`;class R extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"});const r=document.createElement("template");r.innerHTML=`
-      <style>${C}</style>
-      ${E}
-    `,this.shadowRoot.appendChild(r.content.cloneNode(!0)),this.activeCategory="all"}connectedCallback(){this.setupEventListeners(),console.log("SearchHero connected successfully")}setupEventListeners(){const r=this.shadowRoot.querySelector(".search-input"),n=this.shadowRoot.querySelector(".search-button"),e=()=>{const t=r==null?void 0:r.value.trim();t&&(this.dispatchEvent(new CustomEvent("search-submitted",{bubbles:!0,composed:!0,detail:{searchTerm:t,category:this.activeCategory}})),console.log(`Search: "${t}" in category: ${this.activeCategory}`))};n==null||n.addEventListener("click",e),r==null||r.addEventListener("keypress",t=>{t.key==="Enter"&&e()});const o=this.shadowRoot.querySelectorAll(".category-btn");o.forEach(t=>{t.addEventListener("click",()=>{o.forEach(i=>i.classList.remove("active")),t.classList.add("active"),this.activeCategory=t.getAttribute("data-category"),this.dispatchEvent(new CustomEvent("category-selected",{bubbles:!0,composed:!0,detail:{category:this.activeCategory}})),console.log(`Category selected: ${this.activeCategory}`)})})}}customElements.define("search-banner",R);const L=`<div class="chat-bubble">\r
+}`;class f extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"});const r=document.createElement("template");r.innerHTML=`
+      <style>${y}</style>
+      ${x}
+    `,this.shadowRoot.appendChild(r.content.cloneNode(!0)),this.activeCategory="all"}connectedCallback(){this.setupEventListeners(),console.log("SearchHero connected successfully")}setupEventListeners(){const r=this.shadowRoot.querySelector(".search-input"),n=this.shadowRoot.querySelector(".search-button"),e=()=>{const t=r.value.trim();t&&this.dispatchEvent(new CustomEvent("search-submit",{bubbles:!0,composed:!0,detail:{query:t}})),console.log(`Search submitted: ${t}`)};n==null||n.addEventListener("click",e),r==null||r.addEventListener("keypress",t=>{t.key==="Enter"&&e()});const o=this.shadowRoot.querySelectorAll(".category-btn");o.forEach(t=>{t.addEventListener("click",()=>{o.forEach(i=>i.classList.remove("active")),t.classList.add("active"),this.activeCategory=t.getAttribute("data-category"),this.dispatchEvent(new CustomEvent("category-selected",{bubbles:!0,composed:!0,detail:{category:this.activeCategory}})),console.log(`Category selected: ${this.activeCategory}`)})})}}customElements.define("search-banner",f);const k=`<div class="chat-bubble">\r
     <svg\r
         xmlns="http://www.w3.org/2000/svg"\r
         width="24"\r
@@ -991,21 +994,27 @@ body {\r
         </div>\r
         <input class="message-input" placeholder="Type a message...">\r
     </div>\r
-</div>`,z=`:host {\r
+</div>`,S=`:host {\r
     display: block;\r
     position: fixed;\r
     bottom: 20px;\r
     right: 20px;\r
-    border: transparent;\r
-    border-radius: 8px;\r
+    /*border: 1px solid var(--blue);*/\r
     font-family: sans-serif;\r
     z-index: 999;\r
+    transition: bottom 0.01s ease;\r
+}\r
+\r
+:host(.above-bottom-nav) {\r
+    bottom: calc(20px + var(--bottom-nav-height, 200px));\r
 }\r
 /* Chat Bubble Styles */\r
 .chat-bubble {\r
     position: relative;\r
     width: 60px;\r
     height: 60px;\r
+    /*border-radius: 50%;*/\r
+    border: 1px solid var(--gold);\r
     border-radius: 50%;\r
     background-color: var(--blue);\r
     color: var(--white);\r
@@ -1017,6 +1026,7 @@ body {\r
     transition: transform 0.2s ease, box-shadow 0.2s ease;\r
 }\r
 .chat-bubble:hover {\r
+    /*border-color: 1px solid var(--white);*/\r
     transform: scale(1.05);\r
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);\r
 }\r
@@ -1160,11 +1170,12 @@ input[type = "search"] {\r
 }\r
 .widget-container{\r
     background-color: white;\r
+    border: 1px solid var(--blue);\r
     width: 300px;\r
 }\r
 .back-button {\r
     cursor: pointer;\r
-}`;class _ extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this._conversations=[{id:1,name:"Alice",preview:"Hey!",timestamp:"10:32 AM",unread:!0},{id:2,name:"Bob",preview:"See you soon.",timestamp:"9:14 AM",unread:!1},{id:3,name:"Carol",preview:"Got it.",timestamp:"Yesterday",unread:!0}]}connectedCallback(){const r=document.createElement("template");r.innerHTML=`<style>${z}</style>${L}`,this.shadowRoot.appendChild(r.content.cloneNode(!0)),this.shadowRoot.querySelector(".close-icon").addEventListener("click",()=>this.hideWidget()),this._handleEsc=e=>{e.key==="Escape"&&this.isConnected&&this.parentElement&&this.hideWidget()},this.shadowRoot.querySelector(".chat-bubble").addEventListener("click",()=>{this.toggleWidget()}),this.shadowRoot.querySelector(".widget-container").style.display="none",this._renderConversations(),this._isVisible=!1,document.addEventListener("keydown",this._handleEsc),this.shadowRoot.querySelector("input").addEventListener("input",e=>{const o=e.target.value.toLowerCase();this._renderConversations(o)}),this._renderConversations();const n=this.shadowRoot.querySelector(".back-button");n&&n.addEventListener("click",()=>{this.shadowRoot.querySelector(".chat-screen").classList.add("hidden"),this.shadowRoot.querySelector(".convo-list").style.display="block",this.shadowRoot.querySelector("header").style.display="flex",this.shadowRoot.querySelector("input").style.display="block"})}toggleWidget(){this._isVisible?this.hideWidget():this.showWidget()}showWidget(){this.shadowRoot.querySelector(".widget-container").style.display="block",this.shadowRoot.querySelector(".chat-bubble").style.display="none",this._isVisible=!0}hideWidget(){this.shadowRoot.querySelector(".widget-container").style.display="none",this.shadowRoot.querySelector(".chat-bubble").style.display="flex",this._isVisible=!1}disconnectedCallback(){document.removeEventListener("keydown",this._handleEsc),document.body.style.overflow=""}_renderConversations(r=""){const n=this.shadowRoot.querySelector(".convo-list");n.innerHTML="",this._conversations.filter(e=>e.name.toLowerCase().includes(r)).forEach(e=>{const o=document.createElement("div");o.classList.add("convo"),o.innerHTML=`
+}`;class C extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this._conversations=[{id:1,name:"Alice",preview:"Hey!",timestamp:"10:32 AM",unread:!0},{id:2,name:"Bob",preview:"See you soon.",timestamp:"9:14 AM",unread:!1},{id:3,name:"Carol",preview:"Got it.",timestamp:"Yesterday",unread:!0}]}connectedCallback(){const r=document.createElement("template");r.innerHTML=`<style>${S}</style>${k}`,this.shadowRoot.appendChild(r.content.cloneNode(!0)),this.shadowRoot.querySelector(".close-icon").addEventListener("click",()=>this.hideWidget()),this._handleEsc=o=>{o.key==="Escape"&&this.isConnected&&this.parentElement&&this.hideWidget()};const n=document.querySelector("chat-widget");document.addEventListener("user-signed-out",()=>{n.style.display="none",console.log("receive event logout")}),document.addEventListener("user-signed-in",()=>{n.style.display="block",console.log("receive event login")}),this.shadowRoot.querySelector(".chat-bubble").addEventListener("click",()=>{this.toggleWidget()}),this.shadowRoot.querySelector(".widget-container").style.display="none",this._renderConversations(),this._isVisible=!1,document.addEventListener("keydown",this._handleEsc),this.shadowRoot.querySelector("input").addEventListener("input",o=>{const t=o.target.value.toLowerCase();this._renderConversations(t)}),this._renderConversations();const e=this.shadowRoot.querySelector(".back-button");e&&e.addEventListener("click",()=>{this.shadowRoot.querySelector(".chat-screen").classList.add("hidden"),this.shadowRoot.querySelector(".convo-list").style.display="block",this.shadowRoot.querySelector("header").style.display="flex",this.shadowRoot.querySelector("input").style.display="block"}),this._setupBottomNavDetection()}_setupBottomNavDetection(){this._isScrollListenerActive||(this._handleScroll=()=>{const r=document.querySelector("bottom-nav");if(!r)return;const n=r.getBoundingClientRect(),e=window.innerHeight;if(n.top<e&&n.bottom>0){const t=Math.min(n.height,e-n.top);document.documentElement.style.setProperty("--bottom-nav-height",`${t}px`),this.classList.add("above-bottom-nav")}else this.classList.remove("above-bottom-nav"),document.documentElement.style.removeProperty("--bottom-nav-height")},window.addEventListener("scroll",this._handleScroll,{passive:!0}),window.addEventListener("resize",this._handleScroll,{passive:!0}),this._handleScroll(),this._isScrollListenerActive=!0)}toggleWidget(){this._isVisible?this.hideWidget():this.showWidget()}showWidget(){this.shadowRoot.querySelector(".widget-container").style.display="block",this.shadowRoot.querySelector(".chat-bubble").style.display="none",this._isVisible=!0}hideWidget(){this.shadowRoot.querySelector(".widget-container").style.display="none",this.shadowRoot.querySelector(".chat-bubble").style.display="flex",this._isVisible=!1}disconnectedCallback(){document.removeEventListener("keydown",this._handleEsc),document.body.style.overflow=""}_renderConversations(r=""){const n=this.shadowRoot.querySelector(".convo-list");n.innerHTML="",this._conversations.filter(e=>e.name.toLowerCase().includes(r)).forEach(e=>{const o=document.createElement("div");o.classList.add("convo"),o.innerHTML=`
             <div class="avatar"></div>
             <div class="details">
             <div>
@@ -1174,4 +1185,4 @@ input[type = "search"] {\r
             <div>${e.preview}</div>
             </div>
             ${e.unread?'<div class="unread-badge"></div>':""}
-            `,o.addEventListener("click",()=>{this.shadowRoot.querySelector(".convo-list").style.display="none",this.shadowRoot.querySelector("header").style.display="none",this.shadowRoot.querySelector("input").style.display="none";const t=this.shadowRoot.querySelector(".chat-screen");t.classList.remove("hidden"),t.querySelector(".chat-title").textContent=e.name;const i=t.querySelector(".messages");i.innerHTML=`<div class="message">${e.preview}</div>`,this.dispatchEvent(new CustomEvent("chat-open",{detail:{id:e.id},bubbles:!0,composed:!0}))}),n.appendChild(o)})}}customElements.define("chat-widget",_);
+            `,o.addEventListener("click",()=>{this.shadowRoot.querySelector(".convo-list").style.display="none",this.shadowRoot.querySelector("header").style.display="none",this.shadowRoot.querySelector("input").style.display="none";const t=this.shadowRoot.querySelector(".chat-screen");t.classList.remove("hidden"),t.querySelector(".chat-title").textContent=e.name;const i=t.querySelector(".messages");i.innerHTML=`<div class="message">${e.preview}</div>`,this.dispatchEvent(new CustomEvent("chat-open",{detail:{id:e.id},bubbles:!0,composed:!0}))}),n.appendChild(o)})}}customElements.define("chat-widget",C);

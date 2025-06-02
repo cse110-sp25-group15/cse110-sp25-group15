@@ -21,7 +21,6 @@ class SearchHero extends HTMLElement {
 
   connectedCallback() {
     this.setupEventListeners();
-    console.log('SearchHero connected successfully');
   }
 
   setupEventListeners() {

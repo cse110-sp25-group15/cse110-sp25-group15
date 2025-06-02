@@ -12,19 +12,27 @@ export class ListingModel {
    */
   async fetchAllListings() {
     try {
-      const { data: listings, error } = await supabase
+      const { data: listings, error, status } = await supabase
         .from('listings')
         .select();
 
       if (error) {
-        console.error('Error fetching listings:', error);
-        throw error;
+        if (status === 401 || status === 403) {
+          throw new Error('AuthError: Unauthorized or forbidden');
+        } else if (status >= 500) {
+          throw new Error('ServerError: Internal server error');
+        } else {
+          throw new Error(`APIError: ${error.message}`);
+        }
       }
 
       this.listings = listings;
       return this.listings;
     } catch (err) {
-      console.error('Failed to fetch listings:', err);
+      if (err instanceof TypeError) {
+        throw new Error('NetworkError: Check your internet connection.');
+      }
+      console.error('Failed to fetch listings: ', err);
       throw err;
     }
   }
@@ -40,18 +48,26 @@ export class ListingModel {
     }
 
     try {
-      const { data: listings, error } = await supabase
+      const { data: listings, error, status } = await supabase
         .from('listings')
         .select()
         .eq('category', category);
 
       if (error) {
-        console.error(`Error fetching ${category} listings:`, error);
-        throw error;
+        if (status === 401 || status === 403) {
+          throw new Error('AuthError: Unauthorized or forbidden');
+        } else if (status >= 500) {
+          throw new Error('ServerError: Internal server error');
+        } else {
+          throw new Error(`APIError: ${error.message}`);
+        }
       }
 
       return listings;
     } catch (err) {
+      if (err instanceof TypeError) {
+        throw new Error('NetworkError: Check your internet connection.');
+      }
       console.error(`Failed to fetch ${category} listings:`, err);
       throw err;
     }
@@ -64,19 +80,27 @@ export class ListingModel {
    */
   async fetchAllListingsSortByDate(ascending = false) {
     try {
-      const { data: listings, error } = await supabase
+      const { data: listings, error, status } = await supabase
         .from('listings')
         .select()
         .order('date_posted', { ascending });
 
       if (error) {
-        console.error('Error fetching listings:', error);
-        throw error;
+        if (status === 401 || status === 403) {
+          throw new Error('AuthError: Unauthorized or forbidden');
+        } else if (status >= 500) {
+          throw new Error('ServerError: Internal server error');
+        } else {
+          throw new Error(`APIError: ${error.message}`);
+        }
       }
 
       return listings;
     } catch (err) {
-      console.error('Failed to fetch listings:', err);
+      if (err instanceof TypeError) {
+        throw new Error('NetworkError: Check your internet connection.');
+      }
+      console.error('Failed to fetch listings by data: ', err);
       throw err;
     }
   }
@@ -88,22 +112,30 @@ export class ListingModel {
    */
   async fetchAllListingsSortByPrice(ascending) {
     try {
-      const { data: listings, error } = await supabase
+      const { data: listings, error, status } = await supabase
         .from('listings')
         .select()
         .order('price', { ascending });
 
       if (error) {
-        console.error('Error fetching listings by price:', error);
-        throw error;
+        if (status === 401 || status === 403) {
+          throw new Error('AuthError: Unauthorized or forbidden');
+        } else if (status >= 500) {
+          throw new Error('ServerError: Internal server error');
+        } else {
+          throw new Error(`APIError: ${error.message}`);
+        }
       }
 
       return listings;
     } catch (err) {
-      console.error('Failed to fetch listings by price:', err);
+      if (err instanceof TypeError) {
+        throw new Error('NetworkError: Check your internet connection.');
+      }
+      console.error('Failed to fetch listings by price: ', err);
       throw err;
     }
-  } 
+  }
 
   /**
    * Gets a listing by ID
@@ -116,24 +148,32 @@ export class ListingModel {
     if (cachedListing) {
       return cachedListing;
     }
-    
+
     // If not in cache, fetch from database
     try {
-      const { data, error } = await supabase
+      const { data, error, status } = await supabase
         .from('listings')
         .select()
         .eq('listing_id', listingId)
         .single();
-        
+
       if (error) {
-        console.error(`Error fetching listing ${listingId}:`, error);
-        return null;
+        if (status === 401 || status === 403) {
+          throw new Error('AuthError: Unauthorized or forbidden');
+        } else if (status >= 500) {
+          throw new Error('ServerError: Internal server error');
+        } else {
+          throw new Error(`APIError: ${error.message}`);
+        }
       }
-      
+
       return data;
     } catch (err) {
+      if (err instanceof TypeError) {
+        throw new Error('NetworkError: Check your internet connection.');
+      }
       console.error(`Failed to fetch listing ${listingId}:`, err);
-      return null;
+      throw err;
     }
   }
 
@@ -144,19 +184,27 @@ export class ListingModel {
  */
   async fetchListingsByUser(userId) {
     try {
-      const { data: listings, error } = await supabase
+      const { data: listings, error, status } = await supabase
         .from('listings')
         .select('*')
         .eq('user_id', userId);
 
       if (error) {
-        console.error('Error fetching user listings:', error);
-        throw error;
+        if (status === 401 || status === 403) {
+          throw new Error('AuthError: Unauthorized or forbidden');
+        } else if (status >= 500) {
+          throw new Error('ServerError: Internal server error');
+        } else {
+          throw new Error(`APIError: ${error.message}`);
+        }
       }
 
       return listings;
     } catch (err) {
-      console.error('Failed to fetch user listings:', err);
+      if (err instanceof TypeError) {
+        throw new Error('NetworkError: Check your internet connection.');
+      }
+      console.error('Failed to fetch user listings: ', err);
       throw err;
     }
   }
@@ -177,18 +225,26 @@ export class ListingModel {
         console.warn('Warning: failed to delete images for listing:', imageError);
       }
 
-      const { error } = await supabase
+      const { error, status } = await supabase
         .from('listings')
         .delete()
         .eq('listing_id', listingId);
 
       if (error) {
-        console.error('Error deleting listing:', error);
-        throw error;
+        if (status === 401 || status === 403) {
+          throw new Error('AuthError: Unauthorized or forbidden');
+        } else if (status >= 500) {
+          throw new Error('ServerError: Internal server error');
+        } else {
+          throw new Error(`APIError: ${error.message}`);
+        }
       }
 
       console.log(`Listing ${listingId} deleted successfully.`);
     } catch (err) {
+      if (err instanceof TypeError) {
+        throw new Error('NetworkError: Check your internet connection.');
+      }
       console.error('Failed to delete listing:', err);
       throw err;
     }
@@ -227,17 +283,27 @@ export class ListingModel {
     }
     try {
       // Use ilike for case-insensitive partial match on title or description
-      const { data: listings, error } = await supabase
+      const { data: listings, error, status } = await supabase
         .from('listings')
         .select()
         .or(`title.ilike.%${query}%,description.ilike.%${query}%`);
+
       if (error) {
-        console.error('Error searching listings:', error);
-        throw error;
+        if (status == 401 || status === 403) {
+          throw new Error('AuthError: Unauthorized or forbidden');
+        } else if (status >= 500) {
+          throw new Error('ServerError: Internal server error');
+        } else {
+          throw new Error(`APIError: ${error.message}`);
+        }
       }
+
       return listings;
     } catch (err) {
-      console.error('Failed to search listings:', err);
+      if (err instanceof TypeError) {
+        throw new Error('NetworkError: Check your internet connection.');
+      }
+      console.error('Failed to search listings: ', err);
       throw err;
     }
   }

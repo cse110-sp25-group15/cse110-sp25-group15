@@ -35,7 +35,6 @@ class AuthPill extends HTMLElement {
   setupListeners() {
     const link = window.location.href;
 
-    console.log('AuthPill connected at:', link);
     // Login button
     this.loginBtn?.addEventListener('click', () => {
       supabase.auth.signInWithOAuth({
@@ -104,7 +103,6 @@ class AuthPill extends HTMLElement {
 
   async checkAuthState() {
     const { data } = await supabase.auth.getSession();
-    console.log(data);
     if (data.session?.user) {
       // user is logged in
       this.updateUser(data.session.user);

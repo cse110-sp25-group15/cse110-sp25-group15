@@ -27,7 +27,6 @@ export class ListingDisplayController {
     // Find and store all category buttons from within the browse-page shadow DOM
     if (this.browsePage && this.browsePage.shadowRoot) {
       this.categoryButtons = Array.from(this.browsePage.shadowRoot.querySelectorAll('category-button'));
-      console.log('Found category buttons:', this.categoryButtons.length);
     } else {
       console.error('Cannot find category buttons: browse-page or its shadow root is missing');
     }
@@ -107,7 +106,6 @@ export class ListingDisplayController {
         });
       }
 
-      console.log(`Loaded ${listings.length} listings (category: ${category}, sort: ${sortBy})`);
     } catch (err) {
       console.error('Controller failed to fetch listings:', err);
       this.productsContainer.innerHTML = '<div class="no-results">Error loading listings.</div>';

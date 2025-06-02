@@ -289,7 +289,7 @@ export class ListingModel {
         .or(`title.ilike.%${query}%,description.ilike.%${query}%`);
 
       if (error) {
-        if (status == 401 || status === 403) {
+        if (status === 401 || status === 403) {
           throw new Error('AuthError: Unauthorized or forbidden');
         } else if (status >= 500) {
           throw new Error('ServerError: Internal server error');

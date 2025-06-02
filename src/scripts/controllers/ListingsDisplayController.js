@@ -121,7 +121,7 @@ export class ListingDisplayController {
       console.error('Cannot render card, products container not available');
       return;
     }
-    
+
     const formattedListing = this.model.formatListingForView(listing);
     const card = document.createElement('product-card');
 
@@ -143,7 +143,7 @@ export class ListingDisplayController {
     this.categoryButtons.forEach((button) => {
       const slotElement = button.shadowRoot.querySelector('slot');
       const buttonCategory = slotElement.assignedNodes().map((node) => node.textContent).join('').trim();
-    
+
       if (buttonCategory === selectedCategory) {
         button.setAttribute('selected', '');
       } else {
@@ -165,7 +165,7 @@ export class ListingDisplayController {
         console.error(`Listing with ID ${listingId} not found`);
         return;
       }
-  
+
       if (!this.overlay) {
         console.error('Product overlay component not found');
         return;
@@ -176,7 +176,7 @@ export class ListingDisplayController {
       this.overlay.setAttribute('condition', listing.condition || '');
       this.overlay.setAttribute('date', listing.date_posted || '');
       this.overlay.setAttribute('description', listing.description || '');
-      
+
       // Handle multiple images - convert array to JSON string for the attribute
       let imagesAttr = '';
       if (listing.images && Array.isArray(listing.images) && listing.images.length > 0) {
@@ -185,12 +185,13 @@ export class ListingDisplayController {
         // Fallback to thumbnail if no images array
         imagesAttr = listing.thumbnail;
       }
-      
+
       this.overlay.setAttribute('images', imagesAttr);
       this.overlay.show();
-  
+
     } catch (error) {
       console.error('Error showing product detail:', error);
+      this.overlay.innerHTML = '<div class="error-loading">Unable to load listing. Please try again later.</div>';
     }
   }
 
@@ -203,28 +204,28 @@ export class ListingDisplayController {
       console.error('Products container not found');
       return;
     }
-    
+
     // Reset category to 'All' when searching
     this.currentCategory = 'All';
     this.currentSort = null;
     this.updateCategoryButtons(this.currentCategory);
-    
+
     this.productsContainer.innerHTML = '';
-    
+
     try {
       const results = await this.model.searchListings(query);
-      
+
       if (!results || results.length === 0) {
         const emptyState = document.createElement('empty-state');
         this.productsContainer.appendChild(emptyState);
         console.log(`No search results found for query: "${query}"`);
         return;
       }
-      
+
       results.forEach((listing) => {
         this.renderListingCard(listing);
       });
-      
+
       console.log(`Rendered ${results.length} search results for query: "${query}"`);
     } catch (err) {
       this.productsContainer.innerHTML = '<div class="no-results">Error searching listings.</div>';

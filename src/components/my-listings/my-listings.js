@@ -171,9 +171,13 @@ class MyListings extends HTMLElement {
         editModal = document.createElement('edit-listing-modal');
         this.shadowRoot.appendChild(editModal);
       }
+      const listingWithImages = {
+        ...listing,
+        allImages: listing.images && Array.isArray(listing.images) ? listing.images : [listing.thumbnail].filter(Boolean),
+      };
 
       // Show the modal with listing data
-      editModal.show(listing);
+      editModal.show(listingWithImages);
 
       // Listen for the update event
       editModal.addEventListener('listing-update', async (e) => {

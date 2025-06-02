@@ -9,7 +9,6 @@ export class ListingDisplayController {
     this.categoryButtons = [];
     this.currentCategory = 'All';
     this.currentSort = null;
-    this.defaultListings = null;
   }
 
   init() {
@@ -54,14 +53,6 @@ export class ListingDisplayController {
       console.log('Sort change event received:', event.detail);
       this.currentSort = event.detail.sortBy;
       this.fetchListings(this.currentCategory, this.currentSort);
-      // If reset to "featured" (default)
-      if (this.currentSort === 'featured' && this.defaultListings) {
-        this.productsContainer.innerHTML = '';
-        this.defaultListings.forEach((listing) => this.renderListingCard(listing));
-        console.log(`Reset to default "Featured" listings (${this.defaultListings.length})`);
-      } else {
-        this.fetchListings(this.currentCategory, this.currentSort);
-      }
     });
   }
 
@@ -91,10 +82,6 @@ export class ListingDisplayController {
         listings = await this.model.fetchListingsByCategory(category);
       } else {
         listings = await this.model.fetchAllListings();
-
-        if (!this.defaultListings) {
-          this.defaultListings = [...listings];
-        }
       }
 
       // Apply category filter if sorting is applied but category is not 'All'
@@ -178,7 +165,17 @@ export class ListingDisplayController {
       this.overlay.setAttribute('condition', listing.condition || '');
       this.overlay.setAttribute('date', listing.date_posted || '');
       this.overlay.setAttribute('description', listing.description || '');
-      this.overlay.setAttribute('images', listing.thumbnail || '');
+      
+      // Handle multiple images - convert array to JSON string for the attribute
+      let imagesAttr = '';
+      if (listing.images && Array.isArray(listing.images) && listing.images.length > 0) {
+        imagesAttr = JSON.stringify(listing.images);
+      } else if (listing.thumbnail) {
+        // Fallback to thumbnail if no images array
+        imagesAttr = listing.thumbnail;
+      }
+      
+      this.overlay.setAttribute('images', imagesAttr);
       this.overlay.show();
   
     } catch (error) {

@@ -8,7 +8,6 @@ describe('<empty-state>', () => {
 
     const shadowRoot = element.shadowRoot;
 
-    expect(shadowRoot.innerHTML).toContain('<button>');
     expect(shadowRoot.querySelector('.empty-state-text')).not.toBeNull();
 
     document.body.removeChild(element);

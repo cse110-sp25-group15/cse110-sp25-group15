@@ -53,6 +53,13 @@ export class ListingDisplayController {
       this.currentSort = event.detail.sortBy;
       this.fetchListings(this.currentCategory, this.currentSort);
     });
+
+    document.addEventListener('search-submit', async (e) => {
+      const query = e.detail.query;
+      if (query) {
+        this.renderSearchResults(query);
+      }
+    });
   }
 
   /**
@@ -88,10 +95,16 @@ export class ListingDisplayController {
         listings = listings.filter((listing) => listing.category === category);
       }
 
-      // Render all listings
-      listings.forEach((listing) => {
-        this.renderListingCard(listing);
-      });
+      if (listings.length === 0 || !listings) {
+        const emptyState = document.createElement('empty-state');
+        this.productsContainer.appendChild(emptyState);
+        return;
+      } else {
+        // Render all listings
+        listings.forEach((listing) => {
+          this.renderListingCard(listing);
+        });
+      }
 
     } catch (err) {
       console.error('Controller failed to fetch listings:', err);
@@ -191,13 +204,20 @@ export class ListingDisplayController {
       return;
     }
     
+    // Reset category to 'All' when searching
+    this.currentCategory = 'All';
+    this.currentSort = null;
+    this.updateCategoryButtons(this.currentCategory);
+    
     this.productsContainer.innerHTML = '';
     
     try {
       const results = await this.model.searchListings(query);
       
       if (!results || results.length === 0) {
-        this.productsContainer.innerHTML = '<div class="no-results">No results found.</div>';
+        const emptyState = document.createElement('empty-state');
+        this.productsContainer.appendChild(emptyState);
+        console.log(`No search results found for query: "${query}"`);
         return;
       }
       
@@ -210,13 +230,5 @@ export class ListingDisplayController {
       this.productsContainer.innerHTML = '<div class="no-results">Error searching listings.</div>';
       console.error('Error rendering search results:', err);
     }
-  }
-
-  notifyError(message) {
-    alert(message);
-  }
-
-  notifySuccess(message) {
-    alert(message);
   }
 }

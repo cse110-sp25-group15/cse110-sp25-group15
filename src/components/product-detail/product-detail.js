@@ -1,5 +1,6 @@
 import templateHTML from './product-detail.html?raw';
 import templateCSS from './product-detail.css?raw';
+import '../popup/popup.js';
 
 /**
  * A custom element that displays detailed product information including:
@@ -10,7 +11,6 @@ import templateCSS from './product-detail.css?raw';
  * @element product-detail
  */
 class ProductViewer extends HTMLElement {
-
   MSG_PLACEHOLDER = 'Hi, is this still available?';
 
   constructor() {
@@ -43,6 +43,7 @@ class ProductViewer extends HTMLElement {
     this.closeButton = this.shadowRoot.querySelector('.close-btn');
     this.overlay = this.shadowRoot.querySelector('.overlay');
     this.productDetail = this.shadowRoot.querySelector('.product-detail');
+    this.popup = this.shadowRoot.querySelector('popup-msg');
 
     this._initializeOverlay();
     this._updateContent();
@@ -136,24 +137,12 @@ class ProductViewer extends HTMLElement {
     this.dispatchEvent(new CustomEvent('contact-seller', { bubbles: true, composed: true }));
 
     const contactMsg = this.shadowRoot.querySelector('.contact-message');
-    const sentPopup = this.shadowRoot.querySelector('.sent-popup');
-    const popupTimer = 1000;
-
     if (contactMsg) {
       contactMsg.value = '';
       contactMsg.placeholder = 'Sent!';
     }
 
-    if (sentPopup) {
-      sentPopup.hidden = false;
-      sentPopup.classList.add('show');
-
-      // Quick 1s timer
-      setTimeout(function() {
-        sentPopup.classList.remove('show'); 
-        sentPopup.hidden = true;
-      }, popupTimer);
-    }
+    this.popup.showMessage('Message Sent!', 1000);
   }
 
   _handleCloseClick() {

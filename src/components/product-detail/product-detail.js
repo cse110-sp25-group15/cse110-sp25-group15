@@ -10,6 +10,9 @@ import templateCSS from './product-detail.css?raw';
  * @element product-detail
  */
 class ProductViewer extends HTMLElement {
+
+  MSG_PLACEHOLDER = 'Hi, is this still available?';
+
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
@@ -131,6 +134,26 @@ class ProductViewer extends HTMLElement {
 
   _handleContactClick() {
     this.dispatchEvent(new CustomEvent('contact-seller', { bubbles: true, composed: true }));
+
+    const contactMsg = this.shadowRoot.querySelector('.contact-message');
+    const sentPopup = this.shadowRoot.querySelector('.sent-popup');
+    const popupTimer = 1000;
+
+    if (contactMsg) {
+      contactMsg.value = '';
+      contactMsg.placeholder = 'Sent!';
+    }
+
+    if (sentPopup) {
+      sentPopup.hidden = false;
+      sentPopup.classList.add('show');
+
+      // Quick 1s timer
+      setTimeout(function() {
+        sentPopup.classList.remove('show'); 
+        sentPopup.hidden = true;
+      }, popupTimer);
+    }
   }
 
   _handleCloseClick() {
@@ -224,6 +247,9 @@ class ProductViewer extends HTMLElement {
       this.overlay.style.display = 'block';
       this._isVisible = true;
       this._lockBodyScroll();
+
+      const contactMsg = this.shadowRoot.querySelector('.contact-message');
+      contactMsg.placeholder = this.MSG_PLACEHOLDER;
     }
   }
 

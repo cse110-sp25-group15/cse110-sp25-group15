@@ -56,3 +56,7 @@
 ## Miscellaneous Notes
 
 - Nav bar is very high priority both for frontend and backend and needs to completed before the next sprint cycle begins
+
+
+## Note-taker
+Dhruv Agarwal

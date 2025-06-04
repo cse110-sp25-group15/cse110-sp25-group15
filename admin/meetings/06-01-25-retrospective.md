@@ -1,8 +1,6 @@
-
-
 # June 1 – Weekly Retro Meeting
 
-## Time: 6 - 6:30 PM 
+## Time: 6:30 - 7 PM 
 ## Platform: Zoom  
 
 ## People Present

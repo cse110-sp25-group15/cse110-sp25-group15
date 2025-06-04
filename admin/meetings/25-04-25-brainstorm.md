@@ -51,3 +51,7 @@
 - Jop Application Tracker (Yellow)
 - Flashcard (Yellow)
 - Collaboration Calendar (Yellow)
+
+
+##Note-taker
+Dhruv Agarwal

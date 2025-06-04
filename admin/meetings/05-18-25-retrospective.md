@@ -1,6 +1,6 @@
 # 18 May – Weekly Retro Meeting
 
-## Time: 6 - 6:30 PM  
+## Time: 6:30 - 7 PM  
 ## Platform: Zoom  
 
 ## People Present  
@@ -50,4 +50,5 @@
 - Maintain a shared document for listing blockers and reaching out early when stuck.  
 - Discuss workflow/process friction points in Tuesday’s brainstorm to improve the sprint structure.
 
-**Note-taker**: Dhruv Agarwal
+**Note-taker**
+Dhruv Agarwal

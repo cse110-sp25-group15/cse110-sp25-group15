@@ -51,3 +51,7 @@
 ## Ideation & sprint kickoff
 - The team brainstormed possible features and discussed what could be implemented
 - This session marked the **start of the first sprint development cycle**
+
+
+## Note-taker
+Dhruv Agarwal

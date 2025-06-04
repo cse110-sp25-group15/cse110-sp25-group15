@@ -241,7 +241,6 @@
   fill: currentColor;
 }
 
-
 @media (max-width: 1024px) {
   .product-detail {
     flex-direction: column;

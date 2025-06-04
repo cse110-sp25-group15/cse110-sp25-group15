@@ -47,6 +47,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>import templateHTML from './product-detail.html?raw';
 import templateCSS from './product-detail.css?raw';
+import '../popup/popup.js';
 
 /**
  * A custom element that displays detailed product information including:
@@ -57,6 +58,8 @@ import templateCSS from './product-detail.css?raw';
  * @element product-detail
  */
 class ProductViewer extends HTMLElement {
+  MSG_PLACEHOLDER = 'Hi, is this still available?';
+
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
@@ -76,25 +79,156 @@ class ProductViewer extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
-    console.log(`Attribute changed: ${name}, Old Value: ${oldVal}, New Value: ${newVal}`);
     if (oldVal !== newVal) {
-      console.log('Updating content due to attribute change');
       this._updateContent();
     }
   }
 
   connectedCallback() {
-    this._updateContent();
-    this._addEventListeners();
+    this.gallery = this.shadowRoot.querySelector('.gallery');
+    this.sendButton = this.shadowRoot.querySelector('.send-btn');
+    this.closeButton = this.shadowRoot.querySelector('.close-btn');
+    this.overlay = this.shadowRoot.querySelector('.overlay');
+    this.productDetail = this.shadowRoot.querySelector('.product-detail');
+    this.popup = this.shadowRoot.querySelector('popup-msg');
+
     this._initializeOverlay();
+    this._updateContent();
+
+    this._handleKeyDown = this._handleKeyDown.bind(this);
+    this._handleContactClick = this._handleContactClick.bind(this);
+    this._handleCloseClick = this._handleCloseClick.bind(this);
+    this._handleOverlayClick = this._handleOverlayClick.bind(this);
+    this._stopPropagation = this._stopPropagation.bind(this);
+    this._handleEscKey = this._handleEscKey.bind(this);
+
+    this.gallery?.addEventListener('keydown', this._handleKeyDown);
+    this.sendButton?.addEventListener('click', this._handleContactClick);
+    this.closeButton?.addEventListener('click', this._handleCloseClick);
+    this.overlay?.addEventListener('click', this._handleOverlayClick);
+    this.productDetail?.addEventListener('click', this._stopPropagation);
+    document.addEventListener('keydown', this._handleEscKey);
+
+  }
+
+  /**
+   * Clean up when component is removed
+   */
+  disconnectedCallback() {
+    // Ensure body scroll is unlocked if component is removed while overlay is open
+    if (this._isVisible) {
+      this._unlockBodyScroll();
+    }
+    this.gallery?.removeEventListener('keydown', this._handleKeyDown);
+    this.sendButton?.removeEventListener('click', this._handleContactClick);
+    this.closeButton?.removeEventListener('click', this._handleCloseClick);
+    this.overlay?.removeEventListener('click', this._handleOverlayClick);
+    this.productDetail?.removeEventListener('click', this._stopPropagation);
+    document.removeEventListener('keydown', this._handleEscKey);
+  }
+
+  /**
+   * Updates the component content based on current data and image index.
+   * Updates image, thumbnails, and product meta fields.
+   * @private
+   */
+  _updateContent() {
+    const images = this.images;
+    const mainImg = this.shadowRoot.querySelector('.main-image');
+    if (mainImg) {
+      mainImg.src = images[this._currentIndex] || '';
+      mainImg.alt = this.getAttribute('name') || 'Product image';
+    }
+
+    // Update thumbnails
+    const thumbStrip = this.shadowRoot.querySelector('.thumb-strip');
+    if (thumbStrip) {
+      thumbStrip.innerHTML = '';
+      
+      // Only show thumbnails if there are multiple images
+      if (images.length > 1) {
+        images.forEach((src, idx) => {
+          const thumb = document.createElement('img');
+          thumb.src = src;
+          thumb.alt = `Thumbnail ${idx + 1}`;
+          thumb.className = idx === this._currentIndex ? 'active' : '';
+          thumb.tabIndex = 0;
+          thumb.addEventListener('click', () => {
+            this._currentIndex = idx;
+            this._updateContent();
+          });
+          thumbStrip.appendChild(thumb);
+        });
+      }
+    }
+
+    // Update text fields
+    this._setText('.product-name', this.getAttribute('name'));
+    this._setText('.price', this.getAttribute('price') ? `$${this.getAttribute('price')}` : '');
+    this._setText('.condition', this.getAttribute('condition'));
+    this._setText('.date', this.getAttribute('date'));
+    this._setText('.description-block', this.getAttribute('description'));
+  }
+
+  _setText(selector, text) {
+    const el = this.shadowRoot.querySelector(selector);
+    if (el) {el.textContent = text || '';}
+  }
+
+  _handleKeyDown(e) {
+    if (e.key === 'ArrowLeft') {this._cycleImage(-1);}
+    if (e.key === 'ArrowRight') {this._cycleImage(1);}
+  }
+
+  _handleContactClick() {
+    this.dispatchEvent(new CustomEvent('contact-seller', { bubbles: true, composed: true }));
+
+    const contactMsg = this.shadowRoot.querySelector('.contact-message');
+    if (contactMsg) {
+      contactMsg.value = '';
+      contactMsg.placeholder = 'Sent!';
+    }
+
+    this.popup.showMessage('Message Sent!', 1000);
+  }
+
+  _handleCloseClick() {
+    this.hide();
+  }
+
+  _handleOverlayClick(e) {
+    if (e.target === this.overlay) {this.hide();}
+  }
+
+  _stopPropagation(e) {
+    e.stopPropagation();
+  }
+
+  _handleEscKey(e) {
+    if (e.key === 'Escape' &amp;&amp; this._isVisible) {
+      this.hide();
+    }
   }
 
   get images() {
-    // Split on commas and/or line breaks, trim, and filter out empty strings
-    return (this.getAttribute('images') || '')
-      .split(/[\s,]+/) // split on comma, space, or line break
-      .map((s) => s.trim())
-      .filter(Boolean);
+    const imagesAttr = this.getAttribute('images') || '';
+    
+    // Handle both array format (from database) and comma-separated format
+    if (imagesAttr.startsWith('[') &amp;&amp; imagesAttr.endsWith(']')) {
+      try {
+        // Parse JSON array format
+        return JSON.parse(imagesAttr).filter(Boolean);
+      } catch (e) {
+        console.warn('Failed to parse images JSON:', e);
+        return [];
+      }
+    } else {
+      // Handle comma-separated format or single image
+      return imagesAttr
+        .split(/[\s,]+/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+    }
   }
 
   /**
@@ -102,9 +236,8 @@ class ProductViewer extends HTMLElement {
    * @private
    */
   _initializeOverlay() {
-    const overlay = this.shadowRoot.querySelector('.overlay');
-    if (overlay) {
-      overlay.style.display = 'none';
+    if (this.overlay) {
+      this.overlay.style.display = 'none';
       this._isVisible = false;
     }
   }
@@ -146,12 +279,13 @@ class ProductViewer extends HTMLElement {
    * Show the overlay
    */
   show() {
-    const overlay = this.shadowRoot.querySelector('.overlay');
-    if (overlay) {
-      overlay.style.display = 'block';
+    if (this.overlay) {
+      this.overlay.style.display = 'block';
       this._isVisible = true;
       this._lockBodyScroll();
-      console.log('Overlay shown');
+
+      const contactMsg = this.shadowRoot.querySelector('.contact-message');
+      contactMsg.placeholder = this.MSG_PLACEHOLDER;
     }
   }
 
@@ -159,104 +293,11 @@ class ProductViewer extends HTMLElement {
    * Hide the overlay
    */
   hide() {
-    const overlay = this.shadowRoot.querySelector('.overlay');
-    if (overlay) {
-      overlay.style.display = 'none';
+    if (this.overlay) {
+      this.overlay.style.display = 'none';
       this._isVisible = false;
       this._unlockBodyScroll();
-      console.log('Overlay hidden');
     }
-  }
-
-  /**
-   * Updates the component content based on current data and image index.
-   * Updates image, thumbnails, and product meta fields.
-   * @private
-   */
-  _updateContent() {
-    console.log('Updating content with images:', this.images);
-    // Example: update main image
-    const images = this.images;
-    const mainImg = this.shadowRoot.querySelector('.main-image');
-    if (mainImg) {
-      mainImg.src = images[this._currentIndex] || '';
-      mainImg.alt = this.getAttribute('name') || 'Product image';
-    }
-
-    // Update thumbnails
-    const thumbStrip = this.shadowRoot.querySelector('.thumb-strip');
-    if (thumbStrip) {
-      thumbStrip.innerHTML = '';
-      images.forEach((src, idx) => {
-        const thumb = document.createElement('img');
-        thumb.src = src;
-        thumb.alt = `Thumbnail ${idx + 1}`;
-        thumb.className = idx === this._currentIndex ? 'active' : '';
-        thumb.tabIndex = 0;
-        thumb.addEventListener('click', () => {
-          this._currentIndex = idx;
-          this._updateContent();
-        });
-        thumbStrip.appendChild(thumb);
-      });
-    }
-
-    // Update text fields
-    const nameEl = this.shadowRoot.querySelector('.product-name');
-    if (nameEl) {nameEl.textContent = this.getAttribute('name') || '';}
-    const priceEl = this.shadowRoot.querySelector('.price');
-    if (priceEl) {priceEl.textContent = this.getAttribute('price') ? `$${this.getAttribute('price')}` : '';}
-    const condEl = this.shadowRoot.querySelector('.condition');
-    if (condEl) {condEl.textContent = this.getAttribute('condition') || '';}
-    const dateEl = this.shadowRoot.querySelector('.date');
-    if (dateEl) {dateEl.textContent = this.getAttribute('date') || '';}
-    const descEl = this.shadowRoot.querySelector('.description-block');
-    if (descEl) {descEl.textContent = this.getAttribute('description') || '';}
-  }
-
-  /**
-   * Adds event listeners to gallery arrows, keyboard events, and contact button.
-   * Emits `contact-seller` when the contact button is clicked.
-   * @private
-   * @fires contact-seller
-   */
-  _addEventListeners() {
-    // Keyboard navigation
-    this.shadowRoot.querySelector('.gallery')?.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') {this._cycleImage(-1);};
-      if (e.key === 'ArrowRight') {this._cycleImage(1);};
-    });
-
-    this.shadowRoot.querySelector('.send-btn')?.addEventListener('click', () => {
-      this.dispatchEvent(new CustomEvent('contact-seller', { bubbles: true, composed: true }));
-    });
-
-    // Close button click
-    this.shadowRoot.querySelector('.close-btn')?.addEventListener('click', () => {
-      this.hide();
-    });
-
-    // Background click to close overlay
-    const overlay = this.shadowRoot.querySelector('.overlay');
-    overlay?.addEventListener('click', (e) => {
-      // Only close if clicking the overlay background (not the content)
-      if (e.target === overlay) {
-        this.hide();
-      }
-    });
-
-    // Prevent clicks on overlay content from bubbling to overlay
-    const productDetail = this.shadowRoot.querySelector('.product-detail');
-    productDetail?.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
-
-    // ESC key to close
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' &amp;&amp; this._isVisible) {
-        this.hide();
-      }
-    });
   }
 
   /**
@@ -271,16 +312,6 @@ class ProductViewer extends HTMLElement {
     if(images.length === 0) {return;}
     this._currentIndex = (this._currentIndex + dir + images.length) % images.length;
     this._updateContent();
-  }
-
-  /**
-   * Clean up when component is removed
-   */
-  disconnectedCallback() {
-    // Ensure body scroll is unlocked if component is removed while overlay is open
-    if (this._isVisible) {
-      this._unlockBodyScroll();
-    }
   }
 }
 
@@ -298,7 +329,7 @@ customElements.define('product-detail', ProductViewer);</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Fri May 30 2025 17:11:16 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Tue Jun 03 2025 00:39:46 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

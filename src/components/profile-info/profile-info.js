@@ -34,7 +34,10 @@ class ProfileInfo extends HTMLElement {
   setupEventListeners() {
     this.signOutBtn?.addEventListener('click', async () => {
       await supabase.auth.signOut();
-      window.location.href = '/cse110-sp25-group15/';
+      window.notify('Successfully signed out', 'info');
+      setTimeout(() => {
+        window.location.href = '/cse110-sp25-group15/';
+      }, 1000);
     });
 
     // Listen for auth state changes

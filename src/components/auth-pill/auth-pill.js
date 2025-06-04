@@ -85,6 +85,7 @@ class AuthPill extends HTMLElement {
   handleAuthChange(event, session) {
     if (event === 'SIGNED_IN' && session) {
       this.updateUser(session.user);
+      window.notify('Successfully signed in!', 'success');
     } else if (event === 'SIGNED_OUT') {
       this.showLoginUI();
     }
@@ -164,7 +165,7 @@ class AuthPill extends HTMLElement {
     } catch (err) {
       console.error('Failed to save user:', err);
       await this.logout();
-      alert('Must have a UCSD account (@ucsd.edu) to login');
+      window.notify('Must have a UCSD account (@ucsd.edu) to login', 'error', 4000);
     }
   }
 
@@ -226,6 +227,7 @@ class AuthPill extends HTMLElement {
 
   async logout() {
     await supabase.auth.signOut();
+    window.notify('Successfully signed out', 'info');
     this.showLoginUI();
     this.dispatchEvent(new CustomEvent('user-signed-out', { 
       bubbles: true, composed: true, 

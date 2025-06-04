@@ -89,16 +89,7 @@ class BottomNav extends HTMLElement {
   }
 
   showNewsletterFeedback(message) {
-    const button = this.shadowRoot.querySelector('.newsletter-button');
-    const originalText = button.textContent;
-    
-    button.textContent = message;
-    button.style.background = '#28a745';
-    
-    setTimeout(() => {
-      button.textContent = originalText;
-      button.style.background = '';
-    }, 2000);
+    window.notify(message, 'success');
   }
 }
 

@@ -76,8 +76,10 @@ class MyListings extends HTMLElement {
       
       if (this.listings.length === 0) {
         this.showEmptyState();
+
       } else {
         this.renderListings();
+
       }
 
     } catch (error) {
@@ -198,23 +200,26 @@ class MyListings extends HTMLElement {
         
         } catch (error) {
           console.error('Error updating listing:', error);
-          alert('Failed to update listing. Please try again.');
+          window.notify('Failed to update listing. Please try again.', 'error');
         }
       }, { once: true });
 
     } catch (error) {
       console.error('Error editing listing:', error);
-      alert('Failed to load listing for editing.');
+      window.notify('Failed to load listing for editing. Please try again.', 'error');
     }
   }
 
   async confirmDelete(listingId) {
-    if (!confirm('Are you sure you want to delete this listing?')) {
+  // Create a custom confirmation dialog
+    const confirmed = await this.showDeleteConfirmation();
+  
+    if (!confirmed) {
       return;
     }
 
     try {
-      // Delete the listing
+    // Delete the listing
       const { error } = await supabase
         .from('listings')
         .delete()
@@ -227,12 +232,15 @@ class MyListings extends HTMLElement {
 
       // Remove from local array and re-render
       this.listings = this.listings.filter((l) => l.listing_id !== listingId);
-      
+    
       if (this.listings.length === 0) {
         this.showEmptyState();
       } else {
         this.renderListings();
       }
+
+      // Show success notification
+      window.notify('Listing deleted successfully', 'success');
 
       // Dispatch event to update profile stats
       this.dispatchEvent(new CustomEvent('listing-deleted', {
@@ -243,8 +251,84 @@ class MyListings extends HTMLElement {
 
     } catch (error) {
       console.error('Error deleting listing:', error);
-      alert('Failed to delete listing. Please try again.');
+      window.notify('Failed to delete listing. Please try again.', 'error');
     }
+  }
+  showDeleteConfirmation() {
+    return new Promise((resolve) => {
+    // Create overlay
+      const overlay = document.createElement('div');
+      overlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    `;
+    
+      // Create dialog
+      const dialog = document.createElement('div');
+      dialog.style.cssText = `
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      max-width: 400px;
+      text-align: center;
+    `;
+    
+      dialog.innerHTML = `
+      <h3 style="margin: 0 0 1rem 0; color: var(--navy-text);">Delete Listing?</h3>
+      <p style="margin: 0 0 1.5rem 0; color: #666;">Are you sure you want to delete this listing? This action cannot be undone.</p>
+      <div style="display: flex; gap: 1rem; justify-content: center;">
+        <button id="cancel-delete" style="
+          padding: 0.75rem 1.5rem;
+          border: 2px solid var(--blue);
+          background: white;
+          color: var(--blue);
+          border-radius: 6px;
+          font-weight: 500;
+          cursor: pointer;
+        ">Cancel</button>
+        <button id="confirm-delete" style="
+          padding: 0.75rem 1.5rem;
+          border: none;
+          background: var(--danger);
+          color: white;
+          border-radius: 6px;
+          font-weight: 500;
+          cursor: pointer;
+        ">Delete</button>
+      </div>
+    `;
+    
+      overlay.appendChild(dialog);
+      document.body.appendChild(overlay);
+    
+      // Handle button clicks
+      dialog.querySelector('#cancel-delete').onclick = () => {
+        overlay.remove();
+        resolve(false);
+      };
+    
+      dialog.querySelector('#confirm-delete').onclick = () => {
+        overlay.remove();
+        resolve(true);
+      };
+    
+      // Handle overlay click
+      overlay.onclick = (e) => {
+        if (e.target === overlay) {
+          overlay.remove();
+          resolve(false);
+        }
+      };
+    });
   }
 
   showLoading() {

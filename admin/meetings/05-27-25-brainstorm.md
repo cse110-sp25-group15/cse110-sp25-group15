@@ -61,3 +61,6 @@
 - This meeting kicks off the third sprint cycle  
 - Team members have committed to the tasks above for this sprint  
 - Consistent progress tracking and testing are expected
+
+## Note-taker 
+Dhruv Agarwal

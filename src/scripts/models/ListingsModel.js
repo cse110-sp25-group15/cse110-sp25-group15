@@ -122,7 +122,7 @@ export class ListingModel {
         *,
         users (
           id,
-          email
+          display_name
         )
       `)
         .eq('listing_id', listingId)
@@ -135,10 +135,10 @@ export class ListingModel {
     
       // Format the user name from email or metadata
       if (data && data.users) {
-      // Extract name from email (before @) if no full name is stored
-        const emailName = data.users.email.split('@')[0];
-        data.lister_name = emailName;
-        data.lister_email = data.users.email;
+      // creates a fallback name to display if user display_name in 
+      // data base is null
+        const fallback = `User-${data.users.id.slice(0,6)}`;
+        data.lister_name = data.users.display_name || fallback;
       }
     
       return data;

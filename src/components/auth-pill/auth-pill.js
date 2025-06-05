@@ -152,12 +152,19 @@ class AuthPill extends HTMLElement {
     }));
 
   }
-
+  
   async saveUserToDatabase(user) {
     try {
+      const displayName = user.email?.split('@')[0];
       const { error } = await supabase
         .from('users')
-        .upsert([{ id: user.id, email: user.email }], { onConflict: ['id'] });
+        .upsert([
+          { 
+            id: user.id, 
+            email: user.email, 
+            display_name: displayName, 
+          },
+        ], { onConflict: ['id'] });
       
       if(error) {
         throw error;

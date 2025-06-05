@@ -1,3 +1,5 @@
+import css from './confetti.css?raw';
+
 class ConfettiCelebration extends HTMLElement {
   constructor() {
     super();
@@ -6,15 +8,12 @@ class ConfettiCelebration extends HTMLElement {
 
   celebrate() {
     const canvas = document.createElement('canvas');
-    canvas.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 9999;
-    `;
+    canvas.className = 'confetti-canvas';
+    
+    const style = document.createElement('style');
+    style.textContent = css;
+    
+    this.shadowRoot.appendChild(style);
     this.shadowRoot.appendChild(canvas);
     
     const ctx = canvas.getContext('2d');
@@ -22,9 +21,8 @@ class ConfettiCelebration extends HTMLElement {
     canvas.height = window.innerHeight;
     
     const particles = [];
-    const colors = ['#04133B', '#F3C114', '#FFFFFF']; // UCSD colors
-    
-    // Create particles
+    const colors = ['#04133B', '#F3C114', '#FFFFFF']; 
+   
     for (let i = 0; i < 150; i++) {
       particles.push({
         x: Math.random() * canvas.width,
@@ -44,7 +42,7 @@ class ConfettiCelebration extends HTMLElement {
       particles.forEach((p, index) => {
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.1; // gravity
+        p.vy += 0.1; 
         p.rotation += p.rotationSpeed;
         
         ctx.save();
@@ -53,8 +51,7 @@ class ConfettiCelebration extends HTMLElement {
         ctx.fillStyle = p.color;
         ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
         ctx.restore();
-        
-        // Remove particles that fall off screen
+     
         if (p.y > canvas.height) {
           particles.splice(index, 1);
         }
@@ -64,6 +61,7 @@ class ConfettiCelebration extends HTMLElement {
         requestAnimationFrame(animate);
       } else {
         canvas.remove();
+        style.remove();
       }
     };
     
@@ -73,7 +71,6 @@ class ConfettiCelebration extends HTMLElement {
 
 customElements.define('confetti-celebration', ConfettiCelebration);
 
-// Global helper
 window.celebrate = () => {
   const confetti = document.createElement('confetti-celebration');
   document.body.appendChild(confetti);

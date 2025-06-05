@@ -3,6 +3,7 @@ import css from './my-listings.css?raw';
 import supabase from '../../scripts/utils/supabase.js';
 import '../browse-page/product-card/product-card.js';
 import '../edit-listing/edit-listing.js';
+import deleteConfirmationCSS from './delete-confirmation.css?raw';
 
 class MyListings extends HTMLElement {
   constructor() {
@@ -153,21 +154,18 @@ class MyListings extends HTMLElement {
   }
 
   handleListingClick(listingId) {
-    // For now, just show an alert
-    // In a real app, this might open a detail view or edit modal
     console.log('Listing clicked:', listingId);
   }
 
   editListing(listingId) {
     try {
-      // Get the listing data
+      
       const listing = this.listings.find((l) => l.listing_id === listingId);
       if (!listing) {
         console.error('Listing not found');
         return;
       }
-
-      // Get or create the edit modal
+      
       let editModal = this.shadowRoot.querySelector('edit-listing-modal');
       if (!editModal) {
         editModal = document.createElement('edit-listing-modal');
@@ -177,16 +175,14 @@ class MyListings extends HTMLElement {
         ...listing,
         allImages: listing.images && Array.isArray(listing.images) ? listing.images : [listing.thumbnail].filter(Boolean),
       };
-
-      // Show the modal with listing data
+    
       editModal.show(listingWithImages);
-
-      // Listen for the update event
+      
       editModal.addEventListener('listing-update', async (e) => {
         const { listingId, updates } = e.detail;
       
         try {
-          // Update the listing in the database
+          
           const { error } = await supabase
             .from('listings')
             .update(updates)
@@ -194,8 +190,7 @@ class MyListings extends HTMLElement {
             .eq('user_id', this.user.id);
 
           if (error) {throw error;}
-
-          // Reload the listings
+          
           await this.loadUserListings();
         
         } catch (error) {
@@ -211,7 +206,7 @@ class MyListings extends HTMLElement {
   }
 
   async confirmDelete(listingId) {
-  // Create a custom confirmation dialog
+  
     const confirmed = await this.showDeleteConfirmation();
   
     if (!confirmed) {
@@ -219,18 +214,17 @@ class MyListings extends HTMLElement {
     }
 
     try {
-    // Delete the listing
+   
       const { error } = await supabase
         .from('listings')
         .delete()
         .eq('listing_id', listingId)
-        .eq('user_id', this.user.id); // Extra safety check
+        .eq('user_id', this.user.id); 
 
       if (error) {
         throw error;
       }
-
-      // Remove from local array and re-render
+      
       this.listings = this.listings.filter((l) => l.listing_id !== listingId);
     
       if (this.listings.length === 0) {
@@ -238,11 +232,9 @@ class MyListings extends HTMLElement {
       } else {
         this.renderListings();
       }
-
-      // Show success notification
+      
       window.notify('Listing deleted successfully', 'success');
-
-      // Dispatch event to update profile stats
+      
       this.dispatchEvent(new CustomEvent('listing-deleted', {
         bubbles: true,
         composed: true,
@@ -256,75 +248,61 @@ class MyListings extends HTMLElement {
   }
   showDeleteConfirmation() {
     return new Promise((resolve) => {
-    // Create overlay
+    // Create elements
       const overlay = document.createElement('div');
-      overlay.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    `;
+      overlay.className = 'delete-confirmation-overlay';
     
-      // Create dialog
       const dialog = document.createElement('div');
-      dialog.style.cssText = `
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-      max-width: 400px;
-      text-align: center;
-    `;
+      dialog.className = 'delete-confirmation-dialog';
     
-      dialog.innerHTML = `
-      <h3 style="margin: 0 0 1rem 0; color: var(--navy-text);">Delete Listing?</h3>
-      <p style="margin: 0 0 1.5rem 0; color: #666;">Are you sure you want to delete this listing? This action cannot be undone.</p>
-      <div style="display: flex; gap: 1rem; justify-content: center;">
-        <button id="cancel-delete" style="
-          padding: 0.75rem 1.5rem;
-          border: 2px solid var(--blue);
-          background: white;
-          color: var(--blue);
-          border-radius: 6px;
-          font-weight: 500;
-          cursor: pointer;
-        ">Cancel</button>
-        <button id="confirm-delete" style="
-          padding: 0.75rem 1.5rem;
-          border: none;
-          background: var(--danger);
-          color: white;
-          border-radius: 6px;
-          font-weight: 500;
-          cursor: pointer;
-        ">Delete</button>
-      </div>
-    `;
+      const title = document.createElement('h3');
+      title.textContent = 'Delete Listing?';
     
+      const message = document.createElement('p');
+      message.textContent = 'Are you sure you want to delete this listing? This action cannot be undone.';
+    
+      const buttonContainer = document.createElement('div');
+      buttonContainer.className = 'delete-confirmation-buttons';
+    
+      const cancelBtn = document.createElement('button');
+      cancelBtn.id = 'cancel-delete';
+      cancelBtn.className = 'btn-cancel';
+      cancelBtn.textContent = 'Cancel';
+    
+      const confirmBtn = document.createElement('button');
+      confirmBtn.id = 'confirm-delete';
+      confirmBtn.className = 'btn-confirm-delete';
+      confirmBtn.textContent = 'Delete';
+    
+      buttonContainer.appendChild(cancelBtn);
+      buttonContainer.appendChild(confirmBtn);
+      dialog.appendChild(title);
+      dialog.appendChild(message);
+      dialog.appendChild(buttonContainer);
       overlay.appendChild(dialog);
-      document.body.appendChild(overlay);
     
-      // Handle button clicks
-      dialog.querySelector('#cancel-delete').onclick = () => {
+      const style = document.createElement('style');
+      style.textContent = deleteConfirmationCSS;
+    
+      this.shadowRoot.appendChild(style);
+      this.shadowRoot.appendChild(overlay);
+   
+      cancelBtn.onclick = () => {
         overlay.remove();
+        style.remove();
         resolve(false);
       };
     
-      dialog.querySelector('#confirm-delete').onclick = () => {
+      confirmBtn.onclick = () => {
         overlay.remove();
+        style.remove();
         resolve(true);
       };
     
-      // Handle overlay click
       overlay.onclick = (e) => {
         if (e.target === overlay) {
           overlay.remove();
+          style.remove();
           resolve(false);
         }
       };

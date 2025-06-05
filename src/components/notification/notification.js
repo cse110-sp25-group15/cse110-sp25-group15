@@ -12,27 +12,33 @@ class NotificationSystem extends HTMLElement {
   show(message, type = 'info', duration = 3000) {
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
-    
+  
     const icons = {
       success: '✓',
       error: '✕',
       warning: '⚠',
       info: 'ℹ',
     };
-    
-    notification.innerHTML = `
-      <div class="notification-icon">${icons[type]}</div>
-      <div class="notification-content">
-        <p class="notification-message">${message}</p>
-      </div>
-    `;
-    
+  
+    const iconSpan = document.createElement('div');
+    iconSpan.className = 'notification-icon';
+    iconSpan.textContent = icons[type];
+  
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'notification-content';
+  
+    const messageP = document.createElement('p');
+    messageP.className = 'notification-message';
+    messageP.textContent = message;
+  
+    contentDiv.appendChild(messageP);
+    notification.appendChild(iconSpan);
+    notification.appendChild(contentDiv);
+  
     this.container.appendChild(notification);
-    
-    // Trigger animation
+  
     setTimeout(() => notification.classList.add('show'), 10);
-    
-    // Auto remove
+ 
     setTimeout(() => {
       notification.classList.remove('show');
       setTimeout(() => notification.remove(), 300);

@@ -143,7 +143,9 @@ class ProductViewer extends HTMLElement {
     }
 
     this.popup.showMessage('Message Sent!', 1000);
-    window.notify('Message sent to seller!', 'success');
+    if (typeof window.notify === 'function') {
+      window.notify('Message sent to seller!', 'success');
+    }
   }
 
   _handleCloseClick() {

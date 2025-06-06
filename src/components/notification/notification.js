@@ -10,9 +10,6 @@ class NotificationSystem extends HTMLElement {
   }
 
   show(message, type = 'info', duration = 3000) {
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-  
     const icons = {
       success: '✓',
       error: '✕',
@@ -20,25 +17,17 @@ class NotificationSystem extends HTMLElement {
       info: 'ℹ',
     };
   
-    const iconSpan = document.createElement('div');
-    iconSpan.className = 'notification-icon';
-    iconSpan.textContent = icons[type];
+    const template = this.shadowRoot.querySelector('#notification-template');
+    const notification = template.content.cloneNode(true).querySelector('.notification');
+    notification.classList.add(type);
   
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'notification-content';
-  
-    const messageP = document.createElement('p');
-    messageP.className = 'notification-message';
-    messageP.textContent = message;
-  
-    contentDiv.appendChild(messageP);
-    notification.appendChild(iconSpan);
-    notification.appendChild(contentDiv);
+    notification.querySelector('.notification-icon').textContent = icons[type];
+    notification.querySelector('.notification-message').textContent = message;
   
     this.container.appendChild(notification);
   
     setTimeout(() => notification.classList.add('show'), 10);
- 
+  
     setTimeout(() => {
       notification.classList.remove('show');
       setTimeout(() => notification.remove(), 300);

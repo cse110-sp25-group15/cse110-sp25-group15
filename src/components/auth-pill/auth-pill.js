@@ -139,7 +139,6 @@ class AuthPill extends HTMLElement {
     }
   }
 
-
   _handleOutsideClick(e) {
     if (this.pill?.classList.contains('expanded') && !e.composedPath().includes(this.pill)) {
       this._renderMenuClosed();

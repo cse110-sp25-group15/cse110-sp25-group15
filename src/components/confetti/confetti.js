@@ -1,28 +1,26 @@
+import html from './confetti.html?raw';
 import css from './confetti.css?raw';
 
 class ConfettiCelebration extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+    const template = document.createElement('template');
+    template.innerHTML = `<style>${css}</style>${html}`;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
   celebrate() {
-    const canvas = document.createElement('canvas');
-    canvas.className = 'confetti-canvas';
-    
-    const style = document.createElement('style');
-    style.textContent = css;
-    
-    this.shadowRoot.appendChild(style);
-    this.shadowRoot.appendChild(canvas);
+    const canvas = this.shadowRoot.querySelector('.confetti-canvas');
     
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
     const particles = [];
-    const colors = ['#04133B', '#F3C114', '#FFFFFF']; 
-   
+    const colors = ['#04133B', '#F3C114', '#FFFFFF']; // UCSD colors
+    
+    // Create particles
     for (let i = 0; i < 150; i++) {
       particles.push({
         x: Math.random() * canvas.width,
@@ -42,7 +40,7 @@ class ConfettiCelebration extends HTMLElement {
       particles.forEach((p, index) => {
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.1; 
+        p.vy += 0.1; // gravity
         p.rotation += p.rotationSpeed;
         
         ctx.save();
@@ -51,7 +49,8 @@ class ConfettiCelebration extends HTMLElement {
         ctx.fillStyle = p.color;
         ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
         ctx.restore();
-     
+        
+        // Remove particles that fall off screen
         if (p.y > canvas.height) {
           particles.splice(index, 1);
         }
@@ -60,8 +59,7 @@ class ConfettiCelebration extends HTMLElement {
       if (particles.length > 0) {
         requestAnimationFrame(animate);
       } else {
-        canvas.remove();
-        style.remove();
+        this.remove();
       }
     };
     
@@ -71,11 +69,11 @@ class ConfettiCelebration extends HTMLElement {
 
 customElements.define('confetti-celebration', ConfettiCelebration);
 
+// Global helper
 window.celebrate = () => {
   const confetti = document.createElement('confetti-celebration');
   document.body.appendChild(confetti);
   confetti.celebrate();
-  setTimeout(() => confetti.remove(), 5000);
 };
 
 export default ConfettiCelebration;

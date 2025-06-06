@@ -4,6 +4,7 @@ import supabase from '../../scripts/utils/supabase.js';
 import '../browse-page/product-card/product-card.js';
 import '../edit-listing/edit-listing.js';
 import deleteConfirmationCSS from './delete-confirmation.css?raw';
+import deleteConfirmationHTML from './delete-confirmation.html?raw';
 
 class MyListings extends HTMLElement {
   constructor() {
@@ -15,7 +16,7 @@ class MyListings extends HTMLElement {
 
   connectedCallback() {
     const template = document.createElement('template');
-    template.innerHTML = `<style>${css}</style>${html}`;
+    template.innerHTML = `<style>${css}</style>${html}${deleteConfirmationHTML}`;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     
     this.setupElements();
@@ -248,45 +249,23 @@ class MyListings extends HTMLElement {
   }
   showDeleteConfirmation() {
     return new Promise((resolve) => {
-    // Create elements
-      const overlay = document.createElement('div');
-      overlay.className = 'delete-confirmation-overlay';
+    // Clone the template
+      const template = this.shadowRoot.querySelector('#delete-confirmation-template');
+      const confirmationDialog = template.content.cloneNode(true);
     
-      const dialog = document.createElement('div');
-      dialog.className = 'delete-confirmation-dialog';
-    
-      const title = document.createElement('h3');
-      title.textContent = 'Delete Listing?';
-    
-      const message = document.createElement('p');
-      message.textContent = 'Are you sure you want to delete this listing? This action cannot be undone.';
-    
-      const buttonContainer = document.createElement('div');
-      buttonContainer.className = 'delete-confirmation-buttons';
-    
-      const cancelBtn = document.createElement('button');
-      cancelBtn.id = 'cancel-delete';
-      cancelBtn.className = 'btn-cancel';
-      cancelBtn.textContent = 'Cancel';
-    
-      const confirmBtn = document.createElement('button');
-      confirmBtn.id = 'confirm-delete';
-      confirmBtn.className = 'btn-confirm-delete';
-      confirmBtn.textContent = 'Delete';
-    
-      buttonContainer.appendChild(cancelBtn);
-      buttonContainer.appendChild(confirmBtn);
-      dialog.appendChild(title);
-      dialog.appendChild(message);
-      dialog.appendChild(buttonContainer);
-      overlay.appendChild(dialog);
-    
+      // Add styles
       const style = document.createElement('style');
       style.textContent = deleteConfirmationCSS;
     
       this.shadowRoot.appendChild(style);
-      this.shadowRoot.appendChild(overlay);
-   
+      this.shadowRoot.appendChild(confirmationDialog);
+    
+      // Get references to the actual elements after appending
+      const overlay = this.shadowRoot.querySelector('.delete-confirmation-overlay');
+      const cancelBtn = overlay.querySelector('.btn-cancel');
+      const confirmBtn = overlay.querySelector('.btn-confirm-delete');
+    
+      // Event handlers
       cancelBtn.onclick = () => {
         overlay.remove();
         style.remove();

@@ -3,6 +3,8 @@ import css from './my-listings.css?raw';
 import supabase from '../../scripts/utils/supabase.js';
 import '../browse-page/product-card/product-card.js';
 import '../edit-listing/edit-listing.js';
+import deleteConfirmationCSS from './delete-confirmation.css?raw';
+import deleteConfirmationHTML from './delete-confirmation.html?raw';
 
 class MyListings extends HTMLElement {
   constructor() {
@@ -14,7 +16,7 @@ class MyListings extends HTMLElement {
 
   connectedCallback() {
     const template = document.createElement('template');
-    template.innerHTML = `<style>${css}</style>${html}`;
+    template.innerHTML = `<style>${css}</style>${html}${deleteConfirmationHTML}`;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     
     this.setupElements();
@@ -76,8 +78,10 @@ class MyListings extends HTMLElement {
       
       if (this.listings.length === 0) {
         this.showEmptyState();
+
       } else {
         this.renderListings();
+
       }
 
     } catch (error) {
@@ -151,21 +155,18 @@ class MyListings extends HTMLElement {
   }
 
   handleListingClick(listingId) {
-    // For now, just show an alert
-    // In a real app, this might open a detail view or edit modal
     console.log('Listing clicked:', listingId);
   }
 
   editListing(listingId) {
     try {
-      // Get the listing data
+      
       const listing = this.listings.find((l) => l.listing_id === listingId);
       if (!listing) {
         console.error('Listing not found');
         return;
       }
-
-      // Get or create the edit modal
+      
       let editModal = this.shadowRoot.querySelector('edit-listing-modal');
       if (!editModal) {
         editModal = document.createElement('edit-listing-modal');
@@ -175,16 +176,14 @@ class MyListings extends HTMLElement {
         ...listing,
         allImages: listing.images && Array.isArray(listing.images) ? listing.images : [listing.thumbnail].filter(Boolean),
       };
-
-      // Show the modal with listing data
+    
       editModal.show(listingWithImages);
-
-      // Listen for the update event
+      
       editModal.addEventListener('listing-update', async (e) => {
         const { listingId, updates } = e.detail;
       
         try {
-          // Update the listing in the database
+          
           const { error } = await supabase
             .from('listings')
             .update(updates)
@@ -192,49 +191,51 @@ class MyListings extends HTMLElement {
             .eq('user_id', this.user.id);
 
           if (error) {throw error;}
-
-          // Reload the listings
+          
           await this.loadUserListings();
         
         } catch (error) {
           console.error('Error updating listing:', error);
-          alert('Failed to update listing. Please try again.');
+          window.notify('Failed to update listing. Please try again.', 'error');
         }
       }, { once: true });
 
     } catch (error) {
       console.error('Error editing listing:', error);
-      alert('Failed to load listing for editing.');
+      window.notify('Failed to load listing for editing. Please try again.', 'error');
     }
   }
 
   async confirmDelete(listingId) {
-    if (!confirm('Are you sure you want to delete this listing?')) {
+  
+    const confirmed = await this.showDeleteConfirmation();
+  
+    if (!confirmed) {
       return;
     }
 
     try {
-      // Delete the listing
+   
       const { error } = await supabase
         .from('listings')
         .delete()
         .eq('listing_id', listingId)
-        .eq('user_id', this.user.id); // Extra safety check
+        .eq('user_id', this.user.id); 
 
       if (error) {
         throw error;
       }
-
-      // Remove from local array and re-render
-      this.listings = this.listings.filter((l) => l.listing_id !== listingId);
       
+      this.listings = this.listings.filter((l) => l.listing_id !== listingId);
+    
       if (this.listings.length === 0) {
         this.showEmptyState();
       } else {
         this.renderListings();
       }
-
-      // Dispatch event to update profile stats
+      
+      window.notify('Listing deleted successfully', 'success');
+      
       this.dispatchEvent(new CustomEvent('listing-deleted', {
         bubbles: true,
         composed: true,
@@ -243,8 +244,48 @@ class MyListings extends HTMLElement {
 
     } catch (error) {
       console.error('Error deleting listing:', error);
-      alert('Failed to delete listing. Please try again.');
+      window.notify('Failed to delete listing. Please try again.', 'error');
     }
+  }
+  showDeleteConfirmation() {
+    return new Promise((resolve) => {
+    // Clone the template
+      const template = this.shadowRoot.querySelector('#delete-confirmation-template');
+      const confirmationDialog = template.content.cloneNode(true);
+    
+      // Add styles
+      const style = document.createElement('style');
+      style.textContent = deleteConfirmationCSS;
+    
+      this.shadowRoot.appendChild(style);
+      this.shadowRoot.appendChild(confirmationDialog);
+    
+      // Get references to the actual elements after appending
+      const overlay = this.shadowRoot.querySelector('.delete-confirmation-overlay');
+      const cancelBtn = overlay.querySelector('.btn-cancel');
+      const confirmBtn = overlay.querySelector('.btn-confirm-delete');
+    
+      // Event handlers
+      cancelBtn.onclick = () => {
+        overlay.remove();
+        style.remove();
+        resolve(false);
+      };
+    
+      confirmBtn.onclick = () => {
+        overlay.remove();
+        style.remove();
+        resolve(true);
+      };
+    
+      overlay.onclick = (e) => {
+        if (e.target === overlay) {
+          overlay.remove();
+          style.remove();
+          resolve(false);
+        }
+      };
+    });
   }
 
   showLoading() {

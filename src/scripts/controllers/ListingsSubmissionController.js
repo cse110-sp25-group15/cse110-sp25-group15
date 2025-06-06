@@ -188,7 +188,9 @@ export class ListingSubmissionController {
       if (event.target && typeof event.target.resetForm === 'function') {
         event.target.resetForm();
       }
-      window.location.replace('https://cse110-sp25-group15.github.io/cse110-sp25-group15/');
+      setTimeout(() => {
+        window.location.replace('https://cse110-sp25-group15.github.io/cse110-sp25-group15/');
+      }, 1500);
 
     } catch (error) {
       console.error('Error handling listing submission:', error);
@@ -197,11 +199,12 @@ export class ListingSubmissionController {
   }
 
   notifyError(message) {
-    alert(message);
+    window.notify(message, 'error', 4000);
   }
 
   notifySuccess(message) {
-    alert(message);
+    window.notify(message, 'success', 3000);
+    window.celebrate(); 
   }
 
 }

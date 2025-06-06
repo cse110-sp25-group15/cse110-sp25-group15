@@ -79,6 +79,8 @@ class SearchBox extends HTMLElement {
           // Reset and close the search after submission
           searchInput.value = '';
           searchContainer.classList.remove('active');
+        } else {
+          window.notify('Please enter a search term', 'warning');
         }
       });
     }

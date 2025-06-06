@@ -219,7 +219,7 @@ class EditListingModal extends HTMLElement {
 
     // Validate file type
     if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
-      alert('Please select a valid image or video file');
+      window.notify('Please select valid image or video files', 'warning');
       return;
     }
 
@@ -265,7 +265,7 @@ class EditListingModal extends HTMLElement {
     const errors = this.validateForm(formData);
     
     if (errors.length > 0) {
-      alert(errors.join('\n'));
+      errors.forEach((error) => window.notify(error, 'warning', 4000));
       return;
     }
     
@@ -305,7 +305,7 @@ class EditListingModal extends HTMLElement {
     } catch (error) {
       console.error('Error updating listing:', error);
       this.hideLoading();
-      alert('Failed to update listing. Please try again.');
+      window.notify('Failed to update listing. Please try again.', 'error');
     }
   }
 
@@ -366,25 +366,7 @@ class EditListingModal extends HTMLElement {
 
   showSuccessMessage() {
     
-    const successMsg = document.createElement('div');
-    successMsg.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #28a745;
-      color: white;
-      padding: 1rem 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      z-index: 2000;
-      font-weight: 500;
-    `;
-    successMsg.textContent = 'Listing updated successfully!';
-    document.body.appendChild(successMsg);
-    
-    setTimeout(() => {
-      successMsg.remove();
-    }, 3000);
+    window.notify('Listing updated successfully!', 'success');
   }
 
   resetForm() {

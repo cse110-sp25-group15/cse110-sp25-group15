@@ -28,7 +28,7 @@ class ProductViewer extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['name', 'price', 'condition', 'date', 'description', 'images'];
+    return ['name', 'price', 'condition', 'date', 'description', 'images', 'listner-name'];
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
@@ -121,6 +121,8 @@ class ProductViewer extends HTMLElement {
     this._setText('.condition', this.getAttribute('condition'));
     this._setText('.date', this.getAttribute('date'));
     this._setText('.description-block', this.getAttribute('description'));
+
+    this._setText('.lister-name', this.getAttribute('lister-name') || 'Unknown');
   }
 
   _setText(selector, text) {
@@ -143,6 +145,9 @@ class ProductViewer extends HTMLElement {
     }
 
     this.popup.showMessage('Message Sent!', 1000);
+    if (typeof window.notify === 'function') {
+      window.notify('Message sent to seller!', 'success');
+    }
   }
 
   _handleCloseClick() {

@@ -111,32 +111,42 @@ export class ListingModel {
    * @returns {Promise<Object|null>} The listing object or null if not found
    */
   async getListingById(listingId) {
-    // Try to find in local cache first
+  // Try to find in local cache first (but cache won't have user info)
     const cachedListing = this.listings.find((listing) => listing.listing_id === listingId);
-    if (cachedListing) {
-      return cachedListing;
-    }
-    
-    // If not in cache, fetch from database
+  
+    // Always fetch from database to get user information
     try {
       const { data, error } = await supabase
         .from('listings')
-        .select()
+        .select(`
+        *,
+        users (
+          id,
+          display_name
+        )
+      `)
         .eq('listing_id', listingId)
         .single();
-        
+      
       if (error) {
         console.error(`Error fetching listing ${listingId}:`, error);
         return null;
       }
-      
+    
+      // Format the user name from email or metadata
+      if (data && data.users) {
+      // creates a fallback name to display if user display_name in 
+      // data base is null
+        const fallback = `User-${data.users.id.slice(0,6)}`;
+        data.lister_name = data.users.display_name || fallback;
+      }
+    
       return data;
     } catch (err) {
       console.error(`Failed to fetch listing ${listingId}:`, err);
       return null;
     }
   }
-
   /**
  * Fetches listings created by a specific user
  * @param {string} userId - UUID of the user

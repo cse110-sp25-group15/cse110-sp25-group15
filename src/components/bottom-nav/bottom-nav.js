@@ -93,8 +93,7 @@ class BottomNav extends HTMLElement {
     // Final fallback to scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-
+  
   _handleNewsletterSubmit(e) {
     e.preventDefault();
     

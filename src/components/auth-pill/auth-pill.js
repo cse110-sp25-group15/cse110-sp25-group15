@@ -6,8 +6,6 @@ class AuthPill extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
-    
-    // Use template cloning as per style guide
     const template = document.createElement('template');
     template.innerHTML = `<style>${css}</style>${html}`;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
@@ -174,33 +172,23 @@ class AuthPill extends HTMLElement {
   }
 
   async _processUserSignIn(userData) {
-    // Clean up URL hash
     if (window.location.href.endsWith('#')) {
       window.location.href = window.location.href.slice(0, -1);
     }
-
     if (!userData || this.hasSavedUser) {return;}
-    
-    // Save to database first - if this fails, don't proceed
     this.hasSavedUser = true;
     const saveSuccess = await this._saveUserToDatabase(userData);
     if (!saveSuccess) {
       this.hasSavedUser = false;
       return;
     }
-    
-    // Set user data
     this.user = {
       id: userData.id,
       email: userData.email,
       name: userData.user_metadata?.full_name || userData.email,
       avatarUrl: this._getAvatarUrl(userData),
     };
-    
-    // Update UI
     this._renderUserUI();
-    
-    // Dispatch event
     this.dispatchEvent(new CustomEvent('user-signed-in', { 
       bubbles: true, 
       composed: true, 
@@ -218,7 +206,7 @@ class AuthPill extends HTMLElement {
       composed: true, 
     }));
   }
-  
+
   async _saveUserToDatabase(user) {
     try {
       const { error } = await supabase
@@ -247,10 +235,7 @@ class AuthPill extends HTMLElement {
     // Try provider avatar
     const avatarUrl = user?.identities?.[0]?.identity_data?.avatar_url || 
                       user?.user_metadata?.avatar_url;
-    
     if (avatarUrl) {return avatarUrl;}
-    
-    // Generate placeholder
     const name = user?.user_metadata?.full_name || user?.email || 'User';
     const initials = this._getInitials(name);
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=random`;

@@ -82,13 +82,12 @@ class AuthPill extends HTMLElement {
     this.pill?.classList.remove('expanded');
   }
 
-  handleAuthChange(event, session) {
-    if (event === 'SIGNED_IN' && session) {
-      this.updateUser(session.user);
-      window.notify('Successfully signed in!', 'success');
-    } else if (event === 'SIGNED_OUT') {
-      this.showLoginUI();
-    }
+  _handleLogin() {
+    const currentUrl = window.location.href;
+    supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: currentUrl },
+    });
   }
 
   toggleMenu() {
@@ -153,26 +152,28 @@ class AuthPill extends HTMLElement {
 
   }
   
-  async saveUserToDatabase(user) {
+  async _saveUserToDatabase(user) {
     try {
       const displayName = user.email?.split('@')[0];
       const { error } = await supabase
         .from('users')
         .upsert([
-          { 
-            id: user.id, 
-            email: user.email, 
-            display_name: displayName, 
+          {
+            id: user.id,
+            email: user.email,
+            display_name: displayName,
           },
         ], { onConflict: ['id'] });
-      
-      if(error) {
+
+      if (error) {
         throw error;
       }
+      return true;
     } catch (err) {
       console.error('Failed to save user:', err);
-      await this.logout();
+      await this._logout();  // use the correct logout function
       window.notify('Must have a UCSD account (@ucsd.edu) to login', 'error', 4000);
+      return false;
     }
   }
 

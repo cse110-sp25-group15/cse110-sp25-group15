@@ -6,37 +6,33 @@ class BrowsePage extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+    
     const template = document.createElement('template');
-    template.innerHTML = `
-          <style>${css}</style>
-          ${html}
-      `;
+    template.innerHTML = `<style>${css}</style>${html}`;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
-  static get observedAttributes() {
-    return ['new', 'low', 'high'];
+  connectedCallback() {
+    // Bind DOM elements
+    this.dropdown = this.shadowRoot.getElementById('dropdown');
+
+    // Bind event handlers
+    this._handleSortChange = this._handleSortChange.bind(this);
+
+    // Add event listeners
+    this.dropdown?.addEventListener('change', this._handleSortChange);
+
+    // Initial render
+    this._renderDefaultCategory();
   }
 
-  connectedCallback() {
-    const dropdown = this.shadowRoot.getElementById('dropdown');
+  disconnectedCallback() {
+    // Remove all event listeners to prevent memory leaks
+    this.dropdown?.removeEventListener('change', this._handleSortChange);
+  }
 
-    dropdown.addEventListener('change', (e) => {
-      const selected = e.target.value;
-      console.log(e.target.value);
-      if (selected === 'new' || selected === 'low' || selected === 'high' || selected === 'featured') {
-        this.dispatchEvent(new CustomEvent('sort-change', {
-          bubbles: true,
-          composed: true,
-          detail: {
-            sortBy: selected, 
-          },
-        },
-        ));
-      }
-
-    });
-    // Auto-select "All" category on load
+  // DOM-UPDATE HELPERS (Pure DOM mutations)
+  _renderDefaultCategory() {
     setTimeout(() => {
       const allButton = this.shadowRoot.querySelector('category-button');
       if (allButton) {
@@ -45,9 +41,24 @@ class BrowsePage extends HTMLElement {
     }, 100);
   }
 
-  attributeChangedCallback(name, _oldValue, _newValue) {
-    if (name === null) {return;}
+  // EVENT HANDLERS
+  _handleSortChange(e) {
+    const selected = e.target.value;
+    console.log(selected);
     
+    if (this._isValidSortOption(selected)) {
+      this.dispatchEvent(new CustomEvent('sort-change', {
+        bubbles: true,
+        composed: true,
+        detail: { sortBy: selected },
+      }));
+    }
+  }
+
+  // UTILITY HELPERS (Pure functions)
+  _isValidSortOption(option) {
+    const validOptions = ['new', 'low', 'high', 'featured'];
+    return validOptions.includes(option);
   }
 }
 

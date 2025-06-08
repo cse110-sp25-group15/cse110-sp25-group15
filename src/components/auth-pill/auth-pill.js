@@ -219,8 +219,9 @@ class AuthPill extends HTMLElement {
       return true;
     } catch (err) {
       console.error('Failed to save user:', err);
+
       await this._logout();
-      alert('Must have a UCSD account (@ucsd.edu) to login');
+      window.notify('You must use a UCSD email to login', 'warning');
       return false;
     }
   }

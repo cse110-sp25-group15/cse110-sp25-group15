@@ -36,6 +36,8 @@ class SearchHero extends HTMLElement {
           composed: true,
           detail: { query },
         }));
+      } else {
+        window.notify('Please enter a search term', 'warning');
       }
       console.log(`Search submitted: ${query}`);
     };

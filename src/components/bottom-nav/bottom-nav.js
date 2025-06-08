@@ -36,8 +36,6 @@ class BottomNav extends HTMLElement {
     this.browseLink?.addEventListener('click', this._handleBrowseClick);
     this.logo?.addEventListener('click', this._handleLogoClick);
 
-    // Initial render
-    this._renderLogoClickable();
   }
 
   disconnectedCallback() {
@@ -49,12 +47,6 @@ class BottomNav extends HTMLElement {
   }
 
   // DOM-UPDATE HELPERS (Pure DOM mutations)
-  _renderLogoClickable() {
-    if (this.logo) {
-      this.logo.style.cursor = 'pointer';
-    }
-  }
-
   _renderNewsletterSuccess() {
     if (!this.newsletterButton) {return;}
     

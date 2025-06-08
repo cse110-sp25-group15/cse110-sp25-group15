@@ -1,5 +1,6 @@
 import templateHTML from './product-detail.html?raw';
 import templateCSS from './product-detail.css?raw';
+import '../popup/popup.js';
 
 /**
  * A custom element that displays detailed product information including:
@@ -10,6 +11,8 @@ import templateCSS from './product-detail.css?raw';
  * @element product-detail
  */
 class ProductViewer extends HTMLElement {
+  MSG_PLACEHOLDER = 'Hi, is this still available?';
+
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
@@ -25,7 +28,7 @@ class ProductViewer extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['name', 'price', 'condition', 'date', 'description', 'images'];
+    return ['name', 'price', 'condition', 'date', 'description', 'images', 'listner-name'];
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
@@ -40,6 +43,7 @@ class ProductViewer extends HTMLElement {
     this.closeButton = this.shadowRoot.querySelector('.close-btn');
     this.overlay = this.shadowRoot.querySelector('.overlay');
     this.productDetail = this.shadowRoot.querySelector('.product-detail');
+    this.popup = this.shadowRoot.querySelector('popup-msg');
 
     this._initializeOverlay();
     this._updateContent();
@@ -117,6 +121,7 @@ class ProductViewer extends HTMLElement {
     this._setText('.condition', this.getAttribute('condition'));
     this._setText('.date', this.getAttribute('date'));
     this._setText('.description-block', this.getAttribute('description'));
+    this._setText('.lister-name', this.getAttribute('lister-name') || 'Unknown');
   }
 
   _setText(selector, text) {
@@ -131,6 +136,24 @@ class ProductViewer extends HTMLElement {
 
   _handleContactClick() {
     this.dispatchEvent(new CustomEvent('contact-seller', { bubbles: true, composed: true }));
+
+    // const contactMsg = this.shadowRoot.querySelector('.contact-message');
+    // if (contactMsg) {
+    //   contactMsg.value = '';
+    //   contactMsg.placeholder = 'Sent!';
+    // }
+    const contactMsg = this.shadowRoot.querySelector('.contact-message');
+    if (contactMsg && !this.shadowRoot.querySelector('.disclaimer-text')) {
+      const disclaimer = document.createElement('div');
+      disclaimer.className = 'disclaimer-text';
+      disclaimer.textContent = '* Chat feature is for demonstration purposes only';
+      contactMsg.insertAdjacentElement('afterend', disclaimer);
+    }
+
+    this.popup.showMessage('Message Sent!', 1000);
+    if (typeof window.notify === 'function') {
+      window.notify('Message sent to seller!', 'success');
+    }
   }
 
   _handleCloseClick() {
@@ -224,6 +247,9 @@ class ProductViewer extends HTMLElement {
       this.overlay.style.display = 'block';
       this._isVisible = true;
       this._lockBodyScroll();
+
+      const contactMsg = this.shadowRoot.querySelector('.contact-message');
+      contactMsg.placeholder = this.MSG_PLACEHOLDER;
     }
   }
 

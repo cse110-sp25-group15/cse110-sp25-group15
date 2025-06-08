@@ -1,4 +1,3 @@
-
 :host {
     --ucsd-blue: #04133B;
     --ucsd-gold: #F3C114;
@@ -6,7 +5,6 @@
     --ucsd-gold-dark: #D4A90F;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
-
 
 .overlay {
     position: fixed;
@@ -95,7 +93,6 @@
     margin: 0 0 1.5rem 0;
 }
 
-/* Media Section */
 .media-section {
     display: flex;
     flex-direction: column;
@@ -157,7 +154,6 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Form Section */
 .form-section {
     display: flex;
     flex-direction: column;
@@ -245,7 +241,6 @@ textarea {
     font-weight: 500;
 }
 
-/* Form Actions */
 .form-actions {
     display: flex;
     gap: 1rem;
@@ -289,7 +284,6 @@ textarea {
     box-shadow: 0 4px 12px rgba(243, 193, 20, 0.3);
 }
 
-/* Loading State */
 .loading-overlay {
     position: absolute;
     top: 0;
@@ -321,7 +315,6 @@ textarea {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-
 
 .image-gallery {
     width: 100%;
@@ -392,40 +385,39 @@ textarea {
     position: relative;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .form-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
-    
+
     .form-row {
         grid-template-columns: 1fr;
         gap: 1rem;
     }
-    
+
     .edit-modal {
         max-height: 100vh;
         border-radius: 0;
     }
-    
+
     .form-actions {
         flex-direction: column-reverse;
     }
-    
+
     .btn-cancel,
     .btn-save {
         width: 100%;
         justify-content: center;
     }
-    
+
     .nav-btn {
         top: -150px;
         width: 35px;
         height: 35px;
         font-size: 1.2rem;
     }
-    
+
     .thumbnail {
         width: 50px;
         height: 50px;

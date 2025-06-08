@@ -9,96 +9,101 @@ class BottomNav extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+
     const template = document.createElement('template');
-    template.innerHTML = `
-      <style>${css}</style>
-      ${html}
-    `;
+    template.innerHTML = `<style>${css}</style>${html}`;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
   connectedCallback() {
-    this.setupEventListeners();
+    this.backToTopBar = this.shadowRoot.querySelector('.back-to-top-bar');
+    this.newsletterForm = this.shadowRoot.querySelector('.newsletter-form');
+    this.emailInput = this.shadowRoot.querySelector('.newsletter-input');
+    this.newsletterButton = this.shadowRoot.querySelector('.newsletter-button');
+    this.browseLink = this.shadowRoot.querySelector('a[href="#marketplace"]');
+    this.logo = this.shadowRoot.querySelector('.logo');
+
+    this._handleBackToTop = this._handleBackToTop.bind(this);
+    this._handleNewsletterSubmit = this._handleNewsletterSubmit.bind(this);
+    this._handleBrowseClick = this._handleBrowseClick.bind(this);
+    this._handleLogoClick = this._handleLogoClick.bind(this);
+
+    this.backToTopBar?.addEventListener('click', this._handleBackToTop);
+    this.newsletterForm?.addEventListener('submit', this._handleNewsletterSubmit);
+    this.browseLink?.addEventListener('click', this._handleBrowseClick);
+    this.logo?.addEventListener('click', this._handleLogoClick);
   }
 
-  setupEventListeners() {
-    // Handle back to top bar (entire bar is clickable)
-    const backToTopBar = this.shadowRoot.querySelector('.back-to-top-bar');
-    if (backToTopBar) {
-      backToTopBar.addEventListener('click', () => {
-        // First try to find the browse-page component
-        const browsePage = document.querySelector('browse-page');
-        if (browsePage) {
-          browsePage.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          // Fallback to marketplace section
-          const marketplaceSection = document.getElementById('marketplace');
-          if (marketplaceSection) {
-            marketplaceSection.scrollIntoView({ behavior: 'smooth' });
-          } else {
-            // Final fallback to scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }
-        }
-      });
-    }
-
-    // Handle newsletter form submission
-    const newsletterForm = this.shadowRoot.querySelector('.newsletter-form');
-    if (newsletterForm) {
-      newsletterForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const emailInput = this.shadowRoot.querySelector('.newsletter-input');
-        const email = emailInput.value.trim();
-        
-        if (email) {
-          // Dispatch custom event for newsletter signup
-          this.dispatchEvent(new CustomEvent('newsletter-signup', {
-            bubbles: true,
-            composed: true,
-            detail: { email },
-          }));
-          
-          // Reset form and show feedback
-          emailInput.value = '';
-          this.showNewsletterFeedback('Thanks for subscribing!');
-        }
-      });
-    }
-
-    // Handle navigation clicks - scroll to marketplace section
-    const browseLink = this.shadowRoot.querySelector('a[href="#marketplace"]');
-    if (browseLink) {
-      browseLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        const marketplaceSection = document.getElementById('marketplace');
-        if (marketplaceSection) {
-          marketplaceSection.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    }
-
-    // Handle logo click
-    const logo = this.shadowRoot.querySelector('.logo');
-    if (logo) {
-      logo.style.cursor = 'pointer';
-      logo.addEventListener('click', () => {
-        window.location.href = '/cse110-sp25-group15/';
-      });
-    }
+  disconnectedCallback() {
+    this.backToTopBar?.removeEventListener('click', this._handleBackToTop);
+    this.newsletterForm?.removeEventListener('submit', this._handleNewsletterSubmit);
+    this.browseLink?.removeEventListener('click', this._handleBrowseClick);
+    this.logo?.removeEventListener('click', this._handleLogoClick);
   }
 
-  showNewsletterFeedback(message) {
-    const button = this.shadowRoot.querySelector('.newsletter-button');
-    const originalText = button.textContent;
-    
-    button.textContent = message;
-    button.style.background = '#28a745';
-    
+  _renderNewsletterSuccess() {
+    if (!this.newsletterButton) {return;}
+    const originalText = this.newsletterButton.textContent;
+    this.newsletterButton.textContent = 'Thanks for subscribing!';
+    this.newsletterButton.style.background = '#28a745';
+
     setTimeout(() => {
-      button.textContent = originalText;
-      button.style.background = '';
+      this.newsletterButton.textContent = originalText;
+      this.newsletterButton.style.background = '';
     }, 2000);
+  }
+
+  _renderEmailCleared() {
+    if (this.emailInput) {
+      this.emailInput.value = '';
+    }
+  }
+
+  _handleBackToTop() {
+    const browsePage = document.querySelector('browse-page');
+    if (browsePage) {
+      browsePage.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
+    const marketplaceSection = document.getElementById('marketplace');
+    if (marketplaceSection) {
+      marketplaceSection.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  _handleNewsletterSubmit(e) {
+    e.preventDefault();
+    const email = this._getEmailValue();
+    if (!email) {return;}
+
+    this.dispatchEvent(new CustomEvent('newsletter-signup', {
+      bubbles: true,
+      composed: true,
+      detail: { email },
+    }));
+
+    this._renderEmailCleared();
+    this._renderNewsletterSuccess();
+  }
+
+  _handleBrowseClick(e) {
+    e.preventDefault();
+    const marketplaceSection = document.getElementById('marketplace');
+    if (marketplaceSection) {
+      marketplaceSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  _handleLogoClick() {
+    window.location.href = '/cse110-sp25-group15/';
+  }
+
+  _getEmailValue() {
+    return this.emailInput?.value.trim() || '';
   }
 }
 

@@ -15,16 +15,13 @@ class ChatWidget extends HTMLElement {
     template.innerHTML = `<style>${css}</style>${html}`;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     // Prevents body scroll when chat is open
-
     const disclaimer = document.createElement('div');
     disclaimer.textContent = 'Disclaimer: This chat is for demonstration purposes only.';
     disclaimer.className = 'chat-disclaimer';
-
     const widgetContainer = this.shadowRoot.querySelector('.widget-container');
     if (widgetContainer) {
       widgetContainer.insertBefore(disclaimer, widgetContainer.firstChild);
     }
-
     //document.body.style.overflow = 'hidden';
     // Close on "X" icon
     this.shadowRoot.querySelector('.close-icon').addEventListener('click', () =>         this.hideWidget()  );
@@ -76,7 +73,6 @@ class ChatWidget extends HTMLElement {
     this._handleScroll = () => {
       const bottomNav = document.querySelector('bottom-nav');
       if (!bottomNav) {return;}
-
       const bottomNavRect = bottomNav.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
       
@@ -146,6 +142,7 @@ class ChatWidget extends HTMLElement {
           this.shadowRoot.querySelector('.convo-list').style.display = 'none';
           this.shadowRoot.querySelector('header').style.display = 'none';
           this.shadowRoot.querySelector('input').style.display = 'none';
+
           const screen = this.shadowRoot.querySelector('.chat-screen');
           screen.classList.remove('hidden');
           screen.querySelector('.chat-title').textContent = convo.name;
@@ -161,5 +158,6 @@ class ChatWidget extends HTMLElement {
       });
   }
 }
+  
 customElements.define('chat-widget', ChatWidget);
 export default ChatWidget;

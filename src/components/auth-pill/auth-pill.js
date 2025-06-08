@@ -6,18 +6,17 @@ class AuthPill extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = `<style>${css}</style>${html}`;
+    const template = document.createElement('template');
+    template.innerHTML = `<style>${css}</style>${html}`;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    
+    // Component state
     this.user = null;
-    this.savedUser = false;
+    this.hasSavedUser = false;
   }
 
   connectedCallback() {
-    this.setupElements();
-    this.checkAuthState();
-    this.setupListeners();
-  }
-
-  setupElements() {
+    // Bind DOM elements
     this.pill = this.shadowRoot.querySelector('.user-pill');
     this.loginBtn = this.shadowRoot.querySelector('#loginButton');
     this.userPill = this.shadowRoot.querySelector('#loggedInPill');
@@ -26,210 +25,234 @@ class AuthPill extends HTMLElement {
     this.menuName = this.shadowRoot.querySelector('.user-menu-name');
     this.menuEmail = this.shadowRoot.querySelector('.user-menu-email');
     this.avatar = this.shadowRoot.querySelector('.user-avatar');
+    this.avatarImg = this.avatar.querySelector('img');
     this.initials = this.shadowRoot.querySelector('.initials');
     this.signoutBtn = this.menu?.querySelector('#signout-button');
     this.profileLink = this.menu?.querySelector('#profile-link');
 
+    // Bind event handlers
+    this._handleLogin = this._handleLogin.bind(this);
+    this._handleToggleMenu = this._handleToggleMenu.bind(this);
+    this._handleOutsideClick = this._handleOutsideClick.bind(this);
+    this._handleSignout = this._handleSignout.bind(this);
+    this._handleProfileClick = this._handleProfileClick.bind(this);
+    this._handleAuthChange = this._handleAuthChange.bind(this);
+
+    // Add event listeners
+    this.loginBtn?.addEventListener('click', this._handleLogin);
+    this.pill?.addEventListener('click', this._handleToggleMenu);
+    document.addEventListener('click', this._handleOutsideClick);
+    this.signoutBtn?.addEventListener('click', this._handleSignout);
+    this.profileLink?.addEventListener('click', this._handleProfileClick);
+    
+    // Setup auth listener
+    this._authUnsubscribe = supabase.auth.onAuthStateChange(this._handleAuthChange);
+    
+    // Initial auth check
+    this._checkAuthState();
   }
 
-  setupListeners() {
-    const link = window.location.href;
-
-    // Login button
-    this.loginBtn?.addEventListener('click', () => {
-      supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: link },
-      });
-    });
+  disconnectedCallback() {
+    // Remove all event listeners to prevent memory leaks
+    this.loginBtn?.removeEventListener('click', this._handleLogin);
+    this.pill?.removeEventListener('click', this._handleToggleMenu);
+    document.removeEventListener('click', this._handleOutsideClick);
+    this.signoutBtn?.removeEventListener('click', this._handleSignout);
+    this.profileLink?.removeEventListener('click', this._handleProfileClick);
     
-    // Toggle menu
-    this.pill?.addEventListener('click', this.toggleMenu.bind(this));
-    
-    // Close menu when clicking outside
-    document.addEventListener('click', this.handleOutsideClick.bind(this));
-    
-    // Menu actions
-    this.signoutBtn?.addEventListener('click', this.handleSignout.bind(this));
-    this.profileLink?.addEventListener('click', () => this.handleNavigation('/profile'));
-    
-    // Auth change listener
-    supabase.auth.onAuthStateChange(this.handleAuthChange.bind(this));
-    
-  }
-
-  handleOutsideClick(e) {
-    if (this.pill?.classList.contains('expanded') && !e.composedPath().includes(this.pill)) {
-      this.pill.classList.remove('expanded');
-      this.menu.style.display = 'none';
+    // Unsubscribe from auth changes
+    if (this._authUnsubscribe) {
+      this._authUnsubscribe.data?.subscription?.unsubscribe();
     }
   }
 
-  handleSignout(e) {
-    e.stopPropagation();
-    this.logout();
-  }
-
-  handleNavigation(path) {
-  // Direct navigation instead of dispatching event
-    if (path === '/profile') {
-      window.location.href = '/cse110-sp25-group15/profile.html';
-    } else {
-      window.location.href = path;
-    }
-  
-    this.menu.style.display = 'none';
+  // DOM-UPDATE HELPERS (Pure DOM mutations)
+  _renderLoginUI() {
+    this.userPill.style.display = 'none';
+    this.loginBtn.style.display = 'flex';
     this.pill?.classList.remove('expanded');
-  }
-
-  handleAuthChange(event, session) {
-    if (event === 'SIGNED_IN' && session) {
-      this.updateUser(session.user);
-    } else if (event === 'SIGNED_OUT') {
-      this.showLoginUI();
-    }
-  }
-
-  toggleMenu() {
-    this.pill.classList.toggle('expanded');
+    this.menu.style.display = 'none';
     
-    if (this.pill.classList.contains('expanded')) {
-      this.updateMenuContent();
-      this.menu.style.display = 'block';
+    // Reset avatar state
+    this.avatarImg.style.display = 'none';
+    this.avatarImg.src = '';
+    this.initials.textContent = '';
+  }
+
+  _renderUserUI() {
+    this.userPill.style.display = 'flex';
+    this.loginBtn.style.display = 'none';
+    
+    // Update user info
+    if (this.nameEl && this.user) {
+      this.nameEl.textContent = this.user.name;
+    }
+    
+    // Update avatar
+    if (this.user?.avatarUrl) {
+      this.avatarImg.src = this.user.avatarUrl;
+      this.avatarImg.alt = 'User avatar';
+      this.avatarImg.style.display = 'block';
+      this.avatarImg.onerror = () => {
+        this.avatarImg.style.display = 'none';
+        this.initials.textContent = this._getInitials(this.user.name);
+      };
+      this.initials.textContent = '';
     } else {
-      this.menu.style.display = 'none';
+      this.avatarImg.style.display = 'none';
+      this.initials.textContent = this._getInitials(this.user.name);
     }
   }
 
-  async checkAuthState() {
+  _renderMenuOpen() {
+    this.pill.classList.add('expanded');
+    this.menu.style.display = 'block';
+    
+    // Update menu content
+    if (this.user) {
+      if (this.menuName) {this.menuName.textContent = this.user.name;}
+      if (this.menuEmail) {this.menuEmail.textContent = this.user.email;}
+    }
+  }
+
+  _renderMenuClosed() {
+    this.pill?.classList.remove('expanded');
+    this.menu.style.display = 'none';
+  }
+
+  // EVENT HANDLERS
+  _handleLogin() {
+    const currentUrl = window.location.href;
+    supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: currentUrl },
+    });
+  }
+
+  _handleToggleMenu() {
+    if (this.pill.classList.contains('expanded')) {
+      this._renderMenuClosed();
+    } else {
+      this._renderMenuOpen();
+    }
+  }
+
+  _handleOutsideClick(e) {
+    if (this.pill?.classList.contains('expanded') && !e.composedPath().includes(this.pill)) {
+      this._renderMenuClosed();
+    }
+  }
+
+  _handleSignout(e) {
+    e.stopPropagation();
+    this._logout();
+  }
+
+  _handleProfileClick() {
+    window.location.href = '/cse110-sp25-group15/profile.html';
+    this._renderMenuClosed();
+  }
+
+  _handleAuthChange(event, session) {
+    if (event === 'SIGNED_IN' && session) {
+      window.notify('You have signed in', 'success');
+      this._processUserSignIn(session.user);
+    } 
+  }
+
+  // MAIN LOGIC METHODS
+  async _checkAuthState() {
     const { data } = await supabase.auth.getSession();
     if (data.session?.user) {
-      // user is logged in
-      this.updateUser(data.session.user);
-      this.dispatchEvent(new CustomEvent('user-signed-in', { 
-        bubbles: true, composed: true, 
-      }));
+      this._processUserSignIn(data.session.user);
     } else {
-      // user not logged in
-      this.showLoginUI();
-      this.dispatchEvent(new CustomEvent('user-signed-out', { 
-        bubbles: true, composed: true, 
-      }));
+      this._processUserSignOut();
     }
   }
 
-  async updateUser(userData) {
-    //checks to see if the url ends with #
-    console.log('Current URL:', window.location.href);
+  async _processUserSignIn(userData) {
     if (window.location.href.endsWith('#')) {
       window.location.href = window.location.href.slice(0, -1);
     }
     if (!userData || this.hasSavedUser) {return;}
-    
-    // Save to database
     this.hasSavedUser = true;
-    this.saveUserToDatabase(userData);
-    
-    // Set user data
+    const saveSuccess = await this._saveUserToDatabase(userData);
+    if (!saveSuccess) {
+      this.hasSavedUser = false;
+      return;
+    }
     this.user = {
       id: userData.id,
       email: userData.email,
       name: userData.user_metadata?.full_name || userData.email,
-      avatarUrl: this.getAvatarUrl(userData),
+      avatarUrl: this._getAvatarUrl(userData),
     };
-    
-    // Update UI
-    this.userPill.style.display = 'flex';
-    this.loginBtn.style.display = 'none';
-    
-    if (this.nameEl) {this.nameEl.textContent = this.user.name;}
-    
-    this.updateAvatar();
-    
+
+    this._renderUserUI();
     this.dispatchEvent(new CustomEvent('user-signed-in', { 
-      bubbles: true, composed: true, detail: { userData: this.user }, 
+      bubbles: true, 
+      composed: true, 
+      detail: { userData: this.user }, 
     }));
+  }
+
+  _processUserSignOut() {
+    if (this.user === null) {return;}
+    this.user = null;
+    this.hasSavedUser = false;
+    this._renderLoginUI();
+    
+    this.dispatchEvent(new CustomEvent('user-signed-out', { 
+      bubbles: true, 
+      composed: true, 
+    }));
+    window.notify('You have signed out', 'success');
 
   }
 
-  async saveUserToDatabase(user) {
+  async _saveUserToDatabase(user) {
     try {
+      const displayName = user.email?.split('@')[0];
       const { error } = await supabase
         .from('users')
-        .upsert([{ id: user.id, email: user.email }], { onConflict: ['id'] });
+        .upsert([{ id: user.id, 
+          email: user.email,
+          display_name: displayName }], { onConflict: ['id'] });
       
-      if(error) {
+      if (error) {
         throw error;
       }
+      return true;
     } catch (err) {
       console.error('Failed to save user:', err);
-      await this.logout();
-      alert('Must have a UCSD account (@ucsd.edu) to login');
+      await this._logout();
+      window.notify('You must use a UCSD email to login', 'warning');
+      return false;
     }
   }
 
-  updateAvatar() {
-    if (!this.user) {return;}
-    
-    if (this.user.avatarUrl) {
-      const img = document.createElement('img');
-      img.src = this.user.avatarUrl;
-      img.alt = 'User avatar';
-      img.onerror = () => {
-        img.remove();
-        this.initials.textContent = this.getInitials(this.user.name);
-      };
-      
-      this.avatar.innerHTML = '';
-      this.avatar.appendChild(img);
-      this.initials.textContent = '';
-    } else {
-      this.initials.textContent = this.getInitials(this.user.name);
-    }
+  async _logout() {
+    await supabase.auth.signOut();
+    this._processUserSignOut();
   }
 
-  updateMenuContent() {
-    if (!this.user) {return;}
-    
-    if (this.menuName) {this.menuName.textContent = this.user.name;}
-    if (this.menuEmail) {this.menuEmail.textContent = this.user.email;}
-  }
-
-  getAvatarUrl(user) {
+  // UTILITY HELPERS (Pure functions)
+  _getAvatarUrl(user) {
     // Try provider avatar
     const avatarUrl = user?.identities?.[0]?.identity_data?.avatar_url || 
                       user?.user_metadata?.avatar_url;
-    
     if (avatarUrl) {return avatarUrl;}
-    
-    // Generate placeholder
     const name = user?.user_metadata?.full_name || user?.email || 'User';
-    const initials = this.getInitials(name);
+    const initials = this._getInitials(name);
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=random`;
   }
 
-  getInitials(name) {
+  _getInitials(name) {
     if (!name) {return 'U';}
     const parts = name.split(' ').filter(Boolean);
     return parts.length <= 1 
       ? (parts[0]?.[0] || 'U').toUpperCase()
       : (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
-  }
-
-  showLoginUI() {
-    this.userPill.style.display = 'none';
-    this.pill?.classList.remove('expanded');
-    this.loginBtn.style.display = 'flex';
-    this.menu.style.display = 'none';
-    this.user = null;
-  }
-
-  async logout() {
-    await supabase.auth.signOut();
-    this.showLoginUI();
-    this.dispatchEvent(new CustomEvent('user-signed-out', { 
-      bubbles: true, composed: true, 
-    }));
   }
 }
 

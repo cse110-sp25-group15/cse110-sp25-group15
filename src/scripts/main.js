@@ -1,5 +1,6 @@
 import { ListingDisplayController } from './controllers/ListingsDisplayController.js';
 import { ListingSubmissionController } from './controllers/ListingsSubmissionController.js';
+import { ConfettiController } from './controllers/ConfettiController.js';
 import supabase from './utils/supabase.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -8,6 +9,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   const listingSubmissionController = new ListingSubmissionController();
   listingSubmissionController.init();
+
+  const confettiController = new ConfettiController();
+  confettiController.init();
 
   // Logo click handler
   const logo = document.querySelector('.logo');

@@ -90,7 +90,7 @@ class ListingForm extends HTMLElement {
     });
 
     if (validFiles.length === 0) {
-      alert('Please select valid image or video files');
+      window.notify('Please select valid image or video files', 'warning');
       return;
     }
 
@@ -461,7 +461,7 @@ class ListingForm extends HTMLElement {
         detail: data,
       }));
     } else {
-      alert(errors.join('\n'));
+      errors.forEach((error) => window.notify(error, 'warning', 4000));
     }
   }
 

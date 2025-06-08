@@ -176,7 +176,7 @@ export class ListingDisplayController {
       this.overlay.setAttribute('condition', listing.condition || '');
       this.overlay.setAttribute('date', listing.date_posted || '');
       this.overlay.setAttribute('description', listing.description || '');
-      this.overlay.setAttribute('lister-name', listing.lister_name || 'Unknown');
+      this.overlay.setAttribute('lister-name', listing.lister_name || ' * Must be signed in to view name *');
       
       // Handle multiple images - convert array to JSON string for the attribute
       let imagesAttr = '';

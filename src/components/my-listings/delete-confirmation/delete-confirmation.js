@@ -5,20 +5,18 @@ class DeleteConfirmation extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
-  }
-
-  connectedCallback() {
     const template = document.createElement('template');
     template.innerHTML = `<style>${css}</style>${html}`;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-
-    this.overlay = this.shadowRoot.querySelector('.delete-confirmation-overlay');
-    this.cancelBtn = this.shadowRoot.querySelector('.btn-cancel');
-    this.confirmBtn = this.shadowRoot.querySelector('.btn-confirm-delete');
-
     this._handleCancel = this._handleCancel.bind(this);
     this._handleConfirm = this._handleConfirm.bind(this);
     this._handleOverlayClick = this._handleOverlayClick.bind(this);
+  }
+
+  connectedCallback() {
+    this.overlay = this.shadowRoot.querySelector('.delete-confirmation-overlay');
+    this.cancelBtn = this.shadowRoot.querySelector('.btn-cancel');
+    this.confirmBtn = this.shadowRoot.querySelector('.btn-confirm-delete');
 
     this.cancelBtn.addEventListener('click', this._handleCancel);
     this.confirmBtn.addEventListener('click', this._handleConfirm);
@@ -54,11 +52,13 @@ class DeleteConfirmation extends HTMLElement {
   }
 
   _dispatchResult(confirmed) {
-    this.dispatchEvent(new CustomEvent('delete-result', {
-      bubbles: true,
-      composed: true,
-      detail: { confirmed },
-    }));
+    this.dispatchEvent(
+      new CustomEvent('delete-result', {
+        bubbles: true,
+        composed: true,
+        detail: { confirmed },
+      }),
+    );
     this.hide();
   }
 }

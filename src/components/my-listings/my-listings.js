@@ -1,65 +1,78 @@
 import html from './my-listings.html?raw';
 import css from './my-listings.css?raw';
 import supabase from '../../scripts/utils/supabase.js';
+
 import '../browse-page/product-card/product-card.js';
 import '../edit-listing/edit-listing.js';
+import './delete-confirmation/delete-confirmation.js';
 
 class MyListings extends HTMLElement {
+
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
-    this.listings = [];
-    this.user = null;
-  }
 
-  connectedCallback() {
+    // Template clone (per guide: constructor → shadow DOM only)
     const template = document.createElement('template');
     template.innerHTML = `<style>${css}</style>${html}`;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-    
-    this.setupElements();
-    this.loadUserListings();
-    this.setupEventListeners();
+
+    // Component state
+    this.listings = [];
+    this.user = null;
+    this.currentDeleteId = null;
+
+    // Pre-bind handlers once
+    this._handleCardClick = this._handleCardClick.bind(this);
+    this._handleCreateListing = this._handleCreateListing.bind(this);
+    this._handleDeleteResult = this._handleDeleteResult.bind(this);
+    this._handleListingUpdate = this._handleListingUpdate.bind(this);
   }
 
-  setupElements() {
+  connectedCallback() {
+    // DOM refs
     this.listingsGrid = this.shadowRoot.querySelector('.listings-grid');
     this.loadingState = this.shadowRoot.querySelector('.loading-state');
     this.emptyState = this.shadowRoot.querySelector('.empty-state');
     this.errorState = this.shadowRoot.querySelector('.error-state');
+    this.deleteModal = this.shadowRoot.querySelector('delete-confirmation');
+    this.editModal = this.shadowRoot.querySelector('edit-listing-modal');
+
+    // Delegated listeners
+    this.shadowRoot.addEventListener('card-click', this._handleCardClick);
+    this.shadowRoot.addEventListener('delete-result', this._handleDeleteResult);
+    this.shadowRoot.addEventListener('listing-update', this._handleListingUpdate);
+
+    // Create-listing buttons (two instances)
+    this.shadowRoot
+      .querySelectorAll('.create-listing-btn')
+      .forEach((btn) => btn.addEventListener('click', this._handleCreateListing));
+
+    // Initial data fetch
+    this._loadUserListings();
   }
 
-  setupEventListeners() {
-    // Listen for card clicks to edit/view
-    this.shadowRoot.addEventListener('card-click', (e) => {
-      const listingId = e.detail.listingId;
-      this.handleListingClick(listingId);
-    });
+  disconnectedCallback() {
+    this.shadowRoot.removeEventListener('card-click', this._handleCardClick);
+    this.shadowRoot.removeEventListener('delete-result', this._handleDeleteResult);
+    this.shadowRoot.removeEventListener('listing-update', this._handleListingUpdate);
 
-    // Listen for create listing button
-    const createBtns = this.shadowRoot.querySelectorAll('.create-listing-btn');
-    createBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        window.location.href = '/cse110-sp25-group15/list';
-      });
-    });
+    this.shadowRoot
+      .querySelectorAll('.create-listing-btn')
+      .forEach((btn) => btn.removeEventListener('click', this._handleCreateListing));
   }
 
-  async loadUserListings() {
+  async _loadUserListings() {
     try {
-      this.showLoading();
+      this._showLoading();
 
-      // Get current user
       const { data: { user }, error: authError } = await supabase.auth.getUser();
-      
       if (!user || authError) {
-        this.showError('Please sign in to view your listings');
+        this._showError('Please sign in to view your listings');
         return;
       }
-
       this.user = user;
 
-      // Fetch user's listings
       const { data: listings, error } = await supabase
         .from('listings')
         .select('*')
@@ -67,206 +80,162 @@ class MyListings extends HTMLElement {
         .order('date_posted', { ascending: false });
 
       if (error) {
-        console.error('Error fetching listings:', error);
-        this.showError('Failed to load your listings');
+        this._showError('Failed to load your listings');
         return;
       }
 
       this.listings = listings || [];
-      
-      if (this.listings.length === 0) {
-        this.showEmptyState();
-      } else {
-        this.renderListings();
-      }
-
-    } catch (error) {
-      console.error('Error loading listings:', error);
-      this.showError('An unexpected error occurred');
+      this.listings.length ? this._renderListings() : this._showEmptyState();
+    } catch {
+      this._showError('An unexpected error occurred');
     }
   }
 
-  renderListings() {
-    this.hideAllStates();
-    this.listingsGrid.style.display = 'grid';
+  _renderListings() {
+    this._hideAllStates();
     this.listingsGrid.innerHTML = '';
+    this.listingsGrid.style.display = 'grid';
 
     this.listings.forEach((listing) => {
-      const card = this.createListingCard(listing);
-      this.listingsGrid.appendChild(card);
+      this.listingsGrid.appendChild(this._createListingCard(listing));
     });
   }
 
-  createListingCard(listing) {
+  _createListingCard(listing) {
     const wrapper = document.createElement('div');
     wrapper.className = 'listing-card-wrapper';
 
-    // Create the product card
+    /* product-card */
     const card = document.createElement('product-card');
-    card.setAttribute('listing-id', listing.listing_id || '');
-    card.setAttribute('title', listing.title || '');
-    card.setAttribute('price', listing.price || '');
-    card.setAttribute('image-url', listing.thumbnail || '');
-    card.setAttribute('date', listing.date_posted || '');
+    card.setAttribute('listing-id', listing.listing_id);
+    card.setAttribute('title', listing.title);
+    card.setAttribute('price', listing.price);
+    card.setAttribute('image-url', listing.thumbnail);
+    card.setAttribute('date', listing.date_posted);
+    wrapper.appendChild(card);
 
-    // Create action buttons overlay
+    /* Actions (Edit / Delete) */
     const actions = document.createElement('div');
     actions.className = 'card-actions';
-    
-    const editBtn = document.createElement('button');
-    editBtn.className = 'edit-btn';
-    editBtn.innerHTML = `
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-      </svg>
-      Edit
-    `;
-    editBtn.onclick = (e) => {
-      e.stopPropagation();
-      this.editListing(listing.listing_id);
-    };
-
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'delete-btn';
-    deleteBtn.innerHTML = `
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="3 6 5 6 21 6"></polyline>
-        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-      </svg>
-      Delete
-    `;
-    deleteBtn.onclick = (e) => {
-      e.stopPropagation();
-      this.confirmDelete(listing.listing_id);
-    };
-
-    actions.appendChild(editBtn);
-    actions.appendChild(deleteBtn);
-
-    wrapper.appendChild(card);
+    actions.append(
+      this._createActionButton('edit', listing.listing_id),
+      this._createActionButton('delete', listing.listing_id),
+    );
     wrapper.appendChild(actions);
 
     return wrapper;
   }
 
-  handleListingClick(listingId) {
-    // For now, just show an alert
-    // In a real app, this might open a detail view or edit modal
-    console.log('Listing clicked:', listingId);
-  }
+  _createActionButton(type, listingId) {
+    const button = document.createElement('button');
+    const iconEdit =
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>';
+    const iconDelete =
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2 2v2"></path></svg>';
 
-  editListing(listingId) {
-    try {
-      // Get the listing data
-      const listing = this.listings.find((l) => l.listing_id === listingId);
-      if (!listing) {
-        console.error('Listing not found');
-        return;
-      }
-
-      // Get or create the edit modal
-      let editModal = this.shadowRoot.querySelector('edit-listing-modal');
-      if (!editModal) {
-        editModal = document.createElement('edit-listing-modal');
-        this.shadowRoot.appendChild(editModal);
-      }
-      const listingWithImages = {
-        ...listing,
-        allImages: listing.images && Array.isArray(listing.images) ? listing.images : [listing.thumbnail].filter(Boolean),
-      };
-
-      // Show the modal with listing data
-      editModal.show(listingWithImages);
-
-      // Listen for the update event
-      editModal.addEventListener('listing-update', async (e) => {
-        const { listingId, updates } = e.detail;
-      
-        try {
-          // Update the listing in the database
-          const { error } = await supabase
-            .from('listings')
-            .update(updates)
-            .eq('listing_id', listingId)
-            .eq('user_id', this.user.id);
-
-          if (error) {throw error;}
-
-          // Reload the listings
-          await this.loadUserListings();
-        
-        } catch (error) {
-          console.error('Error updating listing:', error);
-          alert('Failed to update listing. Please try again.');
-        }
-      }, { once: true });
-
-    } catch (error) {
-      console.error('Error editing listing:', error);
-      alert('Failed to load listing for editing.');
-    }
-  }
-
-  async confirmDelete(listingId) {
-    if (!confirm('Are you sure you want to delete this listing?')) {
-      return;
+    if (type === 'edit') {
+      button.className = 'edit-btn';
+      button.innerHTML = `${iconEdit} Edit`;
+      button.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this._editListing(listingId);
+      });
+    } else {
+      button.className = 'delete-btn';
+      button.innerHTML = `${iconDelete} Delete`;
+      button.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.currentDeleteId = listingId;
+        this.deleteModal.show();
+      });
     }
 
+    return button;
+  }
+
+  _handleCardClick(e) {
+    // Placeholder for future navigation
+    console.debug('Listing clicked:', e.detail.listingId);
+  }
+
+  _handleCreateListing() {
+    window.location.href = '/cse110-sp25-group15/list';
+  }
+
+  async _handleDeleteResult(e) {
+    if (!e.detail.confirmed || !this.currentDeleteId) {return;}
+
     try {
-      // Delete the listing
       const { error } = await supabase
         .from('listings')
         .delete()
-        .eq('listing_id', listingId)
-        .eq('user_id', this.user.id); // Extra safety check
+        .eq('listing_id', this.currentDeleteId)
+        .eq('user_id', this.user.id);
 
-      if (error) {
-        throw error;
-      }
+      if (error) {throw error;}
 
-      // Remove from local array and re-render
-      this.listings = this.listings.filter((l) => l.listing_id !== listingId);
-      
-      if (this.listings.length === 0) {
-        this.showEmptyState();
-      } else {
-        this.renderListings();
-      }
+      this.listings = this.listings.filter((l) => l.listing_id !== this.currentDeleteId);
+      this.listings.length ? this._renderListings() : this._showEmptyState();
 
-      // Dispatch event to update profile stats
+      window.notify('Listing deleted successfully', 'success');
       this.dispatchEvent(new CustomEvent('listing-deleted', {
         bubbles: true,
         composed: true,
-        detail: { listingId },
+        detail: { listingId: this.currentDeleteId },
       }));
-
-    } catch (error) {
-      console.error('Error deleting listing:', error);
-      alert('Failed to delete listing. Please try again.');
+    } catch {
+      window.notify('Failed to delete listing. Please try again.', 'error');
+    } finally {
+      this.currentDeleteId = null;
     }
   }
 
-  showLoading() {
-    this.hideAllStates();
+  _editListing(listingId) {
+    const listing = this.listings.find((l) => l.listing_id === listingId);
+    if (!listing) {return;}
+
+    const listingWithImages = {
+      ...listing,
+      allImages: Array.isArray(listing.images) ? listing.images : [listing.thumbnail].filter(Boolean),
+    };
+
+    this.editModal.show(listingWithImages);
+  }
+
+  async _handleListingUpdate(e) {
+    const { listingId, updates } = e.detail;
+    try {
+      const { error } = await supabase
+        .from('listings')
+        .update(updates)
+        .eq('listing_id', listingId)
+        .eq('user_id', this.user.id);
+
+      if (error) {throw error;}
+
+      await this._loadUserListings();
+    } catch {
+      window.notify('Failed to update listing. Please try again.', 'error');
+    }
+  }
+ 
+  _showLoading() {
+    this._hideAllStates();
     this.loadingState.style.display = 'flex';
   }
 
-  showEmptyState() {
-    this.hideAllStates();
+  _showEmptyState() {
+    this._hideAllStates();
     this.emptyState.style.display = 'flex';
   }
 
-  showError(message) {
-    this.hideAllStates();
+  _showError(message) {
+    this._hideAllStates();
     this.errorState.style.display = 'flex';
-    const errorMessage = this.shadowRoot.querySelector('.error-message');
-    if (errorMessage) {
-      errorMessage.textContent = message;
-    }
+    this.shadowRoot.querySelector('.error-message').textContent = message;
   }
 
-  hideAllStates() {
+  _hideAllStates() {
     this.loadingState.style.display = 'none';
     this.emptyState.style.display = 'none';
     this.errorState.style.display = 'none';

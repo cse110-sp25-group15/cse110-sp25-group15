@@ -1,68 +1,54 @@
 import html from './search-banner.html?raw';
 import css from './search-banner.css?raw';
 
-/**
- * Search Hero Component
- * Hero section with search functionality and category filters
- */
 class SearchHero extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
     const template = document.createElement('template');
-    template.innerHTML = `
-      <style>${css}</style>
-      ${html}
-    `;
+    template.innerHTML = `<style>${css}</style>${html}`;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-    
     this.activeCategory = 'all';
   }
 
   connectedCallback() {
-    this.setupEventListeners();
+    this._bindEvents();
   }
 
-  setupEventListeners() {
-    // Search functionality
+  _bindEvents() {
     const searchInput = this.shadowRoot.querySelector('.search-input');
     const searchButton = this.shadowRoot.querySelector('.search-button');
-    
-    const handleSearch = () => {
+
+    const submitSearch = () => {
       const query = searchInput.value.trim();
-      if (query) {
-        this.dispatchEvent(new CustomEvent('search-submit', {
+      if (!query) {
+        window.notify('Please enter a search term', 'warning');
+        return;
+      }
+      this.dispatchEvent(
+        new CustomEvent('search-submit', {
           bubbles: true,
           composed: true,
           detail: { query },
-        }));
-      }
-      console.log(`Search submitted: ${query}`);
+        }),
+      );
     };
 
-    searchButton?.addEventListener('click', handleSearch);
-    
-    searchInput?.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        handleSearch();
-      }
-    });
+    searchButton.addEventListener('click', submitSearch);
+    searchInput.addEventListener('keypress', (e) => e.key === 'Enter' && submitSearch());
 
-    // Category filter buttons
-    const categoryBtns = this.shadowRoot.querySelectorAll('.category-btn');
-    categoryBtns.forEach((btn) => {
+    this.shadowRoot.querySelectorAll('.category-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
-        categoryBtns.forEach((b) => b.classList.remove('active'));
+        this.shadowRoot.querySelectorAll('.category-btn').forEach((b) => b.classList.remove('active'));
         btn.classList.add('active');
         this.activeCategory = btn.getAttribute('data-category');
-        
-        this.dispatchEvent(new CustomEvent('category-selected', {
-          bubbles: true,
-          composed: true,
-          detail: { category: this.activeCategory },
-        }));
-        
-        console.log(`Category selected: ${this.activeCategory}`);
+        this.dispatchEvent(
+          new CustomEvent('category-selected', {
+            bubbles: true,
+            composed: true,
+            detail: { category: this.activeCategory },
+          }),
+        );
       });
     });
   }

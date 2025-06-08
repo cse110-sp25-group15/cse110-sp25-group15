@@ -127,7 +127,7 @@
     align-items: center;
     padding: 1rem;
   }
-  
+
   .hero-image {
     position: relative;
     width: 100%;
@@ -136,11 +136,11 @@
     margin-bottom: 2rem;
     order: 1; 
   }
-  
+
   .hero-image::after {
     background: linear-gradient(0deg, rgba(4,19,59,0.3) 0%, rgba(4,19,59,0.1) 100%);
   }
-  
+
   .hero-text {
     order: 2; 
     width: 100%;
@@ -149,22 +149,21 @@
     padding: 0;
     padding-top: 1rem;
   }
-  
+
   .hero-text h1 {
     font-size: calc(2rem + 4vw);
   }
 }
 
-
 @media (max-width: 480px) {
   .hero-image {
     height: 35vh;
   }
-  
+
   .hero-text h1 {
     font-size: calc(1.8rem + 3vw);
   }
-  
+
   .btn {
     padding: 0.6rem 1.5rem;
     font-size: 0.9rem;

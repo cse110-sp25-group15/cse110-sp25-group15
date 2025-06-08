@@ -155,10 +155,9 @@ class AuthPill extends HTMLElement {
 
   _handleAuthChange(event, session) {
     if (event === 'SIGNED_IN' && session) {
+      window.notify('You have signed in', 'success');
       this._processUserSignIn(session.user);
-    } else if (event === 'SIGNED_OUT') {
-      this._processUserSignOut();
-    }
+    } 
   }
 
   // MAIN LOGIC METHODS
@@ -188,6 +187,7 @@ class AuthPill extends HTMLElement {
       name: userData.user_metadata?.full_name || userData.email,
       avatarUrl: this._getAvatarUrl(userData),
     };
+
     this._renderUserUI();
     this.dispatchEvent(new CustomEvent('user-signed-in', { 
       bubbles: true, 
@@ -197,6 +197,7 @@ class AuthPill extends HTMLElement {
   }
 
   _processUserSignOut() {
+    if (this.user === null) {return;}
     this.user = null;
     this.hasSavedUser = false;
     this._renderLoginUI();
@@ -205,6 +206,8 @@ class AuthPill extends HTMLElement {
       bubbles: true, 
       composed: true, 
     }));
+    window.notify('You have signed out', 'success');
+
   }
 
   async _saveUserToDatabase(user) {
@@ -222,7 +225,6 @@ class AuthPill extends HTMLElement {
       return true;
     } catch (err) {
       console.error('Failed to save user:', err);
-
       await this._logout();
       window.notify('You must use a UCSD email to login', 'warning');
       return false;

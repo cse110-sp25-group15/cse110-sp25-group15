@@ -12,35 +12,32 @@ class HeroBanner extends HTMLElement {
     `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
-  
+
   connectedCallback() {
     this.setupEventListeners();
   }
-  
+
   setupEventListeners() {
     const browseLink = this.shadowRoot.querySelector('#browse-link');
-    
+
     if (browseLink) {
       browseLink.addEventListener('click', (e) => {
         e.preventDefault();
-        
+
         const marketplaceSection = document.getElementById('marketplace');
         const browsePage = document.querySelector('browse-page');
-        
+
         if (marketplaceSection) {
-        
           marketplaceSection.scrollIntoView({ 
             behavior: 'smooth',
             block: 'start',
           });
         } else if (browsePage) {
-          
           browsePage.scrollIntoView({ 
             behavior: 'smooth',
             block: 'start',
           });
         } else {
-          
           window.scrollTo({
             top: window.innerHeight,
             behavior: 'smooth',

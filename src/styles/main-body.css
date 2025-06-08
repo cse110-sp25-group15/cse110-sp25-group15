@@ -50,6 +50,12 @@ search-banner{
   width: 100%;
 }
 
+browse-page {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 /* Header positioning */
 header {
   position: fixed;

@@ -158,6 +158,22 @@
   margin-bottom: 1.5rem;
 }
 
+
+.meta-table .lister {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  color: var(--ucsd-blue);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.lister-name {
+  font-weight: 600;
+  color: var(--ucsd-gold);
+}
+
 .meta-table .date,
 .meta-table .condition {
   display: flex;
@@ -240,6 +256,9 @@
   height: 14px;
   fill: currentColor;
 }
+
+
+
 
 @media (max-width: 1024px) {
   .product-detail {

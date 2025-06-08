@@ -1,11 +1,9 @@
 import supabase from '../utils/supabase.js';
 import { CategoryEnum } from '../constants/CategoryEnum.js';
-
 export class ListingModel {
   constructor() {
     this.listings = [];
   }
-
   /**
    * Fetches all listings from the database
    * @returns {Promise<Array>} Array of listing objects
@@ -15,12 +13,10 @@ export class ListingModel {
       const { data: listings, error } = await supabase
         .from('listings')
         .select();
-
       if (error) {
         console.error('Error fetching listings:', error);
         throw error;
       }
-
       this.listings = listings;
       return this.listings;
     } catch (err) {
@@ -28,7 +24,6 @@ export class ListingModel {
       throw err;
     }
   }
-
   /**
    * Fetches listings filtered by category
    * @param {string} category - Category to filter by
@@ -38,25 +33,21 @@ export class ListingModel {
     if (!Object.values(CategoryEnum).includes(category)) {
       throw new Error(`Invalid category: ${category}`);
     }
-
     try {
       const { data: listings, error } = await supabase
         .from('listings')
         .select()
         .eq('category', category);
-
       if (error) {
         console.error(`Error fetching ${category} listings:`, error);
         throw error;
       }
-
       return listings;
     } catch (err) {
       console.error(`Failed to fetch ${category} listings:`, err);
       throw err;
     }
   }
-
   /**
    * Fetches listings sorted by date
    * @param {boolean} ascending - true for oldest to newest, false for newest to oldest
@@ -68,19 +59,16 @@ export class ListingModel {
         .from('listings')
         .select()
         .order('date_posted', { ascending });
-
       if (error) {
         console.error('Error fetching listings:', error);
         throw error;
       }
-
       return listings;
     } catch (err) {
       console.error('Failed to fetch listings:', err);
       throw err;
     }
   }
-
   /**
    * Fetches listings sorted by price 
    * @param {boolean} ascending - true for lowest to highest, false for highest to lowest
@@ -92,51 +80,58 @@ export class ListingModel {
         .from('listings')
         .select()
         .order('price', { ascending });
-
       if (error) {
         console.error('Error fetching listings by price:', error);
         throw error;
       }
-
       return listings;
     } catch (err) {
       console.error('Failed to fetch listings by price:', err);
       throw err;
     }
   } 
-
   /**
    * Gets a listing by ID
    * @param {number} listingId - The ID of the listing to retrieve
    * @returns {Promise<Object|null>} The listing object or null if not found
    */
   async getListingById(listingId) {
-    // Try to find in local cache first
+  // Try to find in local cache first (but cache won't have user info)
     const cachedListing = this.listings.find((listing) => listing.listing_id === listingId);
-    if (cachedListing) {
-      return cachedListing;
-    }
-    
-    // If not in cache, fetch from database
+
+    // Always fetch from database to get user information
     try {
       const { data, error } = await supabase
         .from('listings')
-        .select()
+        .select(`
+        *,
+        users (
+          id,
+          display_name
+        )
+      `)
         .eq('listing_id', listingId)
         .single();
-        
+
       if (error) {
         console.error(`Error fetching listing ${listingId}:`, error);
         return null;
       }
-      
+
+      // Format the user name from email or metadata
+      if (data && data.users) {
+      // creates a fallback name to display if user display_name in 
+      // data base is null
+        const fallback = `User-${data.users.id.slice(0,6)}`;
+        data.lister_name = data.users.display_name || fallback;
+      }
+
       return data;
     } catch (err) {
       console.error(`Failed to fetch listing ${listingId}:`, err);
       return null;
     }
   }
-
   /**
  * Fetches listings created by a specific user
  * @param {string} userId - UUID of the user
@@ -148,19 +143,16 @@ export class ListingModel {
         .from('listings')
         .select('*')
         .eq('user_id', userId);
-
       if (error) {
         console.error('Error fetching user listings:', error);
         throw error;
       }
-
       return listings;
     } catch (err) {
       console.error('Failed to fetch user listings:', err);
       throw err;
     }
   }
-
   /**
  * Deletes a listing by its ID
  * @param {string} listingId - UUID of the listing to delete
@@ -172,21 +164,17 @@ export class ListingModel {
         .from('images')
         .delete()
         .eq('listing_id', listingId);
-
       if (imageError) {
         console.warn('Warning: failed to delete images for listing:', imageError);
       }
-
       const { error } = await supabase
         .from('listings')
         .delete()
         .eq('listing_id', listingId);
-
       if (error) {
         console.error('Error deleting listing:', error);
         throw error;
       }
-
       console.log(`Listing ${listingId} deleted successfully.`);
     } catch (err) {
       console.error('Failed to delete listing:', err);
@@ -215,7 +203,6 @@ export class ListingModel {
       date_posted: listing.date_posted,
     };
   }
-
   /**
    * Searches listings by a query string in title or description (case-insensitive)
    * @param {string} query - The search string

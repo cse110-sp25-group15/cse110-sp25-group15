@@ -5,17 +5,6 @@
   --notification-info: #17a2b8;
 }
 
-.notification-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 2000;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  pointer-events: none;
-}
-
 .notification {
   background: white;
   border-radius: 8px;
@@ -29,6 +18,7 @@
   transform: translateX(400px);
   transition: transform 0.3s ease-out;
   pointer-events: auto;
+  margin-bottom: 10px;
 }
 
 .notification.show {
@@ -61,6 +51,14 @@
 
 .notification.error .notification-icon {
   color: var(--notification-error);
+}
+
+.notification.warning .notification-icon {
+  color: var(--notification-warning);
+}
+
+.notification.info .notification-icon {
+  color: var(--notification-info);
 }
 
 .notification-content {

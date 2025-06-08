@@ -15,16 +15,13 @@ class ChatWidget extends HTMLElement {
     template.innerHTML = `<style>${css}</style>${html}`;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     // Prevents body scroll when chat is open
-
     const disclaimer = document.createElement('div');
     disclaimer.textContent = 'Disclaimer: This chat is for demonstration purposes only.';
     disclaimer.className = 'chat-disclaimer';
-
     const widgetContainer = this.shadowRoot.querySelector('.widget-container');
     if (widgetContainer) {
       widgetContainer.insertBefore(disclaimer, widgetContainer.firstChild);
     }
-
     //document.body.style.overflow = 'hidden';
     // Close on "X" icon
     this.shadowRoot.querySelector('.close-icon').addEventListener('click', () =>         this.hideWidget()  );
@@ -76,7 +73,6 @@ class ChatWidget extends HTMLElement {
     this._handleScroll = () => {
       const bottomNav = document.querySelector('bottom-nav');
       if (!bottomNav) {return;}
-
       const bottomNavRect = bottomNav.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
       
@@ -126,33 +122,27 @@ class ChatWidget extends HTMLElement {
   _renderConversations(filter = '') {
     const list = this.shadowRoot.querySelector('.convo-list');
     list.innerHTML = '';
-  
-    const template = this.shadowRoot.querySelector('#conversation-template');
-  
     this._conversations
       .filter((c) => c.name.toLowerCase().includes(filter))
       .forEach((convo) => {
-    
-        const item = template.content.cloneNode(true);
-        const convoElement = item.querySelector('.convo');
-     
-        item.querySelector('.name').textContent = convo.name;
-        item.querySelector('.timestamp').textContent = convo.timestamp;
-        item.querySelector('.preview').textContent = convo.preview;
-      
-        const unreadBadge = item.querySelector('.unread-badge');
-        if (convo.unread) {
-          unreadBadge.style.display = 'block';
-        }
-      
-        list.appendChild(item);
-      
-        const addedElement = list.lastElementChild;
-      
-        addedElement.addEventListener('click', () => {
+        const item = document.createElement('div');
+        item.classList.add('convo');
+        item.innerHTML = `
+            <div class="avatar"></div>
+            <div class="details">
+            <div>
+              <span class="name">${convo.name}</span>
+              <span class="timestamp">${convo.timestamp}</span>
+            </div>
+            <div>${convo.preview}</div>
+            </div>
+            ${convo.unread ? '<div class="unread-badge"></div>' : ''}
+            `;
+        item.addEventListener('click', () => {
           this.shadowRoot.querySelector('.convo-list').style.display = 'none';
           this.shadowRoot.querySelector('header').style.display = 'none';
           this.shadowRoot.querySelector('input').style.display = 'none';
+
           const screen = this.shadowRoot.querySelector('.chat-screen');
           screen.classList.remove('hidden');
           screen.querySelector('.chat-title').textContent = convo.name;
@@ -164,8 +154,10 @@ class ChatWidget extends HTMLElement {
             composed: true,
           }));
         });
+        list.appendChild(item);
       });
   }
 }
+  
 customElements.define('chat-widget', ChatWidget);
 export default ChatWidget;

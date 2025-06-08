@@ -1,50 +1,89 @@
 import html from './notification.html?raw';
 import css from './notification.css?raw';
 
-class NotificationSystem extends HTMLElement {
+class Notification extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = `<style>${css}</style>${html}`;
-    this.container = this.shadowRoot.querySelector('.notification-container');
-  }
-
-  show(message, type = 'info', duration = 3000) {
-    const icons = {
+    this.icons = {
       success: '✓',
-      error: '✕',
+      error: '✕', 
       warning: '⚠',
       info: 'ℹ',
     };
-  
-    const template = this.shadowRoot.querySelector('#notification-template');
-    const notification = template.content.cloneNode(true).querySelector('.notification');
-    notification.classList.add(type);
-  
-    notification.querySelector('.notification-icon').textContent = icons[type];
-    notification.querySelector('.notification-message').textContent = message;
-  
-    this.container.appendChild(notification);
-  
-    setTimeout(() => notification.classList.add('show'), 10);
-  
+  }
+
+  static get observedAttributes() {
+    return ['type', 'message', 'duration'];
+  }
+
+  connectedCallback() {
+    const template = document.createElement('template');
+    template.innerHTML = `<style>${css}</style>${html}`;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+    this.notificationEl = this.shadowRoot.querySelector('.notification');
+    this.iconEl = this.shadowRoot.querySelector('.notification-icon');
+    this.messageEl = this.shadowRoot.querySelector('.notification-message');
+
+    this._render();
+    this._show();
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) {return;}
+    if (this.notificationEl) {
+      this._render();
+    }
+  }
+
+  show(message, type = 'info', duration = 3000) {
+    this.setAttribute('message', message);
+    this.setAttribute('type', type);
+    this.setAttribute('duration', duration);
+  }
+
+  _render() {
+    const type = this.getAttribute('type') || 'info';
+    const message = this.getAttribute('message') || '';
+
+    this.notificationEl.className = `notification ${type}`;
+    this.iconEl.textContent = this.icons[type] || this.icons.info;
+    this.messageEl.textContent = message;
+  }
+
+  _show() {
+    const duration = parseInt(this.getAttribute('duration')) || 3000;
+    
     setTimeout(() => {
-      notification.classList.remove('show');
-      setTimeout(() => notification.remove(), 300);
+      this.notificationEl.classList.add('show');
+    }, 10);
+
+    setTimeout(() => {
+      this._hide();
     }, duration);
+  }
+
+  _hide() {
+    this.notificationEl.classList.remove('show');
+    setTimeout(() => {
+      this.remove();
+    }, 300);
   }
 }
 
-customElements.define('notification-system', NotificationSystem);
+customElements.define('app-notification', Notification);
 
-// Global helper function
+// Global helper function to add notifications to existing container
 window.notify = (message, type = 'info', duration = 3000) => {
-  let notificationSystem = document.querySelector('notification-system');
-  if (!notificationSystem) {
-    notificationSystem = document.createElement('notification-system');
-    document.body.appendChild(notificationSystem);
-  }
-  notificationSystem.show(message, type, duration);
+  // Find the notification container in the main document
+  const container = document.querySelector('.notification-container') || 
+                   document.querySelector('#notification-container') ||
+                   document.body;
+  
+  const notification = document.createElement('app-notification');
+  container.appendChild(notification);
+  notification.show(message, type, duration);
 };
 
-export default NotificationSystem;
+export default Notification;

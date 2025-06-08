@@ -1,7 +1,6 @@
 
 import html from './edit-listing.html?raw';
 import css from './edit-listing.css?raw';
-import supabase from '../../scripts/utils/supabase.js';
 
 class EditListingModal extends HTMLElement {
   constructor() {

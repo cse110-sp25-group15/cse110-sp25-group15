@@ -136,10 +136,17 @@ class ProductViewer extends HTMLElement {
   _handleContactClick() {
     this.dispatchEvent(new CustomEvent('contact-seller', { bubbles: true, composed: true }));
 
+    // const contactMsg = this.shadowRoot.querySelector('.contact-message');
+    // if (contactMsg) {
+    //   contactMsg.value = '';
+    //   contactMsg.placeholder = 'Sent!';
+    // }
     const contactMsg = this.shadowRoot.querySelector('.contact-message');
-    if (contactMsg) {
-      contactMsg.value = '';
-      contactMsg.placeholder = 'Sent!';
+    if (contactMsg && !this.shadowRoot.querySelector('.disclaimer-text')) {
+      const disclaimer = document.createElement('div');
+      disclaimer.className = 'disclaimer-text';
+      disclaimer.textContent = '* Chat feature is for demonstration purposes only';
+      contactMsg.insertAdjacentElement('afterend', disclaimer);
     }
 
     this.popup.showMessage('Message Sent!', 1000);

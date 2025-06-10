@@ -134,11 +134,9 @@ Look inside `package.json` for available development scripts. Here are the most 
 
 ### Protected Branches
 
-We use three protected branches:
+We use one protected branch:
 
 * **`main`** – Production branch, public-facing.
-* **`test`** – Pre-production testing environment.
-* **`dev`** – Active development branch.
 
 > ⚠️ *You cannot push directly to these branches. All updates require pull requests.*
 
@@ -147,7 +145,7 @@ __NOTE: refer to WebComponent Guide before making any changes__
 ```bash
 git fetch
 git pull
-git checkout dev
+git checkout main
 git checkout -b my-feature
 # make your changes
 git add .
@@ -155,7 +153,7 @@ git commit -m "Describe your feature"
 git push --set-upstream origin my-feature
 ```
 
-* Open a pull request to **`dev`** on GitHub.
+* Open a pull request to **`main`** on GitHub.
 * Wait for **automated checks** to pass.
 * **Self-approve** and merge your own pull request.
 

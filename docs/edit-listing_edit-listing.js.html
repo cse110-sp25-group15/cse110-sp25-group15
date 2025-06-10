@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>edit-listing/edit-listing.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AuthPill.html">AuthPill</a><ul class='methods'><li data-type='method'><a href="AuthPill.html#_renderLoginUI">_renderLoginUI</a></li><li data-type='method'><a href="AuthPill.html#_renderMenuClosed">_renderMenuClosed</a></li><li data-type='method'><a href="AuthPill.html#_renderMenuOpen">_renderMenuOpen</a></li><li data-type='method'><a href="AuthPill.html#_renderUserUI">_renderUserUI</a></li></ul></li><li><a href="BottomNav.html">BottomNav</a><ul class='methods'><li data-type='method'><a href="BottomNav.html#_renderEmailCleared">_renderEmailCleared</a></li><li data-type='method'><a href="BottomNav.html#_renderNewsletterSuccess">_renderNewsletterSuccess</a></li></ul></li><li><a href="BrowsePage.html">BrowsePage</a><ul class='methods'><li data-type='method'><a href="BrowsePage.html#_renderDefaultCategory">_renderDefaultCategory</a></li></ul></li><li><a href="CategoryButton.html">CategoryButton</a><ul class='methods'><li data-type='method'><a href="CategoryButton.html#_renderSelected">_renderSelected</a></li></ul></li><li><a href="ChatWidget.html">ChatWidget</a><ul class='methods'><li data-type='method'><a href="ChatWidget.html#_renderBottomNavPosition">_renderBottomNavPosition</a></li><li data-type='method'><a href="ChatWidget.html#_renderChatScreen">_renderChatScreen</a></li><li data-type='method'><a href="ChatWidget.html#_renderConversationList">_renderConversationList</a></li><li data-type='method'><a href="ChatWidget.html#_renderConversations">_renderConversations</a></li><li data-type='method'><a href="ChatWidget.html#_renderDisclaimer">_renderDisclaimer</a></li><li data-type='method'><a href="ChatWidget.html#_renderInitialState">_renderInitialState</a></li><li data-type='method'><a href="ChatWidget.html#_renderWidgetHidden">_renderWidgetHidden</a></li><li data-type='method'><a href="ChatWidget.html#_renderWidgetVisible">_renderWidgetVisible</a></li></ul></li><li><a href="EditListingModal.html">EditListingModal</a><ul class='methods'><li data-type='method'><a href="EditListingModal.html#_renderBodyScrollLocked">_renderBodyScrollLocked</a></li><li data-type='method'><a href="EditListingModal.html#_renderBodyScrollUnlocked">_renderBodyScrollUnlocked</a></li><li data-type='method'><a href="EditListingModal.html#_renderFormData">_renderFormData</a></li><li data-type='method'><a href="EditListingModal.html#_renderFormReset">_renderFormReset</a></li><li data-type='method'><a href="EditListingModal.html#_renderImageGallery">_renderImageGallery</a></li><li data-type='method'><a href="EditListingModal.html#_renderImageNavigation">_renderImageNavigation</a></li><li data-type='method'><a href="EditListingModal.html#_renderImagePreview">_renderImagePreview</a></li><li data-type='method'><a href="EditListingModal.html#_renderLoadingHidden">_renderLoadingHidden</a></li><li data-type='method'><a href="EditListingModal.html#_renderLoadingVisible">_renderLoadingVisible</a></li><li data-type='method'><a href="EditListingModal.html#_renderModalHidden">_renderModalHidden</a></li><li data-type='method'><a href="EditListingModal.html#_renderModalVisible">_renderModalVisible</a></li><li data-type='method'><a href="EditListingModal.html#_renderWordCount">_renderWordCount</a></li></ul></li><li><a href="EmptyState.html">EmptyState</a></li><li><a href="HeroBanner.html">HeroBanner</a></li><li><a href="ListingForm.html">ListingForm</a><ul class='methods'><li data-type='method'><a href="ListingForm.html#_renderBodyScrollLocked">_renderBodyScrollLocked</a></li><li data-type='method'><a href="ListingForm.html#_renderBodyScrollUnlocked">_renderBodyScrollUnlocked</a></li><li data-type='method'><a href="ListingForm.html#_renderDragHover">_renderDragHover</a></li><li data-type='method'><a href="ListingForm.html#_renderDragLeave">_renderDragLeave</a></li><li data-type='method'><a href="ListingForm.html#_renderPreviewContent">_renderPreviewContent</a></li><li data-type='method'><a href="ListingForm.html#_renderPreviewGallery">_renderPreviewGallery</a></li><li data-type='method'><a href="ListingForm.html#_renderPreviewHidden">_renderPreviewHidden</a></li><li data-type='method'><a href="ListingForm.html#_renderPreviewVisible">_renderPreviewVisible</a></li><li data-type='method'><a href="ListingForm.html#_renderUploadLabel">_renderUploadLabel</a></li><li data-type='method'><a href="ListingForm.html#_renderUploadedFiles">_renderUploadedFiles</a></li><li data-type='method'><a href="ListingForm.html#_renderWordCount">_renderWordCount</a></li></ul></li><li><a href="MyListings.html">MyListings</a><ul class='methods'><li data-type='method'><a href="MyListings.html#_renderAllStatesHidden">_renderAllStatesHidden</a></li><li data-type='method'><a href="MyListings.html#_renderEmptyState">_renderEmptyState</a></li><li data-type='method'><a href="MyListings.html#_renderErrorState">_renderErrorState</a></li><li data-type='method'><a href="MyListings.html#_renderListings">_renderListings</a></li><li data-type='method'><a href="MyListings.html#_renderLoading">_renderLoading</a></li></ul></li><li><a href="Notification.html">Notification</a><ul class='methods'><li data-type='method'><a href="Notification.html#_renderHidden">_renderHidden</a></li><li data-type='method'><a href="Notification.html#_renderNotification">_renderNotification</a></li><li data-type='method'><a href="Notification.html#_renderVisible">_renderVisible</a></li></ul></li><li><a href="ProductViewer.html">ProductViewer</a><ul class='methods'><li data-type='method'><a href="ProductViewer.html#_renderBodyScrollLocked">_renderBodyScrollLocked</a></li><li data-type='method'><a href="ProductViewer.html#_renderBodyScrollUnlocked">_renderBodyScrollUnlocked</a></li><li data-type='method'><a href="ProductViewer.html#_renderContactDisclaimer">_renderContactDisclaimer</a></li><li data-type='method'><a href="ProductViewer.html#_renderContent">_renderContent</a></li><li data-type='method'><a href="ProductViewer.html#_renderMainImage">_renderMainImage</a></li><li data-type='method'><a href="ProductViewer.html#_renderOverlayHidden">_renderOverlayHidden</a></li><li data-type='method'><a href="ProductViewer.html#_renderOverlayVisible">_renderOverlayVisible</a></li><li data-type='method'><a href="ProductViewer.html#_renderProductInfo">_renderProductInfo</a></li><li data-type='method'><a href="ProductViewer.html#_renderTextField">_renderTextField</a></li><li data-type='method'><a href="ProductViewer.html#_renderThumbnails">_renderThumbnails</a></li></ul></li><li><a href="ProfileInfo.html">ProfileInfo</a><ul class='methods'><li data-type='method'><a href="ProfileInfo.html#_renderAvatar">_renderAvatar</a></li><li data-type='method'><a href="ProfileInfo.html#_renderAvatarFallback">_renderAvatarFallback</a></li><li data-type='method'><a href="ProfileInfo.html#_renderError">_renderError</a></li><li data-type='method'><a href="ProfileInfo.html#_renderLoading">_renderLoading</a></li><li data-type='method'><a href="ProfileInfo.html#_renderProfile">_renderProfile</a></li><li data-type='method'><a href="ProfileInfo.html#_renderProfileInfo">_renderProfileInfo</a></li></ul></li><li><a href="SearchBox.html">SearchBox</a><ul class='methods'><li data-type='method'><a href="SearchBox.html#connectedCallback">connectedCallback</a></li><li data-type='method'><a href="SearchBox.html#setupEventListeners">setupEventListeners</a></li><li data-type='method'><a href="SearchBox.html#toggleSearch">toggleSearch</a></li></ul></li><li><a href="SearchHero.html">SearchHero</a><ul class='methods'><li data-type='method'><a href="SearchHero.html#_renderActiveCategory">_renderActiveCategory</a></li></ul></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ApplicationOverview.html">ApplicationOverview</a></li><li><a href="tutorial-DatabaseGuide.html">DatabaseGuide</a></li><li><a href="tutorial-JavaScriptGuide.html">JavaScriptGuide</a></li><li><a href="tutorial-OnBoarding.html">OnBoarding</a></li><li><a href="tutorial-WebComponentGuide.html">WebComponentGuide</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">edit-listing/edit-listing.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import html from './edit-listing.html?raw';
+import css from './edit-listing.css?raw';
+
+/**
+ * A modal component for editing marketplace listings with image gallery support.
+ * 
+ * States:
+ * - Hidden: Modal is not visible, body scroll is enabled
+ * - Visible: Modal is displayed, body scroll is locked
+ * - Loading: Form submission in progress with loading overlay
+ * - Gallery Navigation: Multiple images with navigation controls active
+ * 
+ * Purpose:
+ * - Provides interface for editing existing marketplace listings
+ * - Handles form validation and data collection
+ * - Supports image gallery navigation for listings with multiple images
+ * - Manages file upload preview for new images
+ * - Emits listing-update events with form data
+ * - Prevents body scroll when modal is open
+ */
+class EditListingModal extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    
+    const template = document.createElement('template');
+    template.innerHTML = `&lt;style>${css}&lt;/style>${html}`;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+    this.currentListing = null;
+    this.newImageFile = null;
+    this._isVisible = false;
+    this.currentImageIndex = 0;
+    this.allImages = [];
+  }
+
+  connectedCallback() {
+    // Bind DOM elements
+    this.overlay = this.shadowRoot.querySelector('.overlay');
+    this.form = this.shadowRoot.querySelector('.edit-form');
+    this.titleInput = this.shadowRoot.querySelector('#edit-title');
+    this.priceInput = this.shadowRoot.querySelector('#edit-price');
+    this.conditionSelect = this.shadowRoot.querySelector('#edit-condition');
+    this.categorySelect = this.shadowRoot.querySelector('#edit-category');
+    this.descriptionTextarea = this.shadowRoot.querySelector('#edit-description');
+    this.currentThumbnail = this.shadowRoot.querySelector('.current-thumbnail');
+    this.mediaInput = this.shadowRoot.querySelector('#media-update');
+    this.previewContainer = this.shadowRoot.querySelector('.preview-new-media');
+    this.wordCounter = this.shadowRoot.querySelector('.word-count');
+    this.loadingOverlay = this.shadowRoot.querySelector('.loading-overlay');
+    this.closeBtn = this.shadowRoot.querySelector('.close-btn');
+    this.cancelBtn = this.shadowRoot.querySelector('.btn-cancel');
+
+    // Bind event handlers
+    this._handleClose = this._handleClose.bind(this);
+    this._handleSubmit = this._handleSubmit.bind(this);
+    this._handleMediaChange = this._handleMediaChange.bind(this);
+    this._handleDescriptionInput = this._handleDescriptionInput.bind(this);
+    this._handlePriceInput = this._handlePriceInput.bind(this);
+    this._handleEscKey = this._handleEscKey.bind(this);
+    this._handleOverlayClick = this._handleOverlayClick.bind(this);
+
+    // Add event listeners
+    if (this.closeBtn) {this.closeBtn.addEventListener('click', this._handleClose);}
+    if (this.cancelBtn) {this.cancelBtn.addEventListener('click', this._handleClose);}
+    if (this.form) {this.form.addEventListener('submit', this._handleSubmit);}
+    if (this.mediaInput) {this.mediaInput.addEventListener('change', this._handleMediaChange);}
+    if (this.descriptionTextarea) {this.descriptionTextarea.addEventListener('input', this._handleDescriptionInput);}
+    if (this.priceInput) {this.priceInput.addEventListener('input', this._handlePriceInput);}
+    if (this.overlay) {this.overlay.addEventListener('click', this._handleOverlayClick);}
+    
+    document.addEventListener('keydown', this._handleEscKey);
+  }
+
+  disconnectedCallback() {
+    if (this.closeBtn) {this.closeBtn.removeEventListener('click', this._handleClose);}
+    if (this.cancelBtn) {this.cancelBtn.removeEventListener('click', this._handleClose);}
+    if (this.form) {this.form.removeEventListener('submit', this._handleSubmit);}
+    if (this.mediaInput) {this.mediaInput.removeEventListener('change', this._handleMediaChange);}
+    if (this.descriptionTextarea) {this.descriptionTextarea.removeEventListener('input', this._handleDescriptionInput);}
+    if (this.priceInput) {this.priceInput.removeEventListener('input', this._handlePriceInput);}
+    if (this.overlay) {this.overlay.removeEventListener('click', this._handleOverlayClick);}
+    
+    document.removeEventListener('keydown', this._handleEscKey);
+
+    if (this._isVisible) {
+      this._renderBodyScrollUnlocked();
+    }
+  }
+
+  /**
+   * Shows the modal with listing data and locks body scroll
+   */
+  _renderModalVisible() {
+    this.overlay.classList.add('visible');
+    this._isVisible = true;
+    this._renderBodyScrollLocked();
+  }
+
+  /**
+   * Hides the modal and unlocks body scroll
+   */
+  _renderModalHidden() {
+    this.overlay.classList.remove('visible');
+    this._isVisible = false;
+    this._renderBodyScrollUnlocked();
+  }
+
+  /**
+   * Locks body scroll and adds padding to prevent layout shift
+   */
+  _renderBodyScrollLocked() {
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
+  }
+
+  /**
+   * Unlocks body scroll and removes padding
+   */
+  _renderBodyScrollUnlocked() {
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  }
+
+  /**
+   * Populates form fields with listing data and sets up image display
+   */
+  _renderFormData(listing) {
+    this.titleInput.value = listing.title || '';
+    this.priceInput.value = listing.price || '';
+    this.conditionSelect.value = listing.condition || '';
+    this.categorySelect.value = listing.category || '';
+    this.descriptionTextarea.value = listing.description || '';
+
+    const images = listing.allImages || (Array.isArray(listing.images) ? listing.images : [listing.thumbnail].filter(Boolean));
+    if (images.length) {
+      this.currentThumbnail.src = images[0];
+      this._renderImageGallery(images);
+    } else {
+      this.currentThumbnail.src = 'https://via.placeholder.com/300x300?text=No+Image';
+    }
+
+    this._renderWordCount();
+  }
+
+  /**
+   * Creates and displays image gallery with navigation controls for multiple images
+   */
+  _renderImageGallery(images) {
+    this.allImages = images;
+    this.currentImageIndex = 0;
+    
+    // Clean up existing gallery
+    this.shadowRoot.querySelector('.image-gallery')?.remove();
+    this.shadowRoot.querySelectorAll('.nav-btn').forEach((btn) => btn.remove());
+    
+    if (images.length &lt;= 1) {return;}
+
+    const container = this.currentThumbnail.parentNode;
+    container.style.position = 'relative';
+
+    // Create navigation buttons
+    ['prev', 'next'].forEach((dir, i) => {
+      const btn = document.createElement('button');
+      btn.className = `nav-btn ${dir}-btn`;
+      btn.type = 'button';
+      btn.innerHTML = dir === 'prev' ? '‹' : '›';
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this._handleImageNavigation(dir === 'prev' ? -1 : 1);
+      });
+      container.appendChild(btn);
+    });
+
+    // Create thumbnail strip
+    const strip = document.createElement('div');
+    strip.className = 'thumbnail-strip';
+    images.forEach((url, i) => {
+      const thumb = document.createElement('img');
+      thumb.src = url;
+      thumb.className = `thumbnail ${i === 0 ? 'active' : ''}`;
+      thumb.addEventListener('click', () => this._handleThumbnailClick(i, url));
+      strip.appendChild(thumb);
+    });
+
+    const gallery = document.createElement('div');
+    gallery.className = 'image-gallery';
+    gallery.appendChild(strip);
+    container.parentNode.insertBefore(gallery, container.nextSibling);
+  }
+
+  /**
+   * Updates the main image display and active thumbnail indicator
+   */
+  _renderImageNavigation(index) {
+    this.currentThumbnail.src = this.allImages[index];
+    this.shadowRoot.querySelectorAll('.thumbnail').forEach((t, i) => {
+      t.classList.toggle('active', i === index);
+    });
+  }
+
+  /**
+   * Displays preview of newly selected image file
+   */
+  _renderImagePreview(file) {
+    const reader = new FileReader();
+    reader.onload = ({ target }) => {
+      this.previewContainer.innerHTML = `&lt;img src="${target.result}" alt="New image preview">`;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  /**
+   * Updates word count display and exceeded state
+   */
+  _renderWordCount() {
+    const count = this.descriptionTextarea.value.trim().split(/\s+/).filter(Boolean).length;
+    this.wordCounter.textContent = `${count}/250`;
+    this.wordCounter.classList.toggle('exceeded', count > 250);
+  }
+
+  /**
+   * Shows loading overlay during form submission
+   */
+  _renderLoadingVisible() {
+    if (!this.loadingOverlay) {
+      const div = document.createElement('div');
+      div.className = 'loading-overlay';
+      div.innerHTML = '&lt;div class="spinner">&lt;/div>';
+      this.shadowRoot.querySelector('.edit-modal').appendChild(div);
+      this.loadingOverlay = div;
+    }
+    this.loadingOverlay.classList.add('visible');
+  }
+
+  /**
+   * Hides loading overlay after form submission
+   */
+  _renderLoadingHidden() {
+    this.loadingOverlay?.classList.remove('visible');
+  }
+
+  /**
+   * Resets form to initial state and cleans up all dynamic content
+   */
+  _renderFormReset() {
+    this.form.reset();
+    this.previewContainer.innerHTML = '';
+    this.newImageFile = null;
+    this.currentListing = null;
+    this.wordCounter.textContent = '0/250';
+    this.wordCounter.classList.remove('exceeded');
+    this.allImages = [];
+    this.currentImageIndex = 0;
+    
+    // Clean up gallery elements
+    this.shadowRoot.querySelector('.image-gallery')?.remove();
+    this.shadowRoot.querySelectorAll('.nav-btn').forEach((btn) => btn.remove());
+    
+    const media = this.shadowRoot.querySelector('.current-media');
+    if (media) {
+      media.style.removeProperty('position');
+    }
+  }
+
+  _handleClose() {
+    this.hide();
+  }
+
+  _handleEscKey(e) {
+    if (e.key === 'Escape' &amp;&amp; this._isVisible) {
+      this.hide();
+    }
+  }
+
+  _handleOverlayClick(e) {
+    if (e.target === this.overlay) {
+      this.hide();
+    }
+  }
+
+  _handleMediaChange(e) {
+    const file = e.target.files[0];
+    if (!file || (!file.type.startsWith('image/') &amp;&amp; !file.type.startsWith('video/'))) {
+      return window.notify('Please select valid image or video files', 'warning');
+    }
+
+    this.newImageFile = file;
+    this._renderImagePreview(file);
+  }
+
+  _handleDescriptionInput() {
+    this._renderWordCount();
+  }
+
+  _handlePriceInput(e) {
+    const value = e.target.value.replace(/[^\d.]/g, '').split('.');
+    e.target.value = value[0] + (value[1] ? '.' + value[1].slice(0, 2) : '');
+  }
+
+  _handleImageNavigation(direction) {
+    this.currentImageIndex = (this.currentImageIndex + direction + this.allImages.length) % this.allImages.length;
+    this._renderImageNavigation(this.currentImageIndex);
+  }
+
+  _handleThumbnailClick(index, url) {
+    this.currentImageIndex = index;
+    this.currentThumbnail.src = url;
+    this._renderImageNavigation(index);
+  }
+
+  async _handleSubmit(e) {
+    e.preventDefault();
+    const data = this._gatherFormData();
+    const errors = this._validateForm(data);
+    
+    if (errors.length) {
+      return errors.forEach((err) => window.notify(err, 'warning'));
+    }
+
+    this._renderLoadingVisible();
+
+    try {
+      const update = {
+        ...data,
+        price: parseFloat(data.price),
+        ...(this.newImageFile &amp;&amp; { newImage: this.newImageFile }),
+      };
+
+      this.dispatchEvent(new CustomEvent('listing-update', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          listingId: this.currentListing.listing_id,
+          updates: update,
+        },
+      }));
+
+      this._renderLoadingHidden();
+      this.hide();
+      window.notify('Listing updated successfully!', 'success');
+    } catch (err) {
+      console.error(err);
+      this._renderLoadingHidden();
+      window.notify('Failed to update listing. Please try again.', 'error');
+    }
+  }
+
+  show(data) {
+    if (!data) {
+      return console.error('No listing data provided');
+    }
+    this.currentListing = data;
+    this._renderFormData(data);
+    this._renderModalVisible();
+  }
+
+  hide() {
+    this._renderModalHidden();
+    this._renderFormReset();
+  }
+
+  _gatherFormData() {
+    return {
+      title: this.titleInput.value.trim(),
+      price: this.priceInput.value.trim(),
+      condition: this.conditionSelect.value,
+      category: this.categorySelect.value,
+      description: this.descriptionTextarea.value.trim(),
+    };
+  }
+
+  _validateForm(data) {
+    const errors = [];
+    if (!data.title || data.title.length &lt; 3) {
+      errors.push('Title must be at least 3 characters');
+    }
+    if (!data.price || isNaN(+data.price) || +data.price &lt;= 0) {
+      errors.push('Please enter a valid price');
+    }
+    if (!data.condition) {
+      errors.push('Please select a condition');
+    }
+    if (!data.category) {
+      errors.push('Please select a category');
+    }
+    if (data.description.split(/\s+/).filter(Boolean).length > 250) {
+      errors.push('Description exceeds 250 words');
+    }
+    return errors;
+  }
+}
+
+customElements.define('edit-listing-modal', EditListingModal);
+export default EditListingModal;</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Sun Jun 08 2025 21:24:11 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

@@ -2,6 +2,22 @@ import html from './browse-page.html?raw';
 import css from './browse-page.css?raw';
 import './product-card/product-card.js';
 
+/**
+ * BrowsePage Component
+ * 
+ * Renders the main product browsing page for the application.
+ * 
+ * ### Responsibilities:
+ * - Provides a flexbox layout container to hold and display `product-card` elements.
+ * - Initializes with a default selected category ("All").
+ * - Includes a sort dropdown to change how products are ordered.
+ * - Dispatches a `sort-change` event when a valid sort option is selected.
+ * 
+ * ### Key UI Elements:
+ * - `category-button`: Used for category filtering.
+ * - `#dropdown`: Select input for sorting products by criteria like "new", "low", etc.
+ * - Flex container (e.g., `.product-container`): Holds all `product-card` components.
+ */
 class BrowsePage extends HTMLElement {
   constructor() {
     super();
@@ -32,6 +48,12 @@ class BrowsePage extends HTMLElement {
   }
 
   // DOM-UPDATE HELPERS (Pure DOM mutations)
+  
+  /**
+   * Renders the default selected category button ("All").
+   * Waits briefly for the DOM to stabilize, then sets the `selected` attribute
+   * on the first `category-button` element found in the shadow DOM.
+   */
   _renderDefaultCategory() {
     setTimeout(() => {
       const allButton = this.shadowRoot.querySelector('category-button');

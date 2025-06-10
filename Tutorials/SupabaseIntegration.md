@@ -1,4 +1,0 @@
-# Supabase Integration 
-
-
-

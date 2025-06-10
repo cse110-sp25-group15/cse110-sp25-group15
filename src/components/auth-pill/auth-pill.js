@@ -2,6 +2,20 @@ import html from './auth-pill.html?raw';
 import css from './auth-pill.css?raw';
 import supabase from '../../scripts/utils/supabase.js';
 
+/**
+ * `AuthPill` is a Web Component that manages user authentication UI with Supabase.
+ * It provides a toggleable "pill" that either prompts the user to sign in (via Google OAuth)
+ * or displays user information and a dropdown menu with profile and sign-out options.
+ *
+ * ### Component States:
+ * - **Logged Out**: Displays a login button prompting sign-in.
+ * - **Logged In**: Shows the user pill with their avatar/initials and name.
+ * - **Menu Expanded**: User has clicked the pill, showing the dropdown menu.
+ * - **Menu Collapsed**: Dropdown is hidden.
+ *
+ * The component reacts to authentication changes and syncs UI accordingly. It also persists
+ * user information to a Supabase `users` table and dispatches events on sign-in and sign-out.
+ */
 class AuthPill extends HTMLElement {
   constructor() {
     super();
@@ -67,6 +81,13 @@ class AuthPill extends HTMLElement {
   }
 
   // DOM-UPDATE HELPERS (Pure DOM mutations)
+
+  /**
+   * Renders the UI for a logged-out user.
+   * - Hides the user pill.
+   * - Shows the login button.
+   * - Resets avatar and initials display.
+   */
   _renderLoginUI() {
     this.userPill.style.display = 'none';
     this.loginBtn.style.display = 'flex';
@@ -79,6 +100,11 @@ class AuthPill extends HTMLElement {
     this.initials.textContent = '';
   }
 
+  /**
+   * Renders the UI for a logged-in user.
+   * - Displays the user pill with name and avatar or initials.
+   * - Hides the login button.
+   */
   _renderUserUI() {
     this.userPill.style.display = 'flex';
     this.loginBtn.style.display = 'none';
@@ -104,6 +130,11 @@ class AuthPill extends HTMLElement {
     }
   }
 
+  /**
+   * Renders the expanded dropdown menu.
+   * - Displays additional user info like name and email.
+   * - Sets menu to visible and pill to expanded.
+   */
   _renderMenuOpen() {
     this.pill.classList.add('expanded');
     this.menu.style.display = 'block';
@@ -114,7 +145,11 @@ class AuthPill extends HTMLElement {
       if (this.menuEmail) {this.menuEmail.textContent = this.user.email;}
     }
   }
-
+  
+  /**
+   * Collapses the dropdown menu.
+   * - Hides the dropdown menu and removes expanded state from pill.
+   */
   _renderMenuClosed() {
     this.pill?.classList.remove('expanded');
     this.menu.style.display = 'none';

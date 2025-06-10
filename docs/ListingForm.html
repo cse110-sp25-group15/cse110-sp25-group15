@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>SearchBox - Documentation</title>
+    <title>ListingForm - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -35,7 +35,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">SearchBox</h1>
+    <h1 class="page-title">ListingForm</h1>
     
 
     
@@ -49,12 +49,28 @@
     
         <h2>
         
-            SearchBox
+            ListingForm
         
         </h2>
         
-            <div class="class-description usertext"><p>Search Box Component
-Provides search functionality for the site header</p></div>
+            <div class="class-description usertext"><p>A comprehensive form component for creating marketplace listings with media upload support.</p>
+<p>States:</p>
+<ul>
+<li>Default: Form ready for input with no files uploaded</li>
+<li>Files Uploaded: Shows uploaded files with reorder/remove controls</li>
+<li>Preview Mode: Modal showing listing preview with media gallery</li>
+<li>Drag Hover: Visual feedback during file drag operations</li>
+</ul>
+<p>Purpose:</p>
+<ul>
+<li>Collects listing data (title, price, category, condition, description)</li>
+<li>Handles multiple file uploads with drag &amp; drop support</li>
+<li>Provides file reordering and removal functionality</li>
+<li>Shows live preview of the listing with media gallery</li>
+<li>Validates form data and emits listing-submit events</li>
+<li>Manages word count for description field</li>
+<li>Formats price input automatically</li>
+</ul></div>
         
     
 </header>
@@ -69,7 +85,7 @@ Provides search functionality for the site header</p></div>
     <h2>Constructor</h2>
     
 
-    <h4 class="name" id="SearchBox"><span class="type-signature"></span>new SearchBox<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="ListingForm"><span class="type-signature"></span>new ListingForm<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
@@ -78,14 +94,11 @@ Provides search functionality for the site header</p></div>
 
 <dl class="details">
     
-    <dt class="tag-description">Description:</dt>
-    <dd class="tag-description"><ul class="dummy"><li><p>Constructor initializes the component</p></li></ul></dd>
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="search-box_search-box.js.html">search-box/search-box.js</a>, <a href="search-box_search-box.js.html#line8">line 8</a>
+        <a href="listing-form_listing-form.js.html">listing-form/listing-form.js</a>, <a href="listing-form_listing-form.js.html#line22">line 22</a>
     </li></ul></dd>
     
 
@@ -175,7 +188,7 @@ Provides search functionality for the site header</p></div>
 
     
 
-    <h4 class="name" id="connectedCallback"><span class="type-signature"></span>connectedCallback<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="_renderBodyScrollLocked"><span class="type-signature"></span>_renderBodyScrollLocked<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
@@ -185,13 +198,13 @@ Provides search functionality for the site header</p></div>
 <dl class="details">
     
     <dt class="tag-description">Description:</dt>
-    <dd class="tag-description"><ul class="dummy"><li><p>Lifecycle callback when component is connected to the DOM</p></li></ul></dd>
+    <dd class="tag-description"><ul class="dummy"><li><p>Locks body scroll and adds padding to prevent layout shift</p></li></ul></dd>
     
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="search-box_search-box.js.html">search-box/search-box.js</a>, <a href="search-box_search-box.js.html#line20">line 20</a>
+        <a href="listing-form_listing-form.js.html">listing-form/listing-form.js</a>, <a href="listing-form_listing-form.js.html#line252">line 252</a>
     </li></ul></dd>
     
 
@@ -260,7 +273,7 @@ Provides search functionality for the site header</p></div>
 
     
 
-    <h4 class="name" id="setupEventListeners"><span class="type-signature"></span>setupEventListeners<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="_renderBodyScrollUnlocked"><span class="type-signature"></span>_renderBodyScrollUnlocked<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
@@ -270,13 +283,13 @@ Provides search functionality for the site header</p></div>
 <dl class="details">
     
     <dt class="tag-description">Description:</dt>
-    <dd class="tag-description"><ul class="dummy"><li><p>Sets up event listeners for the component</p></li></ul></dd>
+    <dd class="tag-description"><ul class="dummy"><li><p>Unlocks body scroll and removes padding</p></li></ul></dd>
     
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="search-box_search-box.js.html">search-box/search-box.js</a>, <a href="search-box_search-box.js.html#line42">line 42</a>
+        <a href="listing-form_listing-form.js.html">listing-form/listing-form.js</a>, <a href="listing-form_listing-form.js.html#line261">line 261</a>
     </li></ul></dd>
     
 
@@ -345,7 +358,7 @@ Provides search functionality for the site header</p></div>
 
     
 
-    <h4 class="name" id="toggleSearch"><span class="type-signature"></span>toggleSearch<span class="signature">(show<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="_renderDragHover"><span class="type-signature"></span>_renderDragHover<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
@@ -355,13 +368,13 @@ Provides search functionality for the site header</p></div>
 <dl class="details">
     
     <dt class="tag-description">Description:</dt>
-    <dd class="tag-description"><ul class="dummy"><li><p>Public method to programmatically toggle the search box</p></li></ul></dd>
+    <dd class="tag-description"><ul class="dummy"><li><p>Adds drag hover styling to upload area</p></li></ul></dd>
     
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="search-box_search-box.js.html">search-box/search-box.js</a>, <a href="search-box_search-box.js.html#line100">line 100</a>
+        <a href="listing-form_listing-form.js.html">listing-form/listing-form.js</a>, <a href="listing-form_listing-form.js.html#line367">line 367</a>
     </li></ul></dd>
     
 
@@ -408,74 +421,684 @@ Provides search functionality for the site header</p></div>
 
 
 
-    <h5 class="h5-parameters">Parameters:</h5>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
     
 
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>show</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    <code>true</code>
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether to show or hide the search box</p></td>
-        </tr>
+    <h4 class="name" id="_renderDragLeave"><span class="type-signature"></span>_renderDragLeave<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
-    </tbody>
-</table>
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Removes drag hover styling from upload area</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="listing-form_listing-form.js.html">listing-form/listing-form.js</a>, <a href="listing-form_listing-form.js.html#line374">line 374</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="_renderPreviewContent"><span class="type-signature"></span>_renderPreviewContent<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Updates the preview modal content with current form data</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="listing-form_listing-form.js.html">listing-form/listing-form.js</a>, <a href="listing-form_listing-form.js.html#line269">line 269</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="_renderPreviewGallery"><span class="type-signature"></span>_renderPreviewGallery<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Renders the media gallery in preview modal with navigation</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="listing-form_listing-form.js.html">listing-form/listing-form.js</a>, <a href="listing-form_listing-form.js.html#line301">line 301</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="_renderPreviewHidden"><span class="type-signature"></span>_renderPreviewHidden<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Hides the preview modal and unlocks body scroll</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="listing-form_listing-form.js.html">listing-form/listing-form.js</a>, <a href="listing-form_listing-form.js.html#line243">line 243</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="_renderPreviewVisible"><span class="type-signature"></span>_renderPreviewVisible<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Shows the preview modal and locks body scroll</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="listing-form_listing-form.js.html">listing-form/listing-form.js</a>, <a href="listing-form_listing-form.js.html#line235">line 235</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="_renderUploadLabel"><span class="type-signature"></span>_renderUploadLabel<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Updates the upload area label text based on uploaded file count</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="listing-form_listing-form.js.html">listing-form/listing-form.js</a>, <a href="listing-form_listing-form.js.html#line215">line 215</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="_renderUploadedFiles"><span class="type-signature"></span>_renderUploadedFiles<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Renders the uploaded files display with thumbnails, reorder controls, and remove buttons</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="listing-form_listing-form.js.html">listing-form/listing-form.js</a>, <a href="listing-form_listing-form.js.html#line126">line 126</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="_renderWordCount"><span class="type-signature"></span>_renderWordCount<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Updates the word count display and exceeded state for description field</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="listing-form_listing-form.js.html">listing-form/listing-form.js</a>, <a href="listing-form_listing-form.js.html#line116">line 116</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
 
 
 

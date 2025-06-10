@@ -3,7 +3,16 @@ import css from './bottom-nav.css?raw';
 
 /**
  * Bottom Navigation Component
- * Provides footer navigation and newsletter signup
+ * 
+ * Provides a persistent footer section that includes:
+ * - A "Back to Top" button
+ * - A newsletter signup form
+ * - Navigation links (e.g., Browse, Home logo)
+ * 
+ * ### Key Features:
+ * - Smooth scrolling to top or marketplace section
+ * - Email input with visual confirmation of newsletter submission
+ * - Emits `newsletter-signup` event with email payload on submit
  */
 class BottomNav extends HTMLElement {
   constructor() {
@@ -41,6 +50,11 @@ class BottomNav extends HTMLElement {
     this.logo?.removeEventListener('click', this._handleLogoClick);
   }
 
+  /**
+   * Temporarily updates the newsletter button to show a success message.
+   * - Changes button text and background color
+   * - Reverts to original state after 2 seconds
+   */
   _renderNewsletterSuccess() {
     if (!this.newsletterButton) {return;}
     const originalText = this.newsletterButton.textContent;
@@ -52,7 +66,11 @@ class BottomNav extends HTMLElement {
       this.newsletterButton.style.background = '';
     }, 2000);
   }
-
+  
+  /**
+   * Clears the email input field.
+   * - Called after successful form submission
+   */
   _renderEmailCleared() {
     if (this.emailInput) {
       this.emailInput.value = '';

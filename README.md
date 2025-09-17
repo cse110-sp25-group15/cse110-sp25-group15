@@ -10,21 +10,22 @@ UCSD Marketplace is a platform designed to help students buy, sell, and discover
 
 ## Key Goals
 
-* Easy to navigate and use, even for non-technical users ❌
-* Optimized for both desktop and mobile ❌
-* Safe and secure with user verification and moderation features ❌
-* Clear category-based browsing and search functionality ❌
+* Easy to navigate and use, even for non-technical users ✅
+* Optimized for both desktop and mobile ✅
+* Safe and secure with user verification and moderation features ✅
+* Clear category-based browsing and search functionality✅
 * Component-driven structure using Web Components ✅
 * No JavaScript frameworks—just native browser capabilities ✅
 
 ## Features
 
-* Browse listings by categories (e.g. Books, Furniture, Electronics)❌
-* Post and manage your own listings (form-based UX)❌
-* Responsive layout for desktop and mobile ❌
-* Subcategory and filter UI components built with native Web Components ❌
+* Browse listings by categories (e.g. Books, Furniture, Electronics)✅
+* Post and manage your own listings (form-based UX)✅
+* Responsive layout for desktop and mobile ✅
+* Subcategory and filter UI components built with native Web Components ✅
 
 
 ## Our Team!
+
 
 [Meet the Team!](./admin/team.md)
